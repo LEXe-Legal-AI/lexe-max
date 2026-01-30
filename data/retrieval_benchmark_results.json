@@ -1,0 +1,1330 @@
+{
+  "timestamp": "2026-01-28 00:31:59",
+  "config": {
+    "rrf_k": 60,
+    "embedding_model": "mistralai/mistral-embed-2312",
+    "total_queries": 30
+  },
+  "results": [
+    {
+      "query_type": "istituto",
+      "query": "responsabilita civile per danni",
+      "method": "R1",
+      "top_k": [
+        "e80d74cf",
+        "ff69ecc3",
+        "b3fd20b5",
+        "a3397859",
+        "eb2ee59e"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 619.4677352905273
+    },
+    {
+      "query_type": "istituto",
+      "query": "responsabilita civile per danni",
+      "method": "R2",
+      "top_k": [
+        "ff69ecc3",
+        "e80d74cf",
+        "b3fd20b5",
+        "eb2ee59e",
+        "c784ef28"
+      ],
+      "scores": [
+        0.02217741935483871,
+        0.020491803278688527,
+        0.01984126984126984,
+        0.019230769230769232,
+        0.01838235294117647
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 613.8515472412109
+    },
+    {
+      "query_type": "istituto",
+      "query": "risarcimento del danno patrimoniale",
+      "method": "R1",
+      "top_k": [
+        "78d721d4",
+        "6475d6e4",
+        "2056335d",
+        "e347c318",
+        "b92bc595"
+      ],
+      "scores": [
+        0.03201844262295082,
+        0.0315136476426799,
+        0.03149801587301587,
+        0.03009207275993712,
+        0.029631255487269536
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 302.81949043273926
+    },
+    {
+      "query_type": "istituto",
+      "query": "risarcimento del danno patrimoniale",
+      "method": "R2",
+      "top_k": [
+        "6475d6e4",
+        "2056335d",
+        "e347c318",
+        "b92bc595",
+        "0d558638"
+      ],
+      "scores": [
+        0.04727047146401985,
+        0.04724702380952381,
+        0.04513810913990568,
+        0.0444468832309043,
+        0.036838390966831336
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 292.1481132507324
+    },
+    {
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "method": "R1",
+      "top_k": [
+        "d20f2ac0",
+        "ad5c73b7",
+        "ee6a2bdf",
+        "94f211d2",
+        "2cf8612c"
+      ],
+      "scores": [
+        0.03149801587301587,
+        0.01639344262295082,
+        0.01639344262295082,
+        0.016129032258064516,
+        0.016129032258064516
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 316.9374465942383
+    },
+    {
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "method": "R2",
+      "top_k": [
+        "d20f2ac0",
+        "ee6a2bdf",
+        "94f211d2",
+        "e6ad050d",
+        "e4fc5fd9"
+      ],
+      "scores": [
+        0.04199735449735449,
+        0.02185792349726776,
+        0.02150537634408602,
+        0.021164021164021163,
+        0.020833333333333332
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 317.87633895874023
+    },
+    {
+      "query_type": "istituto",
+      "query": "prescrizione del diritto",
+      "method": "R1",
+      "top_k": [
+        "923e90a0",
+        "415c73e6",
+        "852006d1",
+        "70a55ee3",
+        "455ce3ba"
+      ],
+      "scores": [
+        0.03201844262295082,
+        0.03200204813108039,
+        0.03076923076923077,
+        0.029857397504456328,
+        0.029644268774703556
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 271.0397243499756
+    },
+    {
+      "query_type": "istituto",
+      "query": "prescrizione del diritto",
+      "method": "R2",
+      "top_k": [
+        "923e90a0",
+        "415c73e6",
+        "455ce3ba",
+        "e27b41b6",
+        "744194af"
+      ],
+      "scores": [
+        0.04802766393442623,
+        0.04800307219662058,
+        0.044466403162055336,
+        0.04123900293255132,
+        0.04090909090909091
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 286.56840324401855
+    },
+    {
+      "query_type": "istituto",
+      "query": "successione ereditaria legittima",
+      "method": "R1",
+      "top_k": [
+        "add036c4",
+        "0f9e1e98",
+        "455ce3ba",
+        "b392ef01",
+        "bf757274"
+      ],
+      "scores": [
+        0.03278688524590164,
+        0.02964254577157803,
+        0.029571646010002173,
+        0.016129032258064516,
+        0.015873015873015872
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 335.01577377319336
+    },
+    {
+      "query_type": "istituto",
+      "query": "successione ereditaria legittima",
+      "method": "R2",
+      "top_k": [
+        "add036c4",
+        "0f9e1e98",
+        "455ce3ba",
+        "b392ef01",
+        "bf757274"
+      ],
+      "scores": [
+        0.03825136612021859,
+        0.03458297006684104,
+        0.03450025367833587,
+        0.01881720430107527,
+        0.018518518518518517
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 334.81669425964355
+    },
+    {
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "method": "R1",
+      "top_k": [
+        "cbec7f1c",
+        "b6d9408a",
+        "04706f97",
+        "c9381e9f",
+        "b4da3781"
+      ],
+      "scores": [
+        0.032266458495966696,
+        0.031054405392392875,
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015625
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 294.8148250579834
+    },
+    {
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "method": "R2",
+      "top_k": [
+        "b6d9408a",
+        "cbec7f1c",
+        "c9381e9f",
+        "04706f97",
+        "38f76af0"
+      ],
+      "scores": [
+        0.038818006740491094,
+        0.036299765807962535,
+        0.02217741935483871,
+        0.020491803278688527,
+        0.019230769230769232
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 306.5977096557617
+    },
+    {
+      "query_type": "istituto",
+      "query": "licenziamento per giusta causa",
+      "method": "R1",
+      "top_k": [
+        "79f3a735",
+        "0fde7edc",
+        "6f8209da",
+        "34e56515",
+        "31e2b97d"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 1,
+      "keyword_total": 5,
+      "latency_ms": 296.32043838500977
+    },
+    {
+      "query_type": "istituto",
+      "query": "licenziamento per giusta causa",
+      "method": "R2",
+      "top_k": [
+        "5f701db5",
+        "6f8209da",
+        "08eb35d2",
+        "79f3a735",
+        "373a51e5"
+      ],
+      "scores": [
+        0.018656716417910446,
+        0.017857142857142856,
+        0.016544117647058824,
+        0.01639344262295082,
+        0.016304347826086956
+      ],
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 305.87100982666016
+    },
+    {
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "method": "R1",
+      "top_k": [
+        "3a2a853c",
+        "b324e320",
+        "fb017b1c",
+        "840c9f05",
+        "fb4712d7"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 302.0129203796387
+    },
+    {
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "method": "R2",
+      "top_k": [
+        "3a2a853c",
+        "b324e320",
+        "840c9f05",
+        "3df3b1de",
+        "d40d6d11"
+      ],
+      "scores": [
+        0.019672131147540985,
+        0.019354838709677417,
+        0.01875,
+        0.018421052631578946,
+        0.017910447761194027
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 299.12853240966797
+    },
+    {
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "method": "R1",
+      "top_k": [
+        "3d621817",
+        "ad56d6ce",
+        "f8192879",
+        "5df5fd49",
+        "87425298"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 304.7792911529541
+    },
+    {
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "method": "R2",
+      "top_k": [
+        "3d621817",
+        "f8192879",
+        "87425298",
+        "ad56d6ce",
+        "f0a25457"
+      ],
+      "scores": [
+        0.02185792349726776,
+        0.018518518518518517,
+        0.01794871794871795,
+        0.016129032258064516,
+        0.01598173515981735
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 308.9427947998047
+    },
+    {
+      "query_type": "istituto",
+      "query": "concorso di persone nel reato",
+      "method": "R1",
+      "top_k": [
+        "731e3088",
+        "f8192879",
+        "f0a25457",
+        "7c82b136",
+        "519076f3"
+      ],
+      "scores": [
+        0.03278688524590164,
+        0.03149801587301587,
+        0.030834914611005692,
+        0.029910714285714287,
+        0.016129032258064516
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 295.58610916137695
+    },
+    {
+      "query_type": "istituto",
+      "query": "concorso di persone nel reato",
+      "method": "R2",
+      "top_k": [
+        "731e3088",
+        "7c82b136",
+        "f8192879",
+        "f0a25457",
+        "0fc01d98"
+      ],
+      "scores": [
+        0.042622950819672135,
+        0.041875,
+        0.040947420634920635,
+        0.03700189753320683,
+        0.021538461538461538
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 293.69258880615234
+    },
+    {
+      "query_type": "istituto",
+      "query": "misure cautelari personali",
+      "method": "R1",
+      "top_k": [
+        "e63022fb",
+        "883153e3",
+        "01349fe5",
+        "17b3f108",
+        "ae5d63fd"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 361.5434169769287
+    },
+    {
+      "query_type": "istituto",
+      "query": "misure cautelari personali",
+      "method": "R2",
+      "top_k": [
+        "e2778fe6",
+        "e63022fb",
+        "a6a9fb84",
+        "b7251140",
+        "883153e3"
+      ],
+      "scores": [
+        0.01990049751243781,
+        0.019125683060109294,
+        0.016908212560386476,
+        0.01643192488262911,
+        0.016129032258064516
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 356.00829124450684
+    },
+    {
+      "query_type": "istituto",
+      "query": "appello nel processo civile",
+      "method": "R1",
+      "top_k": [
+        "c5847e46",
+        "0db9762a",
+        "dc7312ed",
+        "e611cb0e",
+        "7a064e94"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 283.4775447845459
+    },
+    {
+      "query_type": "istituto",
+      "query": "appello nel processo civile",
+      "method": "R2",
+      "top_k": [
+        "dc7312ed",
+        "c5847e46",
+        "0db9762a",
+        "6ff8e16f",
+        "7a9fbbc1"
+      ],
+      "scores": [
+        0.01984126984126984,
+        0.018442622950819672,
+        0.01814516129032258,
+        0.017045454545454544,
+        0.01607142857142857
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 293.41626167297363
+    },
+    {
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "method": "R1",
+      "top_k": [
+        "136f6b3f",
+        "e80d74cf",
+        "933e4c67",
+        "59be7170",
+        "26ea72e8"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 339.2021656036377
+    },
+    {
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "method": "R2",
+      "top_k": [
+        "136f6b3f",
+        "e80d74cf",
+        "933e4c67",
+        "26ea72e8",
+        "373a51e5"
+      ],
+      "scores": [
+        0.018442622950819672,
+        0.01814516129032258,
+        0.017857142857142856,
+        0.01730769230769231,
+        0.017123287671232876
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 339.0817642211914
+    },
+    {
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "method": "R1",
+      "top_k": [
+        "ae02fd0f",
+        "840c9f05",
+        "4bcd278f",
+        "4d19ac7d",
+        "750c11de"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 347.25046157836914
+    },
+    {
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "method": "R2",
+      "top_k": [
+        "ae02fd0f",
+        "1db577d8",
+        "840c9f05",
+        "fa174210",
+        "4bcd278f"
+      ],
+      "scores": [
+        0.019672131147540985,
+        0.019402985074626865,
+        0.019354838709677417,
+        0.01911764705882353,
+        0.019047619047619046
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 337.04233169555664
+    },
+    {
+      "query_type": "avversaria",
+      "query": "inammissibilita del ricorso cassazione",
+      "method": "R1",
+      "top_k": [
+        "737a4517",
+        "e2778fe6",
+        "dc7312ed",
+        "5a383ed1",
+        "1f971535"
+      ],
+      "scores": [
+        0.03225806451612903,
+        0.0317780580075662,
+        0.03057889822595705,
+        0.025934278350515465,
+        0.01639344262295082
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 347.5320339202881
+    },
+    {
+      "query_type": "avversaria",
+      "query": "inammissibilita del ricorso cassazione",
+      "method": "R2",
+      "top_k": [
+        "737a4517",
+        "e2778fe6",
+        "dc7312ed",
+        "5a383ed1",
+        "10cf09bc"
+      ],
+      "scores": [
+        0.04435483870967742,
+        0.03972257250945775,
+        0.03822362278244631,
+        0.03565963273195877,
+        0.021484375
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 336.87472343444824
+    },
+    {
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "method": "R1",
+      "top_k": [
+        "51d592a6",
+        "78d721d4",
+        "2056335d",
+        "e6fb6206",
+        "7460b905"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625
+      ],
+      "keyword_hits": 1,
+      "keyword_total": 5,
+      "latency_ms": 376.7836093902588
+    },
+    {
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "method": "R2",
+      "top_k": [
+        "51d592a6",
+        "34c19995",
+        "e6fb6206",
+        "e4fc5fd9",
+        "7460b905"
+      ],
+      "scores": [
+        0.022540983606557378,
+        0.02022058823529412,
+        0.01984126984126984,
+        0.01785714285714286,
+        0.017578125
+      ],
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 381.3962936401367
+    },
+    {
+      "query_type": "avversaria",
+      "query": "mancanza di legittimazione attiva",
+      "method": "R1",
+      "top_k": [
+        "d14faf80",
+        "b166cc7d",
+        "750c11de",
+        "ec9b0209",
+        "446edf6f"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 503.2684803009033
+    },
+    {
+      "query_type": "avversaria",
+      "query": "mancanza di legittimazione attiva",
+      "method": "R2",
+      "top_k": [
+        "446edf6f",
+        "d031d09f",
+        "d14faf80",
+        "b166cc7d",
+        "750c11de"
+      ],
+      "scores": [
+        0.019230769230769232,
+        0.018656716417910446,
+        0.018442622950819672,
+        0.01814516129032258,
+        0.017857142857142856
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 517.5251960754395
+    },
+    {
+      "query_type": "avversaria",
+      "query": "improcedibilita della querela",
+      "method": "R1",
+      "top_k": [
+        "8bb6d937",
+        "c5847e46",
+        "1f971535",
+        "ef856438",
+        "883153e3"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 1,
+      "keyword_total": 5,
+      "latency_ms": 341.2027359008789
+    },
+    {
+      "query_type": "avversaria",
+      "query": "improcedibilita della querela",
+      "method": "R2",
+      "top_k": [
+        "d0eaef5b",
+        "8bb6d937",
+        "c5847e46",
+        "ef856438",
+        "883153e3"
+      ],
+      "scores": [
+        0.01990049751243781,
+        0.019125683060109294,
+        0.01881720430107527,
+        0.018229166666666668,
+        0.01794871794871795
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 334.61666107177734
+    },
+    {
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "method": "R1",
+      "top_k": [
+        "6f8209da",
+        "b80d6e7a",
+        "3d621817",
+        "b3ae90f4",
+        "4d691178"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 1734.3344688415527
+    },
+    {
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "method": "R2",
+      "top_k": [
+        "b80d6e7a",
+        "6f8209da",
+        "3d621817",
+        "4d691178",
+        "9c1e4e8c"
+      ],
+      "scores": [
+        0.02217741935483871,
+        0.020491803278688527,
+        0.01984126984126984,
+        0.019230769230769232,
+        0.01893939393939394
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 1742.8207397460938
+    },
+    {
+      "query_type": "avversaria",
+      "query": "insussistenza del fatto contestato",
+      "method": "R1",
+      "top_k": [
+        "d0fdc686",
+        "157feba5",
+        "5df5fd49",
+        "b3afde55",
+        "9fc7e658"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 766.2415504455566
+    },
+    {
+      "query_type": "avversaria",
+      "query": "insussistenza del fatto contestato",
+      "method": "R2",
+      "top_k": [
+        "9fc7e658",
+        "b3afde55",
+        "d0fdc686",
+        "157feba5",
+        "5df5fd49"
+      ],
+      "scores": [
+        0.021153846153846155,
+        0.01953125,
+        0.018442622950819672,
+        0.01814516129032258,
+        0.017857142857142856
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 768.8367366790771
+    },
+    {
+      "query_type": "avversaria",
+      "query": "non punibilita per particolare tenuita",
+      "method": "R1",
+      "top_k": [
+        "4f8b4fa6",
+        "b0e2de5e",
+        "df5a1e0b",
+        "b0ea7873",
+        "7a9fbbc1"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 314.9223327636719
+    },
+    {
+      "query_type": "avversaria",
+      "query": "non punibilita per particolare tenuita",
+      "method": "R2",
+      "top_k": [
+        "4f8b4fa6",
+        "b0e2de5e",
+        "df5a1e0b",
+        "b0ea7873",
+        "7a9fbbc1"
+      ],
+      "scores": [
+        0.021311475409836068,
+        0.020967741935483872,
+        0.020634920634920634,
+        0.01875,
+        0.018461538461538463
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 309.28778648376465
+    },
+    {
+      "query_type": "avversaria",
+      "query": "difetto di motivazione sentenza",
+      "method": "R1",
+      "top_k": [
+        "c176d15c",
+        "e137e30f",
+        "4b2e5bd6",
+        "cd86bbb9",
+        "8bb6d937"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 946.0196495056152
+    },
+    {
+      "query_type": "avversaria",
+      "query": "difetto di motivazione sentenza",
+      "method": "R2",
+      "top_k": [
+        "c176d15c",
+        "e137e30f",
+        "4b2e5bd6",
+        "cd86bbb9",
+        "8bb6d937"
+      ],
+      "scores": [
+        0.02459016393442623,
+        0.022540983606557378,
+        0.02217741935483871,
+        0.01984126984126984,
+        0.01953125
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 952.9640674591064
+    },
+    {
+      "query_type": "avversaria",
+      "query": "prescrizione maturata durante processo",
+      "method": "R1",
+      "top_k": [
+        "415c73e6",
+        "146fed36",
+        "79f7a964",
+        "082269cb",
+        "9fc7e658"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 324.71203804016113
+    },
+    {
+      "query_type": "avversaria",
+      "query": "prescrizione maturata durante processo",
+      "method": "R2",
+      "top_k": [
+        "79f7a964",
+        "415c73e6",
+        "082269cb",
+        "923e90a0",
+        "ea04ca88"
+      ],
+      "scores": [
+        0.01984126984126984,
+        0.018442622950819672,
+        0.017578125,
+        0.017045454545454544,
+        0.016544117647058824
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 331.0699462890625
+    },
+    {
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "method": "R1",
+      "top_k": [
+        "d14ccfb9",
+        "79f3a735",
+        "6834c096",
+        "34e56515",
+        "b0e2de5e"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 322.25751876831055
+    },
+    {
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "method": "R2",
+      "top_k": [
+        "b0e2de5e",
+        "573b5cd6",
+        "e4fc5fd9",
+        "64b6eae7",
+        "79f3a735"
+      ],
+      "scores": [
+        0.019230769230769232,
+        0.01893939393939394,
+        0.018656716417910446,
+        0.01838235294117647,
+        0.01814516129032258
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 321.4249610900879
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "method": "R1",
+      "top_k": [
+        "fbdb095a",
+        "579c7a3e",
+        "7ee1d7d6",
+        "c52e80cf",
+        "405361ee"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 479.1100025177002
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "method": "R2",
+      "top_k": [
+        "22ec0381",
+        "405361ee",
+        "36878fb4",
+        "fbdb095a",
+        "579c7a3e"
+      ],
+      "scores": [
+        0.017628205128205128,
+        0.01730769230769231,
+        0.016544117647058824,
+        0.01639344262295082,
+        0.016129032258064516
+      ],
+      "keyword_hits": 1,
+      "keyword_total": 5,
+      "latency_ms": 487.23530769348145
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "method": "R1",
+      "top_k": [
+        "3a2a853c",
+        "fb017b1c",
+        "731e3088",
+        "160b9078",
+        "7b8b2866"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 303.4999370574951
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "method": "R2",
+      "top_k": [
+        "405361ee",
+        "3a2a853c",
+        "b324e320",
+        "fb017b1c",
+        "731e3088"
+      ],
+      "scores": [
+        0.016417910447761194,
+        0.01639344262295082,
+        0.016176470588235296,
+        0.016129032258064516,
+        0.015873015873015872
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 306.23793601989746
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "method": "R1",
+      "top_k": [
+        "f8192879",
+        "e8b9892b",
+        "ea04ca88",
+        "2413a9d7",
+        "17b3f108"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 343.3816432952881
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "method": "R2",
+      "top_k": [
+        "f8192879",
+        "1db577d8",
+        "e8b9892b",
+        "ea04ca88",
+        "744194af"
+      ],
+      "scores": [
+        0.019672131147540985,
+        0.017910447761194027,
+        0.017741935483870968,
+        0.01746031746031746,
+        0.01666666666666667
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 336.7123603820801
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 1218 responsabilita contrattuale",
+      "method": "R1",
+      "top_k": [
+        "f262f356",
+        "e80d74cf",
+        "59be7170",
+        "933e4c67",
+        "26ea72e8"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 376.2342929840088
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 1218 responsabilita contrattuale",
+      "method": "R2",
+      "top_k": [
+        "f262f356",
+        "e80d74cf",
+        "5aa3e0c4",
+        "4f5938f7",
+        "1881a63c"
+      ],
+      "scores": [
+        0.020491803278688527,
+        0.01814516129032258,
+        0.017045454545454544,
+        0.016891891891891893,
+        0.016544117647058824
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 378.2916069030762
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 337 cpp resistenza pubblico ufficiale",
+      "method": "R1",
+      "top_k": [
+        "7e972b9a",
+        "f8b72289",
+        "fac024cd",
+        "4ca07951",
+        "c479482c"
+      ],
+      "scores": [
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015873015873015872,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 413.00368309020996
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 337 cpp resistenza pubblico ufficiale",
+      "method": "R2",
+      "top_k": [
+        "f8b72289",
+        "4ca07951",
+        "c479482c",
+        "7e972b9a",
+        "6a501559"
+      ],
+      "scores": [
+        0.01881720430107527,
+        0.018229166666666668,
+        0.01794871794871795,
+        0.017759562841530054,
+        0.017412935323383085
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 415.67492485046387
+    },
+    {
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "method": "R1",
+      "top_k": [
+        "04706f97",
+        "31325491",
+        "a73e6fb7",
+        "1d3ca640",
+        "a8d90c68"
+      ],
+      "scores": [
+        0.032266458495966696,
+        0.01639344262295082,
+        0.016129032258064516,
+        0.015625,
+        0.015384615384615385
+      ],
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 444.84448432922363
+    },
+    {
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "method": "R2",
+      "top_k": [
+        "04706f97",
+        "31325491",
+        "ec96e502",
+        "1d3ca640",
+        "a73e6fb7"
+      ],
+      "scores": [
+        0.040333073119958374,
+        0.020491803278688527,
+        0.01893939393939394,
+        0.017578125,
+        0.016129032258064516
+      ],
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 451.24197006225586
+    }
+  ]
+}

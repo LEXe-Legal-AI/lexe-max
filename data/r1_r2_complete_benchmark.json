@@ -1,0 +1,359 @@
+{
+  "timestamp": "2026-01-28 01:19:23",
+  "queries": 14,
+  "results": [
+    {
+      "query_type": "istituto",
+      "query": "responsabilita civile per danni",
+      "method": "R1",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 96.1754322052002
+    },
+    {
+      "query_type": "istituto",
+      "query": "responsabilita civile per danni",
+      "method": "R2-Cohere",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 354.184627532959
+    },
+    {
+      "query_type": "istituto",
+      "query": "responsabilita civile per danni",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 431.13040924072266
+    },
+    {
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "method": "R1",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 50.78387260437012
+    },
+    {
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "method": "R2-Cohere",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 297.57094383239746
+    },
+    {
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 393.28718185424805
+    },
+    {
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "method": "R1",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 48.76065254211426
+    },
+    {
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "method": "R2-Cohere",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 292.1624183654785
+    },
+    {
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "method": "R2-Local",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 392.977237701416
+    },
+    {
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "method": "R1",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 46.256303787231445
+    },
+    {
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "method": "R2-Cohere",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 274.07097816467285
+    },
+    {
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 408.977746963501
+    },
+    {
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "method": "R1",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 50.9188175201416
+    },
+    {
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "method": "R2-Cohere",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 269.5784568786621
+    },
+    {
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "method": "R2-Local",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 391.16859436035156
+    },
+    {
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "method": "R1",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 55.87124824523926
+    },
+    {
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "method": "R2-Cohere",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 278.60236167907715
+    },
+    {
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 395.8406448364258
+    },
+    {
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "method": "R1",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 59.47732925415039
+    },
+    {
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "method": "R2-Cohere",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 297.63102531433105
+    },
+    {
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 393.11933517456055
+    },
+    {
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "method": "R1",
+      "keyword_hits": 1,
+      "keyword_total": 5,
+      "latency_ms": 46.5083122253418
+    },
+    {
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "method": "R2-Cohere",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 268.0637836456299
+    },
+    {
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "method": "R2-Local",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 400.8617401123047
+    },
+    {
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "method": "R1",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 45.083045959472656
+    },
+    {
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "method": "R2-Cohere",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 271.2709903717041
+    },
+    {
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 383.2972049713135
+    },
+    {
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "method": "R1",
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 53.671836853027344
+    },
+    {
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "method": "R2-Cohere",
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 310.6846809387207
+    },
+    {
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "method": "R2-Local",
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 445.84107398986816
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "method": "R1",
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 57.91449546813965
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "method": "R2-Cohere",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 280.49278259277344
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "method": "R2-Local",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 419.36516761779785
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "method": "R1",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 54.17132377624512
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "method": "R2-Cohere",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 286.74817085266113
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 417.16909408569336
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "method": "R1",
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 53.26700210571289
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "method": "R2-Cohere",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 280.95412254333496
+    },
+    {
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "method": "R2-Local",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 382.28726387023926
+    },
+    {
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "method": "R1",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 46.67544364929199
+    },
+    {
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "method": "R2-Cohere",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 298.02823066711426
+    },
+    {
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "method": "R2-Local",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 382.45368003845215
+    }
+  ],
+  "summary": {
+    "R1": {
+      "avg_hits": 2.9285714285714284,
+      "accuracy": 58.57142857142856,
+      "latency": 54.681079728262766
+    },
+    "R2-Cohere": {
+      "avg_hits": 3.7142857142857144,
+      "accuracy": 74.28571428571429,
+      "latency": 290.0031123842512
+    },
+    "R2-Local": {
+      "avg_hits": 3.9285714285714284,
+      "accuracy": 78.57142857142857,
+      "latency": 402.69831248692105
+    }
+  }
+}

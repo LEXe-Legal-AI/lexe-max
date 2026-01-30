@@ -1,0 +1,481 @@
+{
+  "timestamp": "2026-01-28 01:14:14",
+  "queries": 14,
+  "rerankers_tested": [
+    "Cohere 3.5",
+    "Voyage 2",
+    "Jina v2"
+  ],
+  "results": [
+    {
+      "reranker": "Jina v2",
+      "query_type": "istituto",
+      "query": "responsabilita civile per danni",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 569.3066120147705,
+      "top_scores": [
+        0.56649822,
+        0.44263649,
+        0.40215731,
+        0.30819026,
+        0.29502675
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 219.61736679077148,
+      "top_scores": [
+        0.74785584,
+        0.7156829,
+        0.7089592,
+        0.6932451,
+        0.5855047
+      ]
+    },
+    {
+      "reranker": "Voyage 2",
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 316.8659210205078,
+      "top_scores": [
+        0.7109375,
+        0.6875,
+        0.67578125,
+        0.65625,
+        0.64453125
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "istituto",
+      "query": "nullita del contratto",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 430.48572540283203,
+      "top_scores": [
+        0.59219497,
+        0.54431701,
+        0.54043883,
+        0.53558427,
+        0.49139488
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 222.15962409973145,
+      "top_scores": [
+        0.7434107,
+        0.5163278,
+        0.51618147,
+        0.45464227,
+        0.43741554
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "istituto",
+      "query": "fallimento e procedure concorsuali",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 449.42617416381836,
+      "top_scores": [
+        0.51177758,
+        0.49060169,
+        0.47877252,
+        0.45277786,
+        0.41205689
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 218.63889694213867,
+      "top_scores": [
+        0.3437607,
+        0.31072626,
+        0.28885534,
+        0.15863031,
+        0.15575814
+      ]
+    },
+    {
+      "reranker": "Voyage 2",
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 330.0340175628662,
+      "top_scores": [
+        0.6171875,
+        0.61328125,
+        0.578125,
+        0.57421875,
+        0.5703125
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "istituto",
+      "query": "reato di truffa elementi costitutivi",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 425.9004592895508,
+      "top_scores": [
+        0.44287744,
+        0.29665425,
+        0.26133093,
+        0.22405544,
+        0.2043419
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 301.4557361602783,
+      "top_scores": [
+        0.34634283,
+        0.24868056,
+        0.22916451,
+        0.19223623,
+        0.18857822
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "istituto",
+      "query": "omicidio colposo presupposti",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 547.2512245178223,
+      "top_scores": [
+        0.43998796,
+        0.43158415,
+        0.36477757,
+        0.33458945,
+        0.24220563
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 224.90334510803223,
+      "top_scores": [
+        0.35206866,
+        0.2187532,
+        0.21815297,
+        0.21785328,
+        0.20827588
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "avversaria",
+      "query": "quando NON sussiste responsabilita",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 449.7995376586914,
+      "top_scores": [
+        0.23231015,
+        0.22678363,
+        0.21733753,
+        0.20817892,
+        0.20689406
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 246.46234512329102,
+      "top_scores": [
+        0.3637152,
+        0.34647548,
+        0.31147972,
+        0.21231405,
+        0.1810752
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "avversaria",
+      "query": "esclusione del dolo nel reato",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 412.23883628845215,
+      "top_scores": [
+        0.43062615,
+        0.39326853,
+        0.37754068,
+        0.34158251,
+        0.31405056
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "keyword_hits": 3,
+      "keyword_total": 5,
+      "latency_ms": 217.37217903137207,
+      "top_scores": [
+        0.6762998,
+        0.3265296,
+        0.27119726,
+        0.25507727,
+        0.18956643
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "avversaria",
+      "query": "rigetto della domanda risarcitoria",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 433.6869716644287,
+      "top_scores": [
+        0.67917871,
+        0.55157375,
+        0.5252471,
+        0.45665208,
+        0.32852942
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 237.34521865844727,
+      "top_scores": [
+        0.48060113,
+        0.38789952,
+        0.31862345,
+        0.3169086,
+        0.2939519
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "avversaria",
+      "query": "assenza di nesso causale",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 522.9544639587402,
+      "top_scores": [
+        0.42393497,
+        0.40544873,
+        0.38583738,
+        0.33633107,
+        0.32766831
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "keyword_hits": 0,
+      "keyword_total": 5,
+      "latency_ms": 218.53303909301758,
+      "top_scores": [
+        0.3176384,
+        0.2737726,
+        0.12664494,
+        0.11400327,
+        0.11055777
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "avversaria",
+      "query": "incompetenza territoriale del giudice",
+      "keyword_hits": 1,
+      "keyword_total": 5,
+      "latency_ms": 558.9830875396729,
+      "top_scores": [
+        0.18594719,
+        0.17106119,
+        0.1666754,
+        0.16132024,
+        0.16026603
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 228.64556312561035,
+      "top_scores": [
+        0.66464967,
+        0.61307496,
+        0.3317045,
+        0.117968075,
+        0.10861389
+      ]
+    },
+    {
+      "reranker": "Voyage 2",
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 282.1042537689209,
+      "top_scores": [
+        0.69140625,
+        0.65234375,
+        0.61328125,
+        0.5390625,
+        0.53515625
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "citazione",
+      "query": "art. 2043 codice civile",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 366.03331565856934,
+      "top_scores": [
+        0.46952027,
+        0.39840642,
+        0.21601155,
+        0.20561504,
+        0.20561504
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 215.4214382171631,
+      "top_scores": [
+        0.86358756,
+        0.2802227,
+        0.19784746,
+        0.1539179,
+        0.11400327
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "citazione",
+      "query": "art. 640 codice penale truffa",
+      "keyword_hits": 4,
+      "keyword_total": 5,
+      "latency_ms": 415.09461402893066,
+      "top_scores": [
+        0.46028891,
+        0.4263216,
+        0.37113661,
+        0.36206648,
+        0.34246159
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 220.54505348205566,
+      "top_scores": [
+        0.7393665,
+        0.5101799,
+        0.434102,
+        0.29407352,
+        0.20635012
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "citazione",
+      "query": "art. 575 codice penale omicidio",
+      "keyword_hits": 2,
+      "keyword_total": 5,
+      "latency_ms": 465.60072898864746,
+      "top_scores": [
+        0.40074939,
+        0.31827322,
+        0.25534365,
+        0.24798745,
+        0.23792988
+      ]
+    },
+    {
+      "reranker": "Cohere 3.5",
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 224.6227264404297,
+      "top_scores": [
+        0.8173562,
+        0.8098936,
+        0.76992935,
+        0.73778254,
+        0.72629017
+      ]
+    },
+    {
+      "reranker": "Jina v2",
+      "query_type": "citazione",
+      "query": "legge fallimentare art. 67",
+      "keyword_hits": 5,
+      "keyword_total": 5,
+      "latency_ms": 495.47719955444336,
+      "top_scores": [
+        0.61785859,
+        0.61091781,
+        0.50072861,
+        0.49246272,
+        0.48145384
+      ]
+    }
+  ],
+  "rankings": [
+    {
+      "reranker": "Cohere 3.5",
+      "avg_hits": 3.6153846153846154,
+      "accuracy": 72.3076923076923,
+      "latency_ms": 230.4401947901799
+    },
+    {
+      "reranker": "Jina v2",
+      "avg_hits": 3.5714285714285716,
+      "accuracy": 71.42857142857143,
+      "latency_ms": 467.302782194955
+    },
+    {
+      "reranker": "Voyage 2",
+      "avg_hits": 3.0,
+      "accuracy": 60.0,
+      "latency_ms": 309.66806411743164
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "timestamp": "2026-01-28 00:15:25",
+  "sample_size": 22,
+  "embedding_results": [
+    {
+      "model_id": "mistralai/codestral-embed-2505",
+      "model_name": "Codestral Embed",
+      "dim": 1536,
+      "latency_ms": 904.4616222381592,
+      "success": true,
+      "error": null
+    },
+    {
+      "model_id": "google/gemini-embedding-001",
+      "model_name": "Gemini Embed",
+      "dim": 3072,
+      "latency_ms": 904.5743942260742,
+      "success": true,
+      "error": null
+    }
+  ],
+  "retrieval_results": [
+    {
+      "model_name": "Codestral Embed",
+      "query_type": "istituto",
+      "query": "responsabilita medica per colpa grave",
+      "top_5_ids": [
+        "15af473e",
+        "7174ceae",
+        "51d592a6",
+        "446edf6f",
+        "0c3e393d"
+      ],
+      "top_5_scores": [
+        0.6774720109955521,
+        0.6151190168407422,
+        0.6018286394365414,
+        0.5879379943325912,
+        0.5876552578673017
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5
+    },
+    {
+      "model_name": "Codestral Embed",
+      "query_type": "avversaria",
+      "query": "quando NON sussiste il reato di truffa",
+      "top_5_ids": [
+        "7174ceae",
+        "81223d6f",
+        "c12080d7",
+        "4b94d482",
+        "1982fe83"
+      ],
+      "top_5_scores": [
+        0.640799558994422,
+        0.6298523785686516,
+        0.6233736926864593,
+        0.6232422626990618,
+        0.61501834784942
+      ],
+      "keyword_hits": 0,
+      "keyword_total": 5
+    },
+    {
+      "model_name": "Codestral Embed",
+      "query_type": "citazione",
+      "query": "art. 640 codice penale",
+      "top_5_ids": [
+        "f8192879",
+        "446edf6f",
+        "9a568323",
+        "f77fb7a4",
+        "e181a178"
+      ],
+      "top_5_scores": [
+        0.6792717185514731,
+        0.6750323032816868,
+        0.6679995126855965,
+        0.6662819050694175,
+        0.6449454158567032
+      ],
+      "keyword_hits": 1,
+      "keyword_total": 5
+    },
+    {
+      "model_name": "Gemini Embed",
+      "query_type": "istituto",
+      "query": "responsabilita medica per colpa grave",
+      "top_5_ids": [
+        "15af473e",
+        "7174ceae",
+        "51d592a6",
+        "0150d400",
+        "446edf6f"
+      ],
+      "top_5_scores": [
+        0.7159751842535412,
+        0.6500125920361329,
+        0.6167490784471186,
+        0.6090369492333908,
+        0.6074991633261108
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5
+    },
+    {
+      "model_name": "Gemini Embed",
+      "query_type": "avversaria",
+      "query": "quando NON sussiste il reato di truffa",
+      "top_5_ids": [
+        "7174ceae",
+        "cba39211",
+        "0150d400",
+        "15af473e",
+        "1982fe83"
+      ],
+      "top_5_scores": [
+        0.6392669447488634,
+        0.6334911981688124,
+        0.6310298560380668,
+        0.6277094522551838,
+        0.6176155835582958
+      ],
+      "keyword_hits": 1,
+      "keyword_total": 5
+    },
+    {
+      "model_name": "Gemini Embed",
+      "query_type": "citazione",
+      "query": "art. 640 codice penale",
+      "top_5_ids": [
+        "0150d400",
+        "15af473e",
+        "f77fb7a4",
+        "f8192879",
+        "4b94d482"
+      ],
+      "top_5_scores": [
+        0.6298484301066646,
+        0.6277754812621321,
+        0.6261681082298524,
+        0.6045241218080449,
+        0.5959233487244895
+      ],
+      "keyword_hits": 2,
+      "keyword_total": 5
+    }
+  ]
+}

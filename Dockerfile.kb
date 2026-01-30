@@ -1,0 +1,65 @@
+# Dockerfile.kb - PostgreSQL 17 con pgvector + AGE + pg_search + pg_trgm
+# Per LEXE Knowledge Base (massimari giurisprudenziali)
+
+FROM postgres:17-bookworm
+
+LABEL maintainer="LEO Platform <dev@itconsultingsrl.com>"
+LABEL description="PostgreSQL 17 with pgvector, Apache AGE, pg_search (ParadeDB), pg_trgm"
+LABEL version="1.0.0"
+
+# Variabili ambiente build
+ENV PG_MAJOR=17
+ENV PGVECTOR_VERSION=0.7.4
+ENV AGE_VERSION=PG17
+
+# Installa dipendenze build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    curl \
+    ca-certificates \
+    postgresql-server-dev-${PG_MAJOR} \
+    libreadline-dev \
+    zlib1g-dev \
+    flex \
+    bison \
+    && rm -rf /var/lib/apt/lists/*
+
+# 1. pgvector - Vector similarity search
+RUN cd /tmp && \
+    git clone --branch v${PGVECTOR_VERSION} --depth 1 https://github.com/pgvector/pgvector.git && \
+    cd pgvector && \
+    make OPTFLAGS="" && \
+    make install && \
+    rm -rf /tmp/pgvector
+
+# 2. Apache AGE - Graph database extension
+RUN cd /tmp && \
+    git clone --branch ${AGE_VERSION} --depth 1 https://github.com/apache/age.git && \
+    cd age && \
+    make && \
+    make install && \
+    rm -rf /tmp/age
+
+# 3. pg_search (ParadeDB) - BM25 full-text search
+# Nota: AGPLv3 - solo uso interno
+ARG PG_SEARCH_VERSION=0.21.4
+RUN cd /tmp && \
+    curl -fsSL "https://github.com/paradedb/paradedb/releases/download/v${PG_SEARCH_VERSION}/postgresql-17-pg-search_${PG_SEARCH_VERSION}-1PARADEDB-bookworm_amd64.deb" -o pg_search.deb && \
+    dpkg -i pg_search.deb || apt-get install -f -y && \
+    rm -rf /tmp/*.deb
+
+# pg_trgm è già incluso in postgres contrib
+
+# Configura shared_preload_libraries per AGE e pg_search
+RUN echo "shared_preload_libraries = 'age,pg_search'" >> /usr/share/postgresql/postgresql.conf.sample
+
+# Copia script di inizializzazione
+COPY migrations/kb/ /docker-entrypoint-initdb.d/
+
+# Healthcheck
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 \
+    CMD pg_isready -U ${POSTGRES_USER:-lexe_kb} -d ${POSTGRES_DB:-lexe_kb} || exit 1
+
+# Porta default PostgreSQL
+EXPOSE 5432
