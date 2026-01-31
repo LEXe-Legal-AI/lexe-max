@@ -163,11 +163,12 @@ Knowledge Base per i massimari della Corte di Cassazione.
 
 | Metric | Value |
 |--------|-------|
-| **Active Massime** | 41,437 |
+| **Active Massime** | 38,718 |
 | **Embeddings** | 41,437 (text-embedding-3-small) |
+| **Citation Graph Edges** | 58,737 |
+| **RV Coverage** | 99.0% |
 | **Recall@10** | 97.5% |
 | **MRR** | 0.756 |
-| **Latency p95** | 78ms |
 
 ### Infrastruttura
 
@@ -186,6 +187,25 @@ Query → Router → Citation? → Direct Lookup (RV/Sez/Num/Anno)
               └─ RRF Fusion → Top-K
 ```
 
+### Citation Graph (v3.2.3)
+
+| Metric | Value |
+|--------|-------|
+| Edges | 58,737 |
+| Unique sources | 26,415 |
+| Unique targets | 20,868 |
+| Resolution rate | 44.8% |
+| rv_exact | 47.5% |
+
+**Resolver cascade:**
+1. `rv_exact` - RV column match (47.5%)
+2. `sez_num_anno` - Sez+Num+Anno match (25.0%)
+3. `rv_text_fallback` - RV in text (14.5%)
+4. `sez_num_anno_raw` - Raw numero (8.3%)
+5. `num_anno` - Num+Anno only (4.7%)
+
+**Guardrail v3.2.3:** Solo massime "plausibili" (rv OR numero+anno OR patterns in text)
+
 ### Quick Commands
 
 ```bash
@@ -201,6 +221,9 @@ uv run python scripts/qa/generate_openai_embeddings.py --batch-size 100 --commit
 
 # Regenerate golden set
 uv run python scripts/qa/generate_golden_set.py --count 200 --commit
+
+# Build citation graph
+uv run python scripts/graph/build_citation_graph.py --commit --skip-age
 ```
 
 ### Key Scripts
@@ -210,15 +233,16 @@ uv run python scripts/qa/generate_golden_set.py --count 200 --commit
 | `run_retrieval_eval.py` | Hybrid search + eval + JSONL/CSV logging |
 | `generate_openai_embeddings.py` | Embeddings via OpenRouter |
 | `generate_golden_set.py` | Auto-generate test queries |
-| `reingest_civile_citation_anchored.py` | Citation-anchored extraction |
+| `build_citation_graph.py` | Build citation graph with dual-write |
 
 ### Schema KB
 
 ```sql
-kb.massime (id, testo, sezione, numero, anno, rv, is_active, tsv_italian)
+kb.massime (id, testo, sezione, numero, anno, rv, is_active, quality_flags, tsv_italian)
 kb.embeddings (massima_id, model_name, embedding vector(1536))
+kb.graph_edges (source_id, target_id, edge_type, relation_subtype, confidence, weight, run_id)
+kb.graph_runs (id, run_type, status, metrics, config)
 kb.golden_queries (query_text, query_type, expected_massima_id)
-kb.retrieval_logs (query_text, retrieval_mode, results, metrics)
 ```
 
 **Full documentation:** `docs/KB-HANDOFF.md`
@@ -241,7 +265,13 @@ kb.retrieval_logs (query_text, retrieval_mode, results, metrics)
 - Retrieval evaluation pipeline
 - JSONL/CSV logging
 
-**Phase 4: Production API** 🔜 NEXT
+**Phase 4: Citation Graph** ✅ COMPLETE
+- Citation extraction with resolver cascade
+- Graph edges (58,737) with confidence/weight
+- Query router with direct lookup
+- Guardrail v3.2.3 for data quality
+
+**Phase 5: Production API** 🔜 NEXT
 - FastAPI endpoints for KB search
 - Integration with LEO TRIDENT
 - Streaming/SSE support
@@ -258,5 +288,5 @@ When tools fail:
 ---
 *Created: 2026-01-13*
 *Updated: 2026-01-31*
-*Status: Phase 1-3 Complete | KB Production Ready*
+*Status: Phase 1-4 Complete | Citation Graph + Router*
 *Repo: https://github.com/LEO-ITC/lexe-max*

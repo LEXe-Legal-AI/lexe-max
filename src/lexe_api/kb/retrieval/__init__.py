@@ -54,6 +54,18 @@ from .temporal import (
     extract_temporal_from_query,
     fetch_massima_dates,
 )
+from .router import (
+    RouteType,
+    LookupResult,
+    ParsedCitation,
+    RouterResult,
+    RoutedSearchResult,
+    parse_citation,
+    classify_query,
+    citation_lookup,
+    route_query,
+    routed_search,
+)
 
 __all__ = [
     # dense
@@ -94,4 +106,15 @@ __all__ = [
     "apply_temporal_to_results",
     "fetch_massima_dates",
     "extract_temporal_from_query",
+    # router
+    "RouteType",
+    "LookupResult",
+    "ParsedCitation",
+    "RouterResult",
+    "RoutedSearchResult",
+    "parse_citation",
+    "classify_query",
+    "citation_lookup",
+    "route_query",
+    "routed_search",
 ]
