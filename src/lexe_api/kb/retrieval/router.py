@@ -230,28 +230,38 @@ def classify_query(
     Classify query and extract citation/norm if present.
 
     Priority:
-    1. Citation (Rv, Sez/Num/Anno) - most specific
-    2. Norm (art. X c.c., L. Y/Z) - legal reference
-    3. Semantic - fallback
+    1. Citation RV (Rv. 639966) - most specific
+    2. Citation Sez/Num/Anno (Sez. Un., n. 12345/2020)
+    3. Norm (art. X c.c., L. Y/Z) - BEFORE num/anno to avoid conflict
+    4. Citation Num/Anno (n. 12345/2020) - least specific, conflicts with laws
+    5. Semantic - fallback
+
+    Note: Norm check before Num/Anno because "L. n. 206/2005" contains
+    "n. 206/2005" which matches Num/Anno pattern.
 
     Returns (route_type, citation or None, norm or None)
     """
-    # Try citation first (most specific)
+    # Try citation first (most specific patterns)
     citation = parse_citation(query)
 
     if citation:
+        # RV is most specific
         if citation.rv:
             return RouteType.CITATION_RV, citation, None
+        # Sez + Num + Anno is specific
         elif citation.sezione and citation.numero and citation.anno:
             return RouteType.CITATION_SEZ_NUM_ANNO, citation, None
-        elif citation.numero and citation.anno:
-            return RouteType.CITATION_NUM_ANNO, citation, None
 
-    # Try norm detection
+    # Try norm detection BEFORE num/anno citation
+    # because "L. n. 206/2005" contains "n. 206/2005"
     norm_dict = parse_norm_query(query)
     if norm_dict:
         norm = ParsedNorm.from_dict(norm_dict)
         return RouteType.NORM, None, norm
+
+    # Now check for num/anno citation (least specific)
+    if citation and citation.numero and citation.anno:
+        return RouteType.CITATION_NUM_ANNO, citation, None
 
     return RouteType.SEMANTIC, None, None
 
