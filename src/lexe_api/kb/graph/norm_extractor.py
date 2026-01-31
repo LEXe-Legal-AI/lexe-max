@@ -303,13 +303,72 @@ def extract_norms(testo: str) -> list[NormRef]:
     return list(out.values())
 
 
+def _normalize_dirty_query(query: str) -> str:
+    """
+    Normalize dirty query for better norm detection.
+
+    Handles common variations:
+    - "art 2043 cc" -> "art. 2043 c.c."
+    - "2043cc" -> "2043 c.c."
+    - "d lgs 165 2001" -> "d.lgs. 165/2001"
+    - "111 cost" -> "art. 111 cost."
+    """
+    q = query.lower().strip()
+
+    # Normalize code abbreviations
+    replacements = [
+        # Codici senza punti
+        (r"\bcc\b", "c.c."),
+        (r"\bcpc\b", "c.p.c."),
+        (r"\bcpp\b", "c.p.p."),
+        (r"\bcp\b(?!\s*[cp])", "c.p."),  # cp but not cpc/cpp
+        (r"\bcost\b", "cost."),
+        (r"\btub\b", "t.u.b."),
+        (r"\btuf\b", "t.u.f."),
+        (r"\bcad\b", "c.a.d."),
+        # Leggi senza punti
+        (r"\bdlgs\b", "d.lgs."),
+        (r"\bdpr\b", "d.p.r."),
+        (r"\bdl\b(?!\s*[gp])", "d.l."),  # dl but not dlgs/dpr
+        # Spazi mancanti
+        (r"(\d+)(c\.?c\.?|c\.?p\.?c\.?|c\.?p\.?|cost\.?)", r"\1 \2"),
+        # Anno senza slash
+        (r"(\d+)\s+(\d{4})\b", r"\1/\2"),
+    ]
+
+    for pattern, replacement in replacements:
+        q = re.sub(pattern, replacement, q)
+
+    return q
+
+
 def parse_norm_query(query: str) -> dict | None:
     """
     Parse a query to detect norm reference.
 
+    Handles both clean and dirty queries:
+    - "art. 2043 c.c." (clean)
+    - "art 2043 cc" (dirty)
+    - "2043 codice civile" (natural)
+
     Returns dict with keys: code, article, suffix, number, year
     or None if no norm detected.
     """
+    # Try original query first
+    result = _parse_norm_query_inner(query)
+    if result:
+        return result
+
+    # Try normalized version for dirty queries
+    normalized = _normalize_dirty_query(query)
+    if normalized != query.lower().strip():
+        return _parse_norm_query_inner(normalized)
+
+    return None
+
+
+def _parse_norm_query_inner(query: str) -> dict | None:
+    """Inner parsing logic."""
     q = query.lower().strip()
 
     # art. 2043 c.c. / 2043 cc / art 2043 codice civile
