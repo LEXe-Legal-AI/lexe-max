@@ -3,7 +3,8 @@ LEXE Knowledge Base - Query Router
 
 Routes queries to optimal search strategy:
 1. Citation queries (Rv./Sez./n.) → Direct DB lookup (fast, precise)
-2. Semantic queries → Hybrid search (dense + sparse + RRF)
+2. Norm queries (art. 2043 c.c., L. 241/1990) → Norm graph lookup
+3. Semantic queries → Hybrid search (dense + sparse + RRF)
 
 Citation lookup cascade (same as graph/citation_extractor.py):
 1. rv_exact: RV column match
@@ -12,7 +13,12 @@ Citation lookup cascade (same as graph/citation_extractor.py):
 4. num_anno: (numero, anno) match
 5. Fallback: hybrid search
 
-v3.2.3: Leverages RV backfill (99% coverage)
+Norm lookup:
+1. Parse norm reference (CC:2043, LEGGE:241:1990, etc.)
+2. Find massime citing this norm via kb.massima_norms
+3. Rank by recency (anno DESC)
+
+v3.3.0: Added norm graph lookup
 """
 
 import re
@@ -22,6 +28,11 @@ from typing import Any, Optional
 from uuid import UUID
 
 import structlog
+
+from lexe_api.kb.graph.norm_extractor import (
+    norm_to_canonical_id,
+    parse_norm_query,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -35,6 +46,7 @@ class RouteType(str, Enum):
     CITATION_RV = "citation_rv"           # Has RV reference
     CITATION_SEZ_NUM_ANNO = "citation_sez_num_anno"  # Has Sez/Num/Anno
     CITATION_NUM_ANNO = "citation_num_anno"  # Has Num/Anno only
+    NORM = "norm"                          # Has norm reference (art. 2043 c.c., L. 241/1990)
     SEMANTIC = "semantic"                  # General semantic query
 
 
@@ -44,6 +56,7 @@ class LookupResult(str, Enum):
     RV_TEXT = "rv_text"
     SEZ_NUM_ANNO = "sez_num_anno"
     NUM_ANNO = "num_anno"
+    NORM_LOOKUP = "norm_lookup"
     FALLBACK_HYBRID = "fallback_hybrid"
 
 
@@ -86,10 +99,35 @@ class ParsedCitation:
 
 
 @dataclass
+class ParsedNorm:
+    """Parsed norm reference from query."""
+    code: str                          # CC, CPC, CP, LEGGE, DLGS, etc.
+    article: Optional[str] = None      # for codes: 2043, 360
+    suffix: Optional[str] = None       # bis, ter, quater...
+    number: Optional[str] = None       # for laws: 241, 50
+    year: Optional[int] = None         # for laws: 1990, 2016
+    canonical_id: str = ""             # CC:2043, LEGGE:241:1990
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "ParsedNorm":
+        """Create from parse_norm_query result."""
+        norm = cls(
+            code=d["code"],
+            article=d.get("article"),
+            suffix=d.get("suffix"),
+            number=d.get("number"),
+            year=d.get("year"),
+        )
+        norm.canonical_id = norm_to_canonical_id(d)
+        return norm
+
+
+@dataclass
 class RouterResult:
     """Result of query routing."""
     route_type: RouteType
     citation: Optional[ParsedCitation] = None
+    norm: Optional[ParsedNorm] = None
 
     # If direct lookup succeeded
     lookup_result: Optional[LookupResult] = None
@@ -185,23 +223,37 @@ def parse_citation(query: str) -> Optional[ParsedCitation]:
     return citation if citation.is_valid() else None
 
 
-def classify_query(query: str) -> tuple[RouteType, Optional[ParsedCitation]]:
+def classify_query(
+    query: str,
+) -> tuple[RouteType, Optional[ParsedCitation], Optional[ParsedNorm]]:
     """
-    Classify query and extract citation if present.
+    Classify query and extract citation/norm if present.
 
-    Returns (route_type, citation or None)
+    Priority:
+    1. Citation (Rv, Sez/Num/Anno) - most specific
+    2. Norm (art. X c.c., L. Y/Z) - legal reference
+    3. Semantic - fallback
+
+    Returns (route_type, citation or None, norm or None)
     """
+    # Try citation first (most specific)
     citation = parse_citation(query)
 
     if citation:
         if citation.rv:
-            return RouteType.CITATION_RV, citation
+            return RouteType.CITATION_RV, citation, None
         elif citation.sezione and citation.numero and citation.anno:
-            return RouteType.CITATION_SEZ_NUM_ANNO, citation
+            return RouteType.CITATION_SEZ_NUM_ANNO, citation, None
         elif citation.numero and citation.anno:
-            return RouteType.CITATION_NUM_ANNO, citation
+            return RouteType.CITATION_NUM_ANNO, citation, None
 
-    return RouteType.SEMANTIC, None
+    # Try norm detection
+    norm_dict = parse_norm_query(query)
+    if norm_dict:
+        norm = ParsedNorm.from_dict(norm_dict)
+        return RouteType.NORM, None, norm
+
+    return RouteType.SEMANTIC, None, None
 
 
 # ============================================================
@@ -330,6 +382,80 @@ async def citation_lookup(
 
 
 # ============================================================
+# NORM LOOKUP
+# ============================================================
+
+async def norm_lookup(
+    conn: Any,
+    norm: ParsedNorm,
+    limit: int = 10,
+) -> tuple[list[UUID], list[float], LookupResult]:
+    """
+    Lookup massime citing a specific norm.
+
+    Finds massime connected to the norm via kb.massima_norms,
+    ordered by recency (anno DESC) and norm citation_count.
+
+    Args:
+        conn: Database connection
+        norm: Parsed norm reference
+        limit: Max results
+
+    Returns:
+        (massima_ids, scores, lookup_result)
+    """
+    massima_ids: list[UUID] = []
+    scores: list[float] = []
+    result_type = LookupResult.FALLBACK_HYBRID
+
+    # First check if norm exists
+    norm_row = await conn.fetchrow(
+        """
+        SELECT id, citation_count
+        FROM kb.norms
+        WHERE id = $1
+        """,
+        norm.canonical_id,
+    )
+
+    if not norm_row:
+        logger.debug("Norm not found", norm_id=norm.canonical_id)
+        return massima_ids, scores, result_type
+
+    # Find massime citing this norm, ordered by recency
+    rows = await conn.fetch(
+        """
+        SELECT
+            m.id,
+            -- Score based on recency: newer = higher score
+            -- Base score 0.85, bonus for recent years
+            0.85 + LEAST(0.10, (COALESCE(m.anno, 2000) - 2000) * 0.005) AS score
+        FROM kb.massima_norms mn
+        JOIN kb.massime m ON m.id = mn.massima_id
+        WHERE mn.norm_id = $1
+          AND m.is_active = TRUE
+        ORDER BY m.anno DESC NULLS LAST, m.numero DESC NULLS LAST
+        LIMIT $2
+        """,
+        norm.canonical_id,
+        limit,
+    )
+
+    if rows:
+        massima_ids = [row["id"] for row in rows]
+        scores = [row["score"] for row in rows]
+        result_type = LookupResult.NORM_LOOKUP
+        logger.debug(
+            "Norm lookup hit",
+            norm_id=norm.canonical_id,
+            norm_citations=norm_row["citation_count"],
+            count=len(rows),
+        )
+
+    return massima_ids, scores, result_type
+
+
+# ============================================================
 # ROUTER
 # ============================================================
 
@@ -341,9 +467,10 @@ async def route_query(
     """
     Route query to optimal search strategy.
 
-    1. Parse citation from query
+    1. Parse citation/norm from query
     2. If citation found, attempt direct lookup
-    3. Return routing result (may include lookup results)
+    3. If norm found, attempt norm lookup
+    4. Return routing result (may include lookup results)
 
     Args:
         query: User query
@@ -353,11 +480,12 @@ async def route_query(
     Returns:
         RouterResult with route_type and optional lookup results
     """
-    route_type, citation = classify_query(query)
+    route_type, citation, norm = classify_query(query)
 
     result = RouterResult(
         route_type=route_type,
         citation=citation,
+        norm=norm,
     )
 
     # If citation detected, try direct lookup
@@ -373,10 +501,25 @@ async def route_query(
             result.massima_ids = massima_ids
             result.scores = scores
 
+    # If norm detected, try norm lookup
+    elif norm:
+        result.lookup_attempted = True
+        massima_ids, scores, lookup_result = await norm_lookup(
+            conn, norm, limit
+        )
+
+        if massima_ids:
+            result.lookup_hit = True
+            result.lookup_result = lookup_result
+            result.massima_ids = massima_ids
+            result.scores = scores
+
     logger.info(
         "Query routed",
         route_type=route_type.value,
         citation_detected=citation is not None,
+        norm_detected=norm is not None,
+        norm_id=norm.canonical_id if norm else None,
         lookup_hit=result.lookup_hit,
         lookup_result=result.lookup_result.value if result.lookup_result else None,
     )

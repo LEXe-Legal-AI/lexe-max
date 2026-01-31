@@ -164,9 +164,11 @@ Knowledge Base per i massimari della Corte di Cassazione.
 | Metric | Value |
 |--------|-------|
 | **Active Massime** | 38,718 |
-| **Embeddings** | 41,437 (text-embedding-3-small) |
+| **Embeddings** | 41,437 total (38,718 active) |
 | **Citation Graph Edges** | 58,737 |
-| **RV Coverage** | 99.0% |
+| **Norm Graph Edges** | 42,338 |
+| **Unique Norms** | 4,128 |
+| **Norm Coverage** | 60.3% (23,365 massime) |
 | **Recall@10** | 97.5% |
 | **MRR** | 0.756 |
 
@@ -179,12 +181,16 @@ Knowledge Base per i massimari della Corte di Cassazione.
 ### Retrieval Architecture
 
 ```
-Query → Router → Citation? → Direct Lookup (RV/Sez/Num/Anno)
-                    ↓ NO
-              Hybrid Search
-              ├─ Dense (vector, top-50)
-              ├─ Sparse (tsvector, top-50)
-              └─ RRF Fusion → Top-K
+Query --> Router --> Citation? --> Direct Lookup (RV/Sez/Num/Anno)
+                |         |
+                |    Norm? --> Norm Lookup (CC:2043, LEGGE:241:1990)
+                |         |
+                +-- Semantic --> Hybrid Search
+                                 |-- Dense (vector, top-50)
+                                 |-- Sparse (tsvector, top-50)
+                                 +-- RRF Fusion --> Top-K
+                                       |
+                                 Norm Boost (if norm in query)
 ```
 
 ### Citation Graph (v3.2.3)
@@ -205,6 +211,40 @@ Query → Router → Citation? → Direct Lookup (RV/Sez/Num/Anno)
 5. `num_anno` - Num+Anno only (4.7%)
 
 **Guardrail v3.2.3:** Solo massime "plausibili" (rv OR numero+anno OR patterns in text)
+
+### Norm Graph (v3.3.0)
+
+Grafo delle norme citate nelle massime per lookup diretto.
+
+| Metric | Value |
+|--------|-------|
+| Unique norms | 4,128 |
+| Total edges | 42,338 |
+| Massime with norms | 23,365 (60.3%) |
+| Top norm | D.Lgs. 165/2001 (587 citations) |
+
+**Supported norm types:**
+- Codici: CC, CPC, CP, CPP, COST
+- Testi unici: TUB, TUF, CAD
+- Leggi: LEGGE, DLGS, DPR, DL
+
+**Query routing:**
+```
+Query "art. 2043 c.c." -> RouteType.NORM -> norm_lookup() -> massime citing CC:2043
+Query "danno ingiusto art. 2043 c.c." -> hybrid_search + norm_boost
+```
+
+**Scripts:**
+```bash
+# Build norm graph
+uv run python scripts/graph/build_norm_graph.py --batch-size 500
+
+# Sanity checks
+uv run python scripts/graph/sanity_check_norm_graph.py
+
+# Test router
+uv run python scripts/test_norm_router.py
+```
 
 ### Quick Commands
 
@@ -234,6 +274,9 @@ uv run python scripts/graph/build_citation_graph.py --commit --skip-age
 | `generate_openai_embeddings.py` | Embeddings via OpenRouter |
 | `generate_golden_set.py` | Auto-generate test queries |
 | `build_citation_graph.py` | Build citation graph with dual-write |
+| `build_norm_graph.py` | Extract norms and build norm graph |
+| `sanity_check_norm_graph.py` | Validate norm graph data |
+| `test_norm_router.py` | Test norm detection and lookup |
 
 ### Schema KB
 
@@ -242,6 +285,8 @@ kb.massime (id, testo, sezione, numero, anno, rv, is_active, quality_flags, tsv_
 kb.embeddings (massima_id, model_name, embedding vector(1536))
 kb.graph_edges (source_id, target_id, edge_type, relation_subtype, confidence, weight, run_id)
 kb.graph_runs (id, run_type, status, metrics, config)
+kb.norms (id, code, article, suffix, number, year, full_ref, citation_count)
+kb.massima_norms (massima_id, norm_id, context_span, run_id)
 kb.golden_queries (query_text, query_type, expected_massima_id)
 ```
 
