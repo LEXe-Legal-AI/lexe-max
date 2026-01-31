@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEXE KB Citation Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/2.4.0/sigma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphology/0.25.4/graphology.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        #container { width: 100vw; height: 100vh; position: relative; }
+        #sigma-container { width: 100%; height: 100%; background: #0d1117; }
+        #info {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(22, 27, 34, 0.95); padding: 20px;
+            border-radius: 12px; border: 1px solid #30363d;
+            max-width: 320px; z-index: 100;
+        }
+        #info h1 { font-size: 18px; margin-bottom: 10px; color: #58a6ff; }
+        #info p { font-size: 13px; margin-bottom: 12px; color: #8b949e; }
+        .stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 13px; }
+        .stat-value { color: #7ee787; font-weight: 600; }
+        #controls {
+            position: absolute; bottom: 20px; left: 20px;
+            background: rgba(22, 27, 34, 0.95); padding: 15px;
+            border-radius: 12px; border: 1px solid #30363d; z-index: 100;
+        }
+        #controls button {
+            background: #238636; color: white; border: none;
+            padding: 8px 16px; border-radius: 6px; cursor: pointer;
+            margin-right: 8px; margin-bottom: 8px; font-size: 13px;
+        }
+        #controls button:hover { background: #2ea043; }
+        #controls button.secondary { background: #30363d; }
+        #controls button.running { background: #da3633; }
+        #loading {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); text-align: center; z-index: 200;
+        }
+        #loading.hidden { display: none; }
+        .spinner {
+            width: 50px; height: 50px; border: 4px solid #30363d;
+            border-top-color: #58a6ff; border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #legend {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(22, 27, 34, 0.95); padding: 15px;
+            border-radius: 12px; border: 1px solid #30363d; z-index: 100;
+        }
+        #legend h3 { font-size: 14px; margin-bottom: 10px; color: #c9d1d9; }
+        .legend-item { display: flex; align-items: center; margin: 6px 0; font-size: 12px; }
+        .legend-color { width: 14px; height: 14px; border-radius: 50%; margin-right: 8px; }
+        #node-info {
+            position: absolute; bottom: 20px; right: 20px;
+            background: rgba(22, 27, 34, 0.95); padding: 15px;
+            border-radius: 12px; border: 1px solid #30363d;
+            z-index: 100; min-width: 200px; display: none;
+        }
+        #node-info h3 { color: #58a6ff; margin-bottom: 8px; }
+        #node-info .detail { font-size: 12px; margin: 4px 0; color: #8b949e; }
+        #node-info .detail span { color: #c9d1d9; }
+        #search-box { margin-top: 15px; }
+        #search-box input {
+            width: 100%; padding: 8px 12px; border: 1px solid #30363d;
+            border-radius: 6px; background: #161b22; color: #c9d1d9; font-size: 13px;
+        }
+        #layout-status { margin-top: 10px; font-size: 12px; color: #8b949e; }
+        .progress-bar { width: 100%; height: 4px; background: #21262d; border-radius: 2px; margin-top: 8px; }
+        .progress-bar-fill { height: 100%; background: #58a6ff; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="sigma-container"></div>
+        <div id="info">
+            <h1>LEXE KB Citation Graph</h1>
+            <p>Grafo delle citazioni tra massime della Cassazione</p>
+            <div class="stat"><span>Nodi (massime)</span><span class="stat-value" id="node-count">...</span></div>
+            <div class="stat"><span>Archi (citazioni)</span><span class="stat-value" id="edge-count">...</span></div>
+            <div id="layout-status">Layout: in attesa<div class="progress-bar"><div class="progress-bar-fill" id="progress" style="width: 0%"></div></div></div>
+            <div id="search-box"><input type="text" id="search" placeholder="Cerca RV (es. 656405)..." /></div>
+        </div>
+        <div id="legend">
+            <h3>Sezioni</h3>
+            <div class="legend-item"><div class="legend-color" style="background: #ff6b6b"></div> Sez. 1</div>
+            <div class="legend-item"><div class="legend-color" style="background: #4ecdc4"></div> Sez. 2</div>
+            <div class="legend-item"><div class="legend-color" style="background: #45b7d1"></div> Sez. 3</div>
+            <div class="legend-item"><div class="legend-color" style="background: #f9ca24"></div> Sez. 4</div>
+            <div class="legend-item"><div class="legend-color" style="background: #6c5ce7"></div> Sez. 5</div>
+            <div class="legend-item"><div class="legend-color" style="background: #a29bfe"></div> Sez. 6</div>
+            <div class="legend-item"><div class="legend-color" style="background: #96ceb4"></div> Sez. U (Unite)</div>
+            <div class="legend-item"><div class="legend-color" style="background: #ffeaa7"></div> Sez. L (Lavoro)</div>
+            <div class="legend-item"><div class="legend-color" style="background: #636e72"></div> Altre</div>
+        </div>
+        <div id="controls">
+            <button id="btn-layout" onclick="toggleLayout()">Start Layout</button>
+            <button onclick="zoomIn()">+</button>
+            <button onclick="zoomOut()">-</button>
+            <button onclick="resetView()">Reset</button>
+            <button class="secondary" onclick="toggleLabels()">Labels</button>
+        </div>
+        <div id="loading"><div class="spinner"></div><p>Caricamento grafo...</p></div>
+        <div id="node-info">
+            <h3 id="node-label">-</h3>
+            <div class="detail">Sezione: <span id="node-section">-</span></div>
+            <div class="detail">Anno: <span id="node-year">-</span></div>
+            <div class="detail">Out: <span id="node-out">-</span> | In: <span id="node-in">-</span></div>
+        </div>
+    </div>
+
+    <script>
+        const sectionColors = {
+            '1': '#ff6b6b', '2': '#4ecdc4', '3': '#45b7d1', '4': '#f9ca24',
+            '5': '#6c5ce7', '6': '#a29bfe', '61': '#a29bfe',
+            'U': '#96ceb4', 'L': '#ffeaa7', 'N/A': '#636e72'
+        };
+
+        let renderer = null, graph = null, layoutRunning = false, showLabels = false;
+
+        async function loadCSV(url) {
+            const text = await (await fetch(url)).text();
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',');
+            return lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
+                return obj;
+            });
+        }
+
+        // Simple force-directed layout (no external library needed)
+        function forceDirectedStep(graph, iterations = 1) {
+            const nodes = [];
+            const positions = new Map();
+
+            graph.forEachNode((id, attrs) => {
+                nodes.push(id);
+                positions.set(id, { x: attrs.x, y: attrs.y, vx: 0, vy: 0 });
+            });
+
+            const k = Math.sqrt((1000 * 1000) / nodes.length); // optimal distance
+            const gravity = 0.1;
+            const cooling = 0.99;
+            let temperature = 10;
+
+            for (let iter = 0; iter < iterations; iter++) {
+                // Repulsion between all nodes (use sampling for large graphs)
+                const sampleSize = Math.min(nodes.length, 500);
+                for (let i = 0; i < nodes.length; i++) {
+                    const p1 = positions.get(nodes[i]);
+
+                    // Sample random nodes for repulsion
+                    for (let j = 0; j < sampleSize; j++) {
+                        const idx = Math.floor(Math.random() * nodes.length);
+                        if (idx === i) continue;
+                        const p2 = positions.get(nodes[idx]);
+
+                        const dx = p1.x - p2.x;
+                        const dy = p1.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+
+                        if (dist < k * 3) {
+                            const force = (k * k) / dist * 0.1;
+                            p1.vx += (dx / dist) * force;
+                            p1.vy += (dy / dist) * force;
+                        }
+                    }
+
+                    // Gravity toward center
+                    p1.vx -= p1.x * gravity * 0.01;
+                    p1.vy -= p1.y * gravity * 0.01;
+                }
+
+                // Attraction along edges
+                graph.forEachEdge((edge, attrs, source, target) => {
+                    const p1 = positions.get(source);
+                    const p2 = positions.get(target);
+
+                    const dx = p2.x - p1.x;
+                    const dy = p2.y - p1.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+
+                    const force = dist / k * 0.5;
+                    const fx = (dx / dist) * force;
+                    const fy = (dy / dist) * force;
+
+                    p1.vx += fx;
+                    p1.vy += fy;
+                    p2.vx -= fx;
+                    p2.vy -= fy;
+                });
+
+                // Apply velocities with temperature
+                for (const id of nodes) {
+                    const p = positions.get(id);
+                    const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+                    if (speed > 0) {
+                        const limitedSpeed = Math.min(speed, temperature);
+                        p.x += (p.vx / speed) * limitedSpeed;
+                        p.y += (p.vy / speed) * limitedSpeed;
+                    }
+                    p.vx *= 0.9;
+                    p.vy *= 0.9;
+                }
+
+                temperature *= cooling;
+            }
+
+            // Apply positions back to graph
+            for (const id of nodes) {
+                const p = positions.get(id);
+                graph.setNodeAttribute(id, 'x', p.x);
+                graph.setNodeAttribute(id, 'y', p.y);
+            }
+        }
+
+        async function init() {
+            const loading = document.getElementById('loading');
+            try {
+                const [nodes, edges] = await Promise.all([
+                    loadCSV('cosmograph_nodes.csv'),
+                    loadCSV('cosmograph_edges.csv')
+                ]);
+
+                graph = new graphology.Graph();
+                const nodeSet = new Set();
+
+                nodes.forEach((node, i) => {
+                    if (!nodeSet.has(node.id)) {
+                        nodeSet.add(node.id);
+                        const angle = (i / nodes.length) * 2 * Math.PI;
+                        const radius = 300 + Math.random() * 100;
+                        graph.addNode(node.id, {
+                            x: Math.cos(angle) * radius,
+                            y: Math.sin(angle) * radius,
+                            size: 2,
+                            color: sectionColors[node.group] || sectionColors['N/A'],
+                            label: node.label || node.id.substring(0, 8),
+                            section: node.group || 'N/A',
+                            year: node.year || 'N/A'
+                        });
+                    }
+                });
+
+                const edgeSet = new Set();
+                edges.forEach(edge => {
+                    const key = `${edge.source}-${edge.target}`;
+                    if (!edgeSet.has(key) && graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
+                        edgeSet.add(key);
+                        try { graph.addEdge(edge.source, edge.target, { size: 0.3, color: 'rgba(100,120,140,0.2)' }); } catch(e) {}
+                    }
+                });
+
+                graph.forEachNode((node) => {
+                    const deg = graph.degree(node);
+                    graph.setNodeAttribute(node, 'size', Math.min(1.5 + Math.sqrt(deg) * 0.8, 12));
+                });
+
+                document.getElementById('node-count').textContent = graph.order.toLocaleString();
+                document.getElementById('edge-count').textContent = graph.size.toLocaleString();
+                loading.classList.add('hidden');
+
+                renderer = new Sigma(graph, document.getElementById('sigma-container'), {
+                    renderLabels: false, labelRenderedSizeThreshold: 6, labelSize: 11,
+                    labelColor: { color: '#fff' }, defaultEdgeColor: 'rgba(100,120,140,0.2)',
+                    minCameraRatio: 0.001, maxCameraRatio: 20
+                });
+
+                renderer.on('enterNode', ({ node }) => {
+                    const a = graph.getNodeAttributes(node);
+                    document.getElementById('node-info').style.display = 'block';
+                    document.getElementById('node-label').textContent = a.label;
+                    document.getElementById('node-section').textContent = a.section;
+                    document.getElementById('node-year').textContent = a.year;
+                    document.getElementById('node-out').textContent = graph.outDegree(node);
+                    document.getElementById('node-in').textContent = graph.inDegree(node);
+                });
+                renderer.on('leaveNode', () => { document.getElementById('node-info').style.display = 'none'; });
+
+                document.getElementById('search').addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase();
+                    if (q.length < 2) return;
+                    graph.forEachNode((node) => {
+                        if (graph.getNodeAttribute(node, 'label').toLowerCase().includes(q)) {
+                            graph.setNodeAttribute(node, 'size', 15);
+                            graph.setNodeAttribute(node, 'color', '#ffffff');
+                            const pos = renderer.getNodeDisplayData(node);
+                            if (pos) renderer.getCamera().animate({ x: pos.x, y: pos.y, ratio: 0.05 }, { duration: 500 });
+                        }
+                    });
+                });
+
+                document.getElementById('layout-status').textContent = 'Layout: pronto';
+                console.log('Graph ready');
+            } catch (error) {
+                console.error(error);
+                loading.innerHTML = `<p style="color:#f85149">Errore: ${error.message}</p>`;
+            }
+        }
+
+        let layoutIteration = 0;
+        function toggleLayout() {
+            const btn = document.getElementById('btn-layout');
+            const status = document.getElementById('layout-status');
+            const progress = document.getElementById('progress');
+
+            if (layoutRunning) {
+                layoutRunning = false;
+                btn.textContent = 'Start Layout';
+                btn.classList.remove('running');
+                status.textContent = `Layout: fermato (${layoutIteration} iter)`;
+            } else {
+                layoutRunning = true;
+                layoutIteration = 0;
+                btn.textContent = 'Stop';
+                btn.classList.add('running');
+
+                function step() {
+                    if (!layoutRunning || layoutIteration >= 300) {
+                        layoutRunning = false;
+                        btn.textContent = 'Start Layout';
+                        btn.classList.remove('running');
+                        status.textContent = `Layout: completato (${layoutIteration} iter)`;
+                        return;
+                    }
+
+                    forceDirectedStep(graph, 1);
+                    layoutIteration++;
+                    progress.style.width = (layoutIteration / 300 * 100) + '%';
+                    status.textContent = `Layout: ${layoutIteration}/300`;
+
+                    requestAnimationFrame(step);
+                }
+                step();
+            }
+        }
+
+        function zoomIn() { renderer?.getCamera().animatedZoom({ duration: 200 }); }
+        function zoomOut() { renderer?.getCamera().animatedUnzoom({ duration: 200 }); }
+        function resetView() { renderer?.getCamera().animatedReset({ duration: 300 }); }
+        function toggleLabels() { showLabels = !showLabels; renderer?.setSetting('renderLabels', showLabels); }
+
+        init();
+    </script>
+</body>
+</html>

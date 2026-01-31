@@ -66,6 +66,16 @@ from .router import (
     route_query,
     routed_search,
 )
+from .graph_reranker import (
+    GraphExpandedResult,
+    GraphRAGConfig,
+    graph_expand_sql,
+    rerank_with_graph,
+    hybrid_search_with_graph,
+    calculate_graph_hit_rate,
+    calculate_rank_change,
+    compute_graph_boost,
+)
 
 __all__ = [
     # dense
@@ -117,4 +127,13 @@ __all__ = [
     "citation_lookup",
     "route_query",
     "routed_search",
+    # graph_reranker (GraphRAG)
+    "GraphExpandedResult",
+    "GraphRAGConfig",
+    "graph_expand_sql",
+    "rerank_with_graph",
+    "hybrid_search_with_graph",
+    "calculate_graph_hit_rate",
+    "calculate_rank_change",
+    "compute_graph_boost",
 ]

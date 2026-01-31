@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-01-31T18:50:41.864338",
+  "config": {
+    "top_k": 10,
+    "samples": 100,
+    "seeds": 3,
+    "depth": 1,
+    "min_weight": 0.5,
+    "boost": 0.05
+  },
+  "results": {
+    "hybrid": {
+      "hits": 88,
+      "mrr_sum": 63.175000000000004,
+      "recall": 0.88,
+      "mrr": 0.63175,
+      "latency_avg": 60.00940000114497,
+      "latency_p95": 71.97010004892945
+    },
+    "hybrid_graph": {
+      "hits": 89,
+      "mrr_sum": 61.45396825396826,
+      "graph_hits": 47.999999999999986,
+      "recall": 0.89,
+      "mrr": 0.6145396825396826,
+      "latency_avg": 61.269337003468536,
+      "latency_p95": 73.20040004560724,
+      "graph_hit_rate": 0.47999999999999987
+    }
+  }
+}
