@@ -33,6 +33,7 @@ logs/
 data/pdfs/
 data/embeddings/
 *.pdf
+scripts/graph/*.csv
 
 # Environment
 .env
