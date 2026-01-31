@@ -426,3 +426,412 @@ def calculate_massima_importance(
             score += 0.1 * (1 - years_old / 5)
 
     return min(score, 1.0)
+
+
+# ============================================================
+# Citation-Anchored Extraction (per Civile)
+# ============================================================
+
+# Pattern citazione compositi per anchoring
+CITATION_ANCHOR_PATTERNS = [
+    # Rv. con numero (priorità alta)
+    re.compile(r"Rv\.?\s*\d{5,6}(?:-\d{2})?", re.IGNORECASE),
+    # Sez. con numero sentenza
+    re.compile(
+        r"Sez\.?\s*(?:U(?:n)?|L(?:av)?|[IVX0-9]+)[,\s]+(?:(?:Sent|Ord)\.?\s+)?n\.?\s*\d+[/\s]+\d{4}",
+        re.IGNORECASE,
+    ),
+    # Cass. civ/pen con numero
+    re.compile(
+        r"Cass\.?\s*(?:civ|pen)?\.?\s*(?:,?\s*(?:Sez\.?\s*)?(?:U|L|[IVX0-9]+)[,\s]+)?n\.?\s*\d+[/\s]+\d{4}",
+        re.IGNORECASE,
+    ),
+    # Sentenza/Ordinanza n. XXXX/YYYY
+    re.compile(
+        r"(?:sent|ord|sentenza|ordinanza)\.?\s*n\.?\s*\d+[/\s]+\d{4}",
+        re.IGNORECASE,
+    ),
+]
+
+
+@dataclass
+class CitationAnchor:
+    """Ancora di citazione trovata nel testo."""
+    pattern_name: str
+    match_text: str
+    start_pos: int
+    end_pos: int
+    line_number: int
+
+
+def find_citation_anchors(text: str) -> list[CitationAnchor]:
+    """
+    Trova tutte le citazioni nel testo con posizioni.
+
+    Returns:
+        Lista di CitationAnchor ordinate per posizione.
+    """
+    anchors: list[CitationAnchor] = []
+    seen_positions: set[tuple[int, int]] = set()
+
+    pattern_names = ["rv", "sez", "cass", "sent"]
+
+    for pattern, name in zip(CITATION_ANCHOR_PATTERNS, pattern_names):
+        for match in pattern.finditer(text):
+            pos = (match.start(), match.end())
+            if pos not in seen_positions:
+                seen_positions.add(pos)
+
+                # Calcola line number
+                line_num = text[:match.start()].count("\n") + 1
+
+                anchors.append(
+                    CitationAnchor(
+                        pattern_name=name,
+                        match_text=match.group(0),
+                        start_pos=match.start(),
+                        end_pos=match.end(),
+                        line_number=line_num,
+                    )
+                )
+
+    # Ordina per posizione
+    anchors.sort(key=lambda a: a.start_pos)
+    return anchors
+
+
+def split_into_sentences(text: str) -> list[tuple[str, int, int]]:
+    """
+    Split testo in frasi con posizioni start/end.
+
+    Returns:
+        Lista di (sentence_text, start_pos, end_pos)
+    """
+    # Abbreviazioni comuni che non terminano frase
+    ABBREVIATIONS = {
+        "sez", "cass", "sent", "ord", "rv", "art", "artt",
+        "pag", "pagg", "cfr", "nn", "vol", "ss", "segg",
+        "cit", "op", "loc", "es", "ecc", "dott", "prof",
+        "avv", "ing", "sig", "sigg", "s.p.a", "s.r.l",
+    }
+
+    sentences: list[tuple[str, int, int]] = []
+    last_end = 0
+
+    # Pattern semplice: punto seguito da spazio e maiuscola, o fine testo
+    sentence_end = re.compile(r'\.(?:\s+[A-Z]|\s*$)')
+
+    for match in sentence_end.finditer(text):
+        # Controlla se il punto è dopo un'abbreviazione
+        start = match.start()
+        # Trova la parola prima del punto
+        word_before = ""
+        i = start - 1
+        while i >= 0 and (text[i].isalpha() or text[i] == '.'):
+            word_before = text[i] + word_before
+            i -= 1
+
+        word_before_clean = word_before.lower().rstrip('.')
+
+        # Se è un'abbreviazione, salta
+        if word_before_clean in ABBREVIATIONS:
+            continue
+
+        end_pos = match.start() + 1  # Include il punto
+        sentence = text[last_end:end_pos].strip()
+        if sentence:
+            sentences.append((sentence, last_end, end_pos))
+        last_end = end_pos
+
+    # Ultima frase senza punto finale
+    if last_end < len(text):
+        remaining = text[last_end:].strip()
+        if remaining:
+            sentences.append((remaining, last_end, len(text)))
+
+    return sentences
+
+
+def extract_window_around_citation(
+    text: str,
+    anchor: CitationAnchor,
+    sentences: list[tuple[str, int, int]],
+    before: int = 2,
+    after: int = 1,
+) -> tuple[str, int, int]:
+    """
+    Estrai finestra di testo attorno a una citazione.
+
+    Args:
+        text: Testo completo
+        anchor: Citazione trovata
+        sentences: Lista frasi pre-calcolate
+        before: Numero frasi prima della citazione
+        after: Numero frasi dopo la citazione
+
+    Returns:
+        (window_text, start_pos, end_pos)
+    """
+    # Trova la frase che contiene la citazione
+    citation_sentence_idx = -1
+    for i, (sent, start, end) in enumerate(sentences):
+        if start <= anchor.start_pos < end:
+            citation_sentence_idx = i
+            break
+
+    if citation_sentence_idx == -1:
+        # Fallback: ritorna contesto basato su caratteri
+        start = max(0, anchor.start_pos - 500)
+        end = min(len(text), anchor.end_pos + 200)
+        return text[start:end].strip(), start, end
+
+    # Calcola range frasi
+    start_idx = max(0, citation_sentence_idx - before)
+    end_idx = min(len(sentences), citation_sentence_idx + after + 1)
+
+    # Estrai window
+    window_start = sentences[start_idx][1]
+    window_end = sentences[end_idx - 1][2]
+
+    window_text = text[window_start:window_end].strip()
+
+    return window_text, window_start, window_end
+
+
+def should_split_block(
+    anchors: list[CitationAnchor],
+    text_length: int,
+    min_distance: int = 300,
+) -> bool:
+    """
+    Determina se un blocco con multiple citazioni va splittato.
+
+    Split se:
+    - Più di 1 citazione
+    - Citazioni distanti almeno min_distance caratteri
+    - Testo lungo (>800 chars per citazione)
+    """
+    if len(anchors) <= 1:
+        return False
+
+    # Check distanza tra citazioni
+    for i in range(1, len(anchors)):
+        dist = anchors[i].start_pos - anchors[i - 1].end_pos
+        if dist >= min_distance:
+            return True
+
+    # Check lunghezza media per citazione
+    avg_len = text_length / len(anchors)
+    if avg_len > 800:
+        return True
+
+    return False
+
+
+def extract_massime_citation_anchored(
+    text: str,
+    page_number: int | None = None,
+    section_context: str = "",
+    section_path: str | None = None,
+    window_before: int = 2,
+    window_after: int = 1,
+    split_on_multiple: bool = True,
+    min_distance_split: int = 300,
+    min_length: int = 120,
+    max_length: int = 3000,
+) -> list[ExtractedMassima]:
+    """
+    Estrai massime ancorandosi ai pattern di citazione.
+
+    Questa modalità è ottimale per documenti Civile dove le massime
+    sono integrate nel testo narrativo con citazioni sparse.
+
+    Args:
+        text: Testo raw da una pagina o blocco
+        page_number: Numero pagina (se disponibile)
+        section_context: Contesto editoriale
+        section_path: Path sezione
+        window_before: Frasi da includere prima della citazione
+        window_after: Frasi da includere dopo la citazione
+        split_on_multiple: Se True, split blocchi con multiple citazioni
+        min_distance_split: Distanza minima tra citazioni per split
+        min_length: Lunghezza minima massima estratta
+        max_length: Lunghezza massima (tronca se supera)
+
+    Returns:
+        Lista ExtractedMassima
+    """
+    massime: list[ExtractedMassima] = []
+
+    # Trova tutte le citazioni
+    anchors = find_citation_anchors(text)
+
+    if not anchors:
+        logger.debug("citation_anchored: no anchors found", text_len=len(text))
+        return []
+
+    # Pre-calcola frasi
+    sentences = split_into_sentences(text)
+
+    # Decide se splittare
+    if split_on_multiple and should_split_block(anchors, len(text), min_distance_split):
+        # Estrai una massima per ogni citazione
+        for i, anchor in enumerate(anchors):
+            window_text, start_pos, end_pos = extract_window_around_citation(
+                text, anchor, sentences, window_before, window_after
+            )
+
+            # Verifica lunghezza
+            if len(window_text) < min_length:
+                continue
+            if len(window_text) > max_length:
+                window_text = window_text[:max_length] + "..."
+
+            # Crea massima
+            massima = _create_massima_from_window(
+                window_text=window_text,
+                anchor=anchor,
+                page_number=page_number,
+                section_context=section_context,
+                section_path=section_path,
+                element_index=i,
+            )
+            massime.append(massima)
+    else:
+        # Usa prima citazione come ancora, estrai tutto il blocco
+        anchor = anchors[0]
+        window_text = text.strip()
+
+        if len(window_text) < min_length:
+            return []
+        if len(window_text) > max_length:
+            window_text = window_text[:max_length] + "..."
+
+        massima = _create_massima_from_window(
+            window_text=window_text,
+            anchor=anchor,
+            page_number=page_number,
+            section_context=section_context,
+            section_path=section_path,
+            element_index=0,
+        )
+        massime.append(massima)
+
+    logger.debug(
+        "citation_anchored extracted",
+        n_anchors=len(anchors),
+        n_massime=len(massime),
+        split=split_on_multiple and len(anchors) > 1,
+    )
+
+    return massime
+
+
+def _create_massima_from_window(
+    window_text: str,
+    anchor: CitationAnchor,
+    page_number: int | None,
+    section_context: str,
+    section_path: str | None,
+    element_index: int,
+) -> ExtractedMassima:
+    """Helper: crea ExtractedMassima da window estratto."""
+    # Pulisci e normalizza
+    testo = clean_legal_text(window_text)
+    testo_normalizzato = normalize_for_hash(testo)
+    content_hash = compute_content_hash(testo)
+
+    # Estrai citazione dal window (più preciso)
+    citation = extract_citation(window_text)
+
+    # Quality score
+    valid_chars = sum(
+        1 for c in testo
+        if c.isalnum() or c.isspace() or c in '.,;:!?()-"\''
+    )
+    text_quality = valid_chars / len(testo) if testo else 0
+
+    return ExtractedMassima(
+        testo=testo,
+        testo_normalizzato=testo_normalizzato,
+        content_hash=content_hash,
+        testo_con_contesto=window_text,  # Raw con contesto
+        citation=citation,
+        section_context=section_context,
+        section_path=section_path,
+        page_start=page_number,
+        page_end=page_number,
+        element_index=element_index,
+        citation_complete=citation.is_complete,
+        text_quality_score=text_quality,
+    )
+
+
+def extract_massime_from_pdf_text(
+    pages: list[tuple[int, str]],
+    extraction_mode: str = "standard",
+    toc_skip_pages: int = 0,
+    section_context: str = "",
+    section_path: str | None = None,
+    gate_config: dict | None = None,
+) -> list[ExtractedMassima]:
+    """
+    Estrai massime da testo PDF (multi-pagina).
+
+    Supporta diverse modalità di estrazione:
+    - standard: element-based (legacy)
+    - citation_anchored: ancora su pattern citazione (raccomandato per Civile)
+
+    Args:
+        pages: Lista di (page_num, page_text)
+        extraction_mode: "standard" o "citation_anchored"
+        toc_skip_pages: Salta prime N pagine (TOC)
+        section_context: Contesto editoriale
+        section_path: Path sezione
+        gate_config: Configurazione gate (min_length, max_length, etc.)
+
+    Returns:
+        Lista ExtractedMassima
+    """
+    gate = gate_config or {}
+    min_length = gate.get("min_length", 150)
+    max_length = gate.get("max_length", 3000)
+    window_before = gate.get("citation_window_before", 2)
+    window_after = gate.get("citation_window_after", 1)
+    split_on_multiple = gate.get("split_on_multiple_citations", True)
+
+    massime: list[ExtractedMassima] = []
+
+    for page_num, page_text in pages:
+        # Skip TOC pages
+        if page_num <= toc_skip_pages:
+            continue
+
+        # Skip pagine quasi vuote
+        if len(page_text.strip()) < 100:
+            continue
+
+        if extraction_mode == "citation_anchored":
+            page_massime = extract_massime_citation_anchored(
+                text=page_text,
+                page_number=page_num,
+                section_context=section_context,
+                section_path=section_path,
+                window_before=window_before,
+                window_after=window_after,
+                split_on_multiple=split_on_multiple,
+                min_length=min_length,
+                max_length=max_length,
+            )
+            massime.extend(page_massime)
+
+        # Per "standard" mode, usa extract_massime_from_elements (richiede elementi)
+
+    logger.info(
+        "PDF text extraction complete",
+        mode=extraction_mode,
+        pages_processed=len(pages) - toc_skip_pages,
+        massime_extracted=len(massime),
+    )
+
+    return massime
