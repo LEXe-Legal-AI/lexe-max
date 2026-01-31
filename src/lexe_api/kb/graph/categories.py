@@ -1,0 +1,826 @@
+"""
+Category Definitions for Massime Classification
+
+8 L1 Macro Categories (always assigned)
+~40 L2 Subcategories (assigned if confidence >= 0.70)
+
+Keywords are matched against massima text (case-insensitive).
+Higher keyword count = higher confidence.
+"""
+
+from dataclasses import dataclass, field
+
+
+@dataclass
+class CategoryDef:
+    """Category definition with keywords for matching."""
+    id: str
+    name: str
+    description: str
+    level: int
+    parent_id: str | None = None
+    keywords: list[str] = field(default_factory=list)
+
+
+# ============================================================
+# L1 MACRO CATEGORIES (8)
+# ============================================================
+
+L1_CATEGORIES: list[CategoryDef] = [
+    CategoryDef(
+        id="CIVILE",
+        name="Diritto Civile",
+        description="Obbligazioni, contratti, proprietà, famiglia, successioni, responsabilità civile",
+        level=1,
+        keywords=[
+            "contratto", "obbligazione", "risarcimento", "danno", "proprietà",
+            "possesso", "usucapione", "servitù", "ipoteca", "pegno",
+            "compravendita", "locazione", "affitto", "comodato", "mutuo",
+            "fideiussione", "garanzia", "cessione", "credito", "debito",
+            "inadempimento", "risoluzione", "recesso", "nullità", "annullamento",
+            "responsabilità extracontrattuale", "illecito civile", "colpa", "dolo",
+            "caso fortuito", "forza maggiore", "c.c.", "codice civile",
+            "art. 1218", "art. 1223", "art. 1226", "art. 2043", "art. 2049",
+            "art. 2050", "art. 2051", "art. 2052", "art. 2054", "art. 2055",
+            "responsabilità del custode", "responsabilità del proprietario",
+            "danno patrimoniale", "danno non patrimoniale", "danno morale",
+            "danno biologico", "danno esistenziale", "lucro cessante",
+            "danno emergente", "nesso causale", "causalità",
+        ]
+    ),
+    CategoryDef(
+        id="LAVORO",
+        name="Diritto del Lavoro",
+        description="Rapporto di lavoro, licenziamento, previdenza, sindacale",
+        level=1,
+        keywords=[
+            "lavoro", "lavoratore", "datore di lavoro", "dipendente",
+            "licenziamento", "dimissioni", "risoluzione rapporto",
+            "contratto di lavoro", "rapporto di lavoro", "subordinazione",
+            "retribuzione", "stipendio", "salario", "tfr", "trattamento fine rapporto",
+            "ferie", "permessi", "malattia", "infortunio sul lavoro",
+            "sindacato", "sciopero", "contrattazione collettiva", "ccnl",
+            "previdenza", "pensione", "inps", "contributi previdenziali",
+            "reintegra", "tutela reale", "jobs act", "legge 300",
+            "statuto dei lavoratori", "mobbing", "demansionamento",
+            "trasferimento", "distacco", "somministrazione", "appalto",
+            "lavoro autonomo", "collaborazione", "partita iva",
+            "d.lgs. 165", "d.lgs. 150", "l. 92/2012", "l. 183/2010",
+            "giusta causa", "giustificato motivo", "licenziamento discriminatorio",
+            "impugnazione licenziamento", "tutela obbligatoria",
+        ]
+    ),
+    CategoryDef(
+        id="PROCESSUALE_CIVILE",
+        name="Diritto Processuale Civile",
+        description="Procedura civile, impugnazioni, esecuzione forzata",
+        level=1,
+        keywords=[
+            "processo civile", "procedimento", "giudizio", "causa",
+            "domanda", "eccezione", "comparsa", "memoria", "istanza",
+            "notifica", "citazione", "decreto ingiuntivo", "ingiunzione",
+            "appello", "cassazione", "ricorso", "reclamo", "revocazione",
+            "competenza", "giurisdizione", "legittimazione", "interesse ad agire",
+            "contraddittorio", "litisconsorzio", "intervento", "chiamata in causa",
+            "prova", "testimonianza", "ctu", "consulenza tecnica",
+            "sentenza", "ordinanza", "decreto", "provvedimento",
+            "esecuzione forzata", "pignoramento", "espropriazione",
+            "sequestro", "cautelare", "provvisoria esecuzione",
+            "c.p.c.", "codice di procedura civile",
+            "art. 100", "art. 102", "art. 105", "art. 132", "art. 183",
+            "art. 342", "art. 360", "art. 366", "art. 369", "art. 384",
+            "motivi di ricorso", "violazione di legge", "vizio di motivazione",
+            "omessa pronuncia", "ultrapetizione", "giudicato",
+        ]
+    ),
+    CategoryDef(
+        id="PENALE",
+        name="Diritto Penale",
+        description="Reati, pene, circostanze, concorso di persone",
+        level=1,
+        keywords=[
+            "reato", "delitto", "contravvenzione", "pena", "reclusione",
+            "arresto", "multa", "ammenda", "sanzione penale",
+            "dolo", "colpa", "preterintenzione", "tentativo",
+            "concorso di persone", "associazione", "banda armata",
+            "omicidio", "lesioni", "furto", "rapina", "estorsione",
+            "truffa", "appropriazione indebita", "ricettazione", "riciclaggio",
+            "corruzione", "concussione", "peculato", "abuso d'ufficio",
+            "falso", "falsità", "calunnia", "diffamazione",
+            "stupefacenti", "droga", "spaccio", "detenzione",
+            "bancarotta", "frode fiscale", "evasione",
+            "c.p.", "codice penale", "art. 56", "art. 110", "art. 575",
+            "art. 582", "art. 624", "art. 628", "art. 640", "art. 648",
+            "circostanze aggravanti", "circostanze attenuanti", "recidiva",
+            "imputato", "imputabilità", "antigiuridicità", "colpevolezza",
+            "prescrizione reato", "estinzione reato", "causa di giustificazione",
+        ]
+    ),
+    CategoryDef(
+        id="PROCESSUALE_PENALE",
+        name="Diritto Processuale Penale",
+        description="Procedura penale, indagini, impugnazioni penali",
+        level=1,
+        keywords=[
+            "processo penale", "procedimento penale", "indagini preliminari",
+            "udienza preliminare", "dibattimento", "pm", "pubblico ministero",
+            "giudice", "gip", "gup", "tribunale", "corte d'assise",
+            "imputato", "indagato", "persona offesa", "parte civile",
+            "arresto", "fermo", "custodia cautelare", "misura cautelare",
+            "intercettazione", "perquisizione", "sequestro probatorio",
+            "incidente probatorio", "prova", "testimone", "perito",
+            "sentenza di condanna", "sentenza di assoluzione", "patteggiamento",
+            "abbreviato", "rito alternativo", "decreto penale",
+            "appello penale", "ricorso cassazione penale",
+            "c.p.p.", "codice di procedura penale",
+            "art. 192", "art. 234", "art. 266", "art. 273", "art. 292",
+            "art. 384 cpp", "art. 530", "art. 533", "art. 606",
+            "nullità processuale", "inutilizzabilità", "decadenza",
+            "archiviazione", "rinvio a giudizio", "richiesta archiviazione",
+        ]
+    ),
+    CategoryDef(
+        id="AMMINISTRATIVO",
+        name="Diritto Amministrativo",
+        description="PA, appalti, urbanistica, espropriazione, ambiente",
+        level=1,
+        keywords=[
+            "pubblica amministrazione", "p.a.", "ente pubblico",
+            "atto amministrativo", "provvedimento", "decreto", "delibera",
+            "autorizzazione", "concessione", "licenza", "permesso",
+            "appalto pubblico", "gara", "bando", "aggiudicazione",
+            "urbanistica", "piano regolatore", "permesso di costruire",
+            "edilizia", "abuso edilizio", "sanatoria", "condono",
+            "espropriazione", "indennizzo", "pubblica utilità",
+            "ambiente", "inquinamento", "rifiuti", "bonifiche",
+            "sanità", "asl", "ospedale", "servizio sanitario",
+            "l. 241/1990", "silenzio", "scia", "conferenza di servizi",
+            "accesso agli atti", "trasparenza", "privacy",
+            "tar", "consiglio di stato", "ricorso amministrativo",
+            "annullamento", "illegittimità", "eccesso di potere",
+            "incompetenza", "violazione di legge",
+        ]
+    ),
+    CategoryDef(
+        id="TRIBUTARIO",
+        name="Diritto Tributario",
+        description="Imposte, accertamento, contenzioso tributario",
+        level=1,
+        keywords=[
+            "imposta", "tributo", "tassa", "contributo",
+            "irpef", "ires", "iva", "irap", "imu", "tari",
+            "accertamento", "avviso di accertamento", "cartella",
+            "agenzia delle entrate", "agenzia riscossione",
+            "reddito", "dichiarazione", "omessa dichiarazione",
+            "evasione fiscale", "elusione", "abuso del diritto",
+            "sanzione tributaria", "ravvedimento", "definizione agevolata",
+            "contenzioso tributario", "commissione tributaria",
+            "ricorso tributario", "d.lgs. 546", "d.lgs. 472",
+            "prescrizione tributi", "decadenza accertamento",
+            "atto impositivo", "iscrizione a ruolo", "fermo amministrativo",
+            "ipoteca esattoriale", "riscossione coattiva",
+            "transfer pricing", "stabile organizzazione",
+            "detrazione", "deduzione", "credito d'imposta",
+        ]
+    ),
+    CategoryDef(
+        id="FALLIMENTARE_CRISI",
+        name="Fallimentare e Crisi d'Impresa",
+        description="Fallimento, concordato, liquidazione giudiziale, sovraindebitamento",
+        level=1,
+        keywords=[
+            "fallimento", "fallito", "curatore", "giudice delegato",
+            "stato passivo", "insinuazione", "creditori", "massa passiva",
+            "revocatoria fallimentare", "azione revocatoria",
+            "concordato preventivo", "concordato fallimentare",
+            "liquidazione giudiziale", "liquidazione coatta",
+            "amministrazione straordinaria", "crisi d'impresa",
+            "sovraindebitamento", "esdebitazione", "occ",
+            "piano attestato", "accordo ristrutturazione",
+            "codice della crisi", "d.lgs. 14/2019", "l.f.",
+            "legge fallimentare", "r.d. 267/1942",
+            "insolvenza", "stato di crisi", "continuità aziendale",
+            "cessione d'azienda", "affitto d'azienda",
+            "prededuzione", "privilegio", "chirografo",
+            "bancarotta fraudolenta", "bancarotta semplice",
+            "art. 67 l.f.", "art. 216 l.f.", "art. 217 l.f.",
+        ]
+    ),
+]
+
+
+# ============================================================
+# L2 SUBCATEGORIES (~40)
+# ============================================================
+
+L2_CATEGORIES: list[CategoryDef] = [
+    # ---------- CIVILE (10 L2) ----------
+    CategoryDef(
+        id="CIVILE_OBBLIGAZIONI",
+        name="Obbligazioni e Contratti",
+        description="Teoria generale delle obbligazioni, inadempimento, contratti tipici",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "obbligazione", "inadempimento", "adempimento", "mora",
+            "contratto", "nullità", "annullamento", "risoluzione", "rescissione",
+            "clausola", "condizione", "termine", "caparra", "penale",
+            "art. 1173", "art. 1176", "art. 1218", "art. 1321", "art. 1325",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_RESP_CIVILE",
+        name="Responsabilità Civile",
+        description="Responsabilità contrattuale ed extracontrattuale, danno",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "responsabilità extracontrattuale", "illecito civile",
+            "danno ingiusto", "risarcimento", "fatto illecito",
+            "art. 2043", "art. 2049", "art. 2050", "art. 2051", "art. 2054",
+            "nesso causale", "causalità", "colpa", "dolo",
+            "danno biologico", "danno morale", "danno esistenziale",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_PROPRIETA",
+        name="Proprietà e Diritti Reali",
+        description="Proprietà, comunione, condominio, servitù, usufrutto",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "proprietà", "comproprietà", "comunione", "divisione",
+            "condominio", "assemblea condominiale", "regolamento condominiale",
+            "servitù", "usufrutto", "uso", "abitazione", "enfiteusi",
+            "superficie", "usucapione", "possesso", "detenzione",
+            "azione di rivendicazione", "negatoria", "confessoria",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_FAMIGLIA",
+        name="Diritto di Famiglia",
+        description="Matrimonio, separazione, divorzio, filiazione, alimenti",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "matrimonio", "separazione", "divorzio", "scioglimento",
+            "comunione dei beni", "separazione dei beni", "assegno",
+            "mantenimento", "alimenti", "filiazione", "adozione",
+            "affidamento", "collocamento", "genitorialità", "potestà",
+            "responsabilità genitoriale", "minore", "interdizione",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_SUCCESSIONI",
+        name="Successioni e Donazioni",
+        description="Successione legittima, testamentaria, donazioni",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "successione", "eredità", "erede", "legato", "legatario",
+            "testamento", "quota legittima", "riserva", "collazione",
+            "accettazione eredità", "rinuncia eredità", "giacenza",
+            "donazione", "revoca donazione", "riduzione",
+            "divisione ereditaria", "comunione ereditaria",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_SOCIETA",
+        name="Diritto Societario",
+        description="Società di persone, capitali, governance, soci",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "società", "socio", "quota", "azione", "partecipazione",
+            "srl", "spa", "sas", "snc", "società semplice",
+            "assemblea", "consiglio", "amministratore", "sindaco",
+            "bilancio", "utili", "dividendi", "aumento capitale",
+            "scioglimento", "liquidazione", "trasformazione", "fusione",
+            "scissione", "conferimento", "responsabilità amministratori",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_ASSICURAZIONE",
+        name="Assicurazioni",
+        description="Contratto di assicurazione, RCA, sinistro, indennizzo",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "assicurazione", "polizza", "premio", "indennizzo",
+            "sinistro", "rischio", "rca", "responsabilità civile auto",
+            "infortunio", "malattia", "vita", "danni", "fondo garanzia",
+            "surrogazione", "rivalsa", "massimale", "franchigia",
+            "art. 1882", "art. 1892", "art. 1913", "d.lgs. 209",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_LOCAZIONI",
+        name="Locazioni",
+        description="Locazione abitativa, commerciale, affitto",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "locazione", "locatore", "conduttore", "inquilino",
+            "canone", "morosità", "sfratto", "finita locazione",
+            "disdetta", "rinnovo", "sublocazione", "cessione contratto",
+            "l. 392/1978", "l. 431/1998", "equo canone",
+            "locazione commerciale", "avviamento", "indennità",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_CONSUMATORE",
+        name="Tutela del Consumatore",
+        description="Codice del consumo, clausole vessatorie, garanzie",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "consumatore", "professionista", "codice del consumo",
+            "clausola vessatoria", "clausola abusiva", "garanzia",
+            "recesso", "diritto di ripensamento", "pratiche commerciali",
+            "pubblicità ingannevole", "class action", "azione di classe",
+            "d.lgs. 206/2005", "tutela consumatori",
+        ]
+    ),
+    CategoryDef(
+        id="CIVILE_BANCA_FINANZA",
+        name="Banca e Finanza",
+        description="Contratti bancari, credito, intermediazione finanziaria",
+        level=2,
+        parent_id="CIVILE",
+        keywords=[
+            "banca", "conto corrente", "deposito", "mutuo", "finanziamento",
+            "interesse", "usura", "anatocismo", "tasso", "spread",
+            "fideiussione", "garanzia bancaria", "ipoteca", "pegno",
+            "titoli", "obbligazioni", "investimento", "intermediazione",
+            "tub", "tuf", "consob", "banca d'italia",
+        ]
+    ),
+
+    # ---------- LAVORO (5 L2) ----------
+    CategoryDef(
+        id="LAVORO_RAPPORTO",
+        name="Rapporto di Lavoro",
+        description="Costituzione, svolgimento, tipologie contrattuali",
+        level=2,
+        parent_id="LAVORO",
+        keywords=[
+            "contratto di lavoro", "rapporto di lavoro", "subordinazione",
+            "tempo determinato", "tempo indeterminato", "part time",
+            "apprendistato", "tirocinio", "stage", "lavoro intermittente",
+            "mansioni", "qualifica", "categoria", "livello",
+        ]
+    ),
+    CategoryDef(
+        id="LAVORO_LICENZIAMENTO",
+        name="Licenziamento",
+        description="Licenziamento individuale, collettivo, tutele",
+        level=2,
+        parent_id="LAVORO",
+        keywords=[
+            "licenziamento", "giusta causa", "giustificato motivo",
+            "reintegra", "tutela reale", "tutela obbligatoria",
+            "indennità", "preavviso", "impugnazione",
+            "art. 18", "jobs act", "licenziamento discriminatorio",
+            "licenziamento collettivo", "mobilità",
+        ]
+    ),
+    CategoryDef(
+        id="LAVORO_PUBBLICO",
+        name="Pubblico Impiego",
+        description="Rapporto di lavoro alle dipendenze della PA",
+        level=2,
+        parent_id="LAVORO",
+        keywords=[
+            "pubblico impiego", "dipendente pubblico", "p.a.",
+            "concorso", "graduatoria", "contratto collettivo",
+            "d.lgs. 165", "testo unico pubblico impiego",
+            "dirigente", "funzionario", "stabilizzazione",
+        ]
+    ),
+    CategoryDef(
+        id="LAVORO_PREVIDENZA",
+        name="Previdenza e Assistenza",
+        description="Pensioni, contributi, INPS, invalidità",
+        level=2,
+        parent_id="LAVORO",
+        keywords=[
+            "pensione", "previdenza", "contributi", "inps", "inail",
+            "anzianità", "vecchiaia", "invalidità", "superstiti",
+            "ricongiunzione", "riscatto", "totalizzazione",
+            "assegno sociale", "indennità accompagnamento",
+        ]
+    ),
+    CategoryDef(
+        id="LAVORO_SINDACALE",
+        name="Diritto Sindacale",
+        description="Sindacati, contrattazione collettiva, sciopero",
+        level=2,
+        parent_id="LAVORO",
+        keywords=[
+            "sindacato", "rsa", "rsu", "contrattazione collettiva",
+            "ccnl", "accordo aziendale", "sciopero", "serrata",
+            "condotta antisindacale", "art. 28", "rappresentanza",
+        ]
+    ),
+
+    # ---------- PROCESSUALE CIVILE (5 L2) ----------
+    CategoryDef(
+        id="PROC_CIV_COGNIZIONE",
+        name="Processo di Cognizione",
+        description="Giudizio ordinario, sommario, speciale",
+        level=2,
+        parent_id="PROCESSUALE_CIVILE",
+        keywords=[
+            "processo di cognizione", "giudizio ordinario",
+            "rito ordinario", "rito sommario", "procedimento sommario",
+            "trattazione", "istruzione", "decisione", "udienza",
+            "prima udienza", "precisazione conclusioni",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_CIV_IMPUGNAZIONI",
+        name="Impugnazioni Civili",
+        description="Appello, Cassazione, revocazione",
+        level=2,
+        parent_id="PROCESSUALE_CIVILE",
+        keywords=[
+            "appello", "impugnazione", "gravame", "cassazione",
+            "ricorso per cassazione", "motivi", "art. 360",
+            "revocazione", "opposizione di terzo",
+            "giudicato", "cosa giudicata", "passaggio in giudicato",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_CIV_ESECUZIONE",
+        name="Esecuzione Forzata",
+        description="Pignoramento, espropriazione, distribuzione",
+        level=2,
+        parent_id="PROCESSUALE_CIVILE",
+        keywords=[
+            "esecuzione forzata", "pignoramento", "espropriazione",
+            "titolo esecutivo", "precetto", "opposizione all'esecuzione",
+            "pignoramento presso terzi", "pignoramento immobiliare",
+            "distribuzione", "vendita forzata", "assegnazione",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_CIV_CAUTELARE",
+        name="Tutela Cautelare",
+        description="Sequestro, provvedimenti d'urgenza, ATP",
+        level=2,
+        parent_id="PROCESSUALE_CIVILE",
+        keywords=[
+            "cautelare", "sequestro conservativo", "sequestro giudiziario",
+            "provvedimento d'urgenza", "art. 700", "periculum in mora",
+            "fumus boni iuris", "atp", "accertamento tecnico preventivo",
+            "inibitoria", "sospensione",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_CIV_SPECIALI",
+        name="Procedimenti Speciali",
+        description="Ingiunzione, convalida sfratto, famiglia, minori",
+        level=2,
+        parent_id="PROCESSUALE_CIVILE",
+        keywords=[
+            "decreto ingiuntivo", "ingiunzione", "opposizione a decreto",
+            "convalida sfratto", "sfratto per morosità",
+            "procedimento camerale", "volontaria giurisdizione",
+            "separazione consensuale", "divorzio congiunto",
+        ]
+    ),
+
+    # ---------- PENALE (5 L2) ----------
+    CategoryDef(
+        id="PENALE_PERSONA",
+        name="Reati contro la Persona",
+        description="Omicidio, lesioni, violenza, minacce",
+        level=2,
+        parent_id="PENALE",
+        keywords=[
+            "omicidio", "lesioni personali", "percosse",
+            "violenza privata", "minaccia", "sequestro di persona",
+            "violenza sessuale", "stalking", "atti persecutori",
+            "maltrattamenti", "abbandono di minore",
+        ]
+    ),
+    CategoryDef(
+        id="PENALE_PATRIMONIO",
+        name="Reati contro il Patrimonio",
+        description="Furto, rapina, truffa, estorsione, ricettazione",
+        level=2,
+        parent_id="PENALE",
+        keywords=[
+            "furto", "rapina", "estorsione", "truffa",
+            "appropriazione indebita", "ricettazione", "riciclaggio",
+            "autoriciclaggio", "usura", "danneggiamento",
+            "art. 624", "art. 628", "art. 629", "art. 640", "art. 648",
+        ]
+    ),
+    CategoryDef(
+        id="PENALE_PA",
+        name="Reati contro la PA",
+        description="Corruzione, concussione, peculato, abuso",
+        level=2,
+        parent_id="PENALE",
+        keywords=[
+            "corruzione", "concussione", "peculato", "abuso d'ufficio",
+            "traffico influenze", "indebita percezione",
+            "pubblico ufficiale", "incaricato pubblico servizio",
+            "art. 314", "art. 317", "art. 318", "art. 319", "art. 323",
+        ]
+    ),
+    CategoryDef(
+        id="PENALE_STUPEFACENTI",
+        name="Stupefacenti",
+        description="Traffico, detenzione, spaccio di droga",
+        level=2,
+        parent_id="PENALE",
+        keywords=[
+            "stupefacenti", "droga", "sostanze psicotrope",
+            "spaccio", "detenzione ai fini spaccio", "cessione",
+            "coltivazione", "uso personale", "lieve entità",
+            "dpr 309/1990", "art. 73", "art. 74",
+        ]
+    ),
+    CategoryDef(
+        id="PENALE_TRIBUTARIO",
+        name="Reati Tributari",
+        description="Evasione fiscale, dichiarazione fraudolenta, omissione",
+        level=2,
+        parent_id="PENALE",
+        keywords=[
+            "reato tributario", "evasione fiscale", "frode fiscale",
+            "dichiarazione fraudolenta", "omessa dichiarazione",
+            "emissione fatture false", "occultamento documenti",
+            "d.lgs. 74/2000", "sottrazione fraudolenta",
+        ]
+    ),
+
+    # ---------- PROCESSUALE PENALE (5 L2) ----------
+    CategoryDef(
+        id="PROC_PEN_INDAGINI",
+        name="Indagini Preliminari",
+        description="Fase investigativa, PM, GIP, archiviazione",
+        level=2,
+        parent_id="PROCESSUALE_PENALE",
+        keywords=[
+            "indagini preliminari", "notizia di reato", "iscrizione",
+            "pm", "pubblico ministero", "gip", "archiviazione",
+            "opposizione archiviazione", "avviso conclusione indagini",
+            "proroga indagini", "termine indagini",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_PEN_CAUTELARI",
+        name="Misure Cautelari",
+        description="Custodia cautelare, arresti domiciliari, divieti",
+        level=2,
+        parent_id="PROCESSUALE_PENALE",
+        keywords=[
+            "misura cautelare", "custodia cautelare", "carcere",
+            "arresti domiciliari", "divieto di dimora", "obbligo dimora",
+            "obbligo presentazione", "esigenze cautelari",
+            "pericolo fuga", "inquinamento prove", "reiterazione",
+            "art. 273", "art. 274", "art. 275", "riesame",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_PEN_RITI",
+        name="Riti Speciali",
+        description="Patteggiamento, abbreviato, direttissimo, immediato",
+        level=2,
+        parent_id="PROCESSUALE_PENALE",
+        keywords=[
+            "patteggiamento", "applicazione pena", "rito abbreviato",
+            "giudizio abbreviato", "giudizio direttissimo",
+            "giudizio immediato", "decreto penale di condanna",
+            "procedimento per decreto", "messa alla prova",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_PEN_IMPUGNAZIONI",
+        name="Impugnazioni Penali",
+        description="Appello penale, Cassazione penale",
+        level=2,
+        parent_id="PROCESSUALE_PENALE",
+        keywords=[
+            "appello penale", "impugnazione penale",
+            "ricorso per cassazione", "motivi di ricorso", "art. 606",
+            "annullamento con rinvio", "annullamento senza rinvio",
+            "reformatio in peius", "divieto di reformatio",
+        ]
+    ),
+    CategoryDef(
+        id="PROC_PEN_ESECUZIONE",
+        name="Esecuzione Penale",
+        description="Esecuzione pena, misure alternative, benefici",
+        level=2,
+        parent_id="PROCESSUALE_PENALE",
+        keywords=[
+            "esecuzione penale", "ordine di esecuzione", "sospensione",
+            "misure alternative", "affidamento in prova",
+            "detenzione domiciliare", "semilibertà", "liberazione anticipata",
+            "tribunale sorveglianza", "magistrato sorveglianza",
+        ]
+    ),
+
+    # ---------- AMMINISTRATIVO (5 L2) ----------
+    CategoryDef(
+        id="AMM_ATTO",
+        name="Atto Amministrativo",
+        description="Formazione, vizi, annullamento, autotutela",
+        level=2,
+        parent_id="AMMINISTRATIVO",
+        keywords=[
+            "atto amministrativo", "provvedimento", "autorizzazione",
+            "concessione", "licenza", "vizi dell'atto",
+            "incompetenza", "eccesso di potere", "violazione di legge",
+            "annullamento d'ufficio", "revoca", "autotutela",
+        ]
+    ),
+    CategoryDef(
+        id="AMM_PROCEDIMENTO",
+        name="Procedimento Amministrativo",
+        description="L. 241/90, partecipazione, accesso, silenzio",
+        level=2,
+        parent_id="AMMINISTRATIVO",
+        keywords=[
+            "procedimento amministrativo", "l. 241", "legge 241",
+            "responsabile procedimento", "preavviso rigetto",
+            "partecipazione", "accesso agli atti", "diritto di accesso",
+            "silenzio assenso", "silenzio rifiuto", "scia", "dia",
+        ]
+    ),
+    CategoryDef(
+        id="AMM_APPALTI",
+        name="Appalti Pubblici",
+        description="Contratti pubblici, gare, aggiudicazione",
+        level=2,
+        parent_id="AMMINISTRATIVO",
+        keywords=[
+            "appalto pubblico", "contratti pubblici", "codice appalti",
+            "gara", "bando", "aggiudicazione", "esclusione",
+            "requisiti", "offerta", "anomalia", "subappalto",
+            "d.lgs. 50/2016", "d.lgs. 36/2023",
+        ]
+    ),
+    CategoryDef(
+        id="AMM_URBANISTICA",
+        name="Urbanistica ed Edilizia",
+        description="Pianificazione, permessi, abusi, sanatoria",
+        level=2,
+        parent_id="AMMINISTRATIVO",
+        keywords=[
+            "urbanistica", "piano regolatore", "prg", "pgt",
+            "permesso di costruire", "scia edilizia", "dia edilizia",
+            "abuso edilizio", "ordine demolizione", "sanatoria",
+            "condono edilizio", "cambio destinazione", "volumetria",
+        ]
+    ),
+    CategoryDef(
+        id="AMM_CONTENZIOSO",
+        name="Contenzioso Amministrativo",
+        description="TAR, Consiglio di Stato, ricorsi, sospensiva",
+        level=2,
+        parent_id="AMMINISTRATIVO",
+        keywords=[
+            "tar", "tribunale amministrativo", "consiglio di stato",
+            "ricorso amministrativo", "ricorso giurisdizionale",
+            "sospensiva", "misure cautelari", "ottemperanza",
+            "silenzio inadempimento", "azione di annullamento",
+        ]
+    ),
+
+    # ---------- TRIBUTARIO (4 L2) ----------
+    CategoryDef(
+        id="TRIB_ACCERTAMENTO",
+        name="Accertamento Tributario",
+        description="Procedure di accertamento, controlli, verifiche",
+        level=2,
+        parent_id="TRIBUTARIO",
+        keywords=[
+            "accertamento", "avviso di accertamento", "accertamento induttivo",
+            "accertamento analitico", "accertamento sintetico",
+            "verifica fiscale", "pvc", "processo verbale constatazione",
+            "contraddittorio", "redditometro", "studi di settore",
+        ]
+    ),
+    CategoryDef(
+        id="TRIB_RISCOSSIONE",
+        name="Riscossione",
+        description="Cartelle, ruoli, esecuzione esattoriale",
+        level=2,
+        parent_id="TRIBUTARIO",
+        keywords=[
+            "cartella di pagamento", "riscossione", "ruolo",
+            "iscrizione a ruolo", "intimazione", "sollecito",
+            "fermo amministrativo", "ipoteca esattoriale",
+            "pignoramento esattoriale", "rottamazione", "saldo e stralcio",
+        ]
+    ),
+    CategoryDef(
+        id="TRIB_CONTENZIOSO",
+        name="Contenzioso Tributario",
+        description="Commissioni tributarie, ricorso, appello",
+        level=2,
+        parent_id="TRIBUTARIO",
+        keywords=[
+            "contenzioso tributario", "commissione tributaria",
+            "cgt", "ctp", "ctr", "ricorso tributario", "appello tributario",
+            "d.lgs. 546", "reclamo mediazione", "sospensione giudiziale",
+        ]
+    ),
+    CategoryDef(
+        id="TRIB_IVA",
+        name="IVA",
+        description="Imposta sul valore aggiunto, detrazione, rimborsi",
+        level=2,
+        parent_id="TRIBUTARIO",
+        keywords=[
+            "iva", "imposta valore aggiunto", "detrazione iva",
+            "rimborso iva", "plafond", "pro rata", "reverse charge",
+            "operazione imponibile", "operazione esente", "non imponibile",
+            "fattura", "dichiarazione iva", "comunicazione liquidazioni",
+        ]
+    ),
+
+    # ---------- FALLIMENTARE/CRISI (4 L2) ----------
+    CategoryDef(
+        id="FALL_FALLIMENTO",
+        name="Fallimento / Liquidazione Giudiziale",
+        description="Dichiarazione, effetti, procedura",
+        level=2,
+        parent_id="FALLIMENTARE_CRISI",
+        keywords=[
+            "fallimento", "liquidazione giudiziale", "dichiarazione fallimento",
+            "sentenza dichiarativa", "curatore", "giudice delegato",
+            "comitato creditori", "effetti fallimento", "spossessamento",
+        ]
+    ),
+    CategoryDef(
+        id="FALL_STATO_PASSIVO",
+        name="Stato Passivo",
+        description="Accertamento crediti, insinuazione, impugnazioni",
+        level=2,
+        parent_id="FALLIMENTARE_CRISI",
+        keywords=[
+            "stato passivo", "insinuazione", "ammissione credito",
+            "esclusione credito", "impugnazione stato passivo",
+            "domanda tardiva", "decreto ammissione", "privilegio",
+            "chirografo", "prededuzione", "credito condizionale",
+        ]
+    ),
+    CategoryDef(
+        id="FALL_REVOCATORIA",
+        name="Revocatoria",
+        description="Azioni revocatorie ordinarie e fallimentari",
+        level=2,
+        parent_id="FALLIMENTARE_CRISI",
+        keywords=[
+            "revocatoria fallimentare", "revocatoria ordinaria",
+            "azione revocatoria", "art. 67", "periodo sospetto",
+            "conoscenza stato insolvenza", "pagamenti", "garanzie",
+            "atti gratuiti", "atti onerosi", "inefficacia",
+        ]
+    ),
+    CategoryDef(
+        id="FALL_CONCORDATO",
+        name="Concordato",
+        description="Concordato preventivo, in continuità, fallimentare",
+        level=2,
+        parent_id="FALLIMENTARE_CRISI",
+        keywords=[
+            "concordato preventivo", "concordato in continuità",
+            "concordato liquidatorio", "concordato fallimentare",
+            "proposta concordataria", "piano concordatario",
+            "omologazione", "voto creditori", "attestazione",
+            "relazione attestatore", "accordo ristrutturazione",
+        ]
+    ),
+]
+
+
+# ============================================================
+# ALL CATEGORIES (combined)
+# ============================================================
+
+ALL_CATEGORIES: list[CategoryDef] = L1_CATEGORIES + L2_CATEGORIES
+
+
+def get_category_by_id(category_id: str) -> CategoryDef | None:
+    """Get category definition by ID."""
+    for cat in ALL_CATEGORIES:
+        if cat.id == category_id:
+            return cat
+    return None
+
+
+def get_l1_categories() -> list[CategoryDef]:
+    """Get all L1 macro categories."""
+    return L1_CATEGORIES
+
+
+def get_l2_by_parent(parent_id: str) -> list[CategoryDef]:
+    """Get L2 subcategories for a parent L1."""
+    return [c for c in L2_CATEGORIES if c.parent_id == parent_id]
