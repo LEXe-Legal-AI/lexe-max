@@ -155,90 +155,96 @@ result = await client.normattiva_search(
 )
 ```
 
-## KB Massimari (NEW - 2026-01-27)
+## KB Massimari — PRODUCTION READY (2026-01-31)
 
 Knowledge Base per i massimari della Corte di Cassazione.
+
+### Status
+
+| Metric | Value |
+|--------|-------|
+| **Active Massime** | 41,437 |
+| **Embeddings** | 41,437 (text-embedding-3-small) |
+| **Recall@10** | 97.5% |
+| **MRR** | 0.756 |
+| **Latency p95** | 78ms |
 
 ### Infrastruttura
 
 | Container | Porta | Descrizione |
 |-----------|-------|-------------|
-| lexe-kb | 5434 | PostgreSQL 17 + pgvector + AGE + pg_search |
-| unstructured-api | 8500 | PDF extraction API |
+| lexe-kb | 5434 | PostgreSQL 17 + pgvector 0.7.4 |
 
-### Estensioni PostgreSQL
+### Retrieval Architecture
 
-- **pgvector** 0.7.4 - HNSW vector search
-- **pg_search** 0.21.4 - BM25 native (ParadeDB)
-- **Apache AGE** 1.6.0 - Graph database
-- **pg_trgm** 1.6 - Fuzzy search
+```
+Query → Router → Citation? → Direct Lookup (RV/Sez/Num/Anno)
+                    ↓ NO
+              Hybrid Search
+              ├─ Dense (vector, top-50)
+              ├─ Sparse (tsvector, top-50)
+              └─ RRF Fusion → Top-K
+```
+
+### Quick Commands
+
+```bash
+# Start infrastructure
+docker compose -f docker-compose.kb.yml up -d
+
+# Run retrieval evaluation
+OPENROUTER_API_KEY="sk-or-..." uv run python scripts/qa/run_retrieval_eval.py \
+  --top-k 10 --mode hybrid --log-results
+
+# Generate embeddings for new massime
+uv run python scripts/qa/generate_openai_embeddings.py --batch-size 100 --commit
+
+# Regenerate golden set
+uv run python scripts/qa/generate_golden_set.py --count 200 --commit
+```
+
+### Key Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `run_retrieval_eval.py` | Hybrid search + eval + JSONL/CSV logging |
+| `generate_openai_embeddings.py` | Embeddings via OpenRouter |
+| `generate_golden_set.py` | Auto-generate test queries |
+| `reingest_civile_citation_anchored.py` | Citation-anchored extraction |
 
 ### Schema KB
 
 ```sql
-kb.documents      -- PDF sorgente
-kb.massime        -- Massime estratte (166+ test)
-kb.embeddings     -- Vettori multi-modello
-kb.citations      -- Citazioni normative
-kb.sections       -- Sezioni documento
+kb.massime (id, testo, sezione, numero, anno, rv, is_active, tsv_italian)
+kb.embeddings (massima_id, model_name, embedding vector(1536))
+kb.golden_queries (query_text, query_type, expected_massima_id)
+kb.retrieval_logs (query_text, retrieval_mode, results, metrics)
 ```
 
-### Comandi KB
-
-```bash
-# Start KB infrastructure
-docker compose -f docker-compose.kb.yml up -d
-
-# Start Unstructured API
-docker run -p 8500:8000 -d --name unstructured-api \
-  downloads.unstructured.io/unstructured-io/unstructured-api:latest
-
-# Test ingestion
-uv run python scripts/test_ingestion.py
-
-# Test retrieval
-uv run python scripts/test_retrieval.py
-
-# Compare PyMuPDF vs Unstructured
-uv run python scripts/test_unstructured.py
-```
-
-### Moduli KB
-
-```
-src/lexe_api/kb/
-├── config.py, models.py
-├── ingestion/   # 8 moduli (extractor, cleaner, parser, etc.)
-└── retrieval/   # 6 moduli (dense, sparse, hybrid, etc.)
-```
-
-### Risultati Test
-
-| Metodo | Massime Estratte | Tempo |
-|--------|------------------|-------|
-| PyMuPDF | 1,267 | ~0.3s |
-| **Unstructured** | **4,547** | ~25s |
-
-**Documentazione completa:** `docs/KB-MASSIMARI-ARCHITECTURE.md`
+**Full documentation:** `docs/KB-HANDOFF.md`
 
 ---
 
-## Future Phases
+## Phases Status
 
-**Phase 2: Vectors + Mini-RAG** ✅ IMPLEMENTED (KB Module)
-- pgvector extension ✅
-- HNSW indexes ✅
-- Multi-model embeddings (Qwen3, E5, BGE, Legal-BERT)
+**Phase 1: Legal Tools** ✅ COMPLETE
+- Normattiva, EUR-Lex, Infolex scrapers
+- Circuit breaker, caching, health monitoring
 
-**Phase 3: Knowledge Graph** ✅ IMPLEMENTED (KB Module)
-- Apache AGE extension ✅
-- lexe_jurisprudence graph ✅
-- CITA, INTERPRETA, CONFERMA edges
+**Phase 2: KB Vectors** ✅ COMPLETE
+- pgvector 0.7.4 + HNSW indexes
+- text-embedding-3-small (1536 dim)
+- Hybrid search (dense + sparse + RRF)
 
-**Phase 4: Production**
-- API endpoints for KB search
+**Phase 3: QA Protocol** ✅ COMPLETE
+- Golden set auto-generation
+- Retrieval evaluation pipeline
+- JSONL/CSV logging
+
+**Phase 4: Production API** 🔜 NEXT
+- FastAPI endpoints for KB search
 - Integration with LEO TRIDENT
-- Benchmark S1-S5 configurations
+- Streaming/SSE support
 
 ## Alerting
 
@@ -251,5 +257,6 @@ When tools fail:
 
 ---
 *Created: 2026-01-13*
-*Updated: 2026-01-27*
-*Status: Phase 1 (Tools) + KB Massimari MVP*
+*Updated: 2026-01-31*
+*Status: Phase 1-3 Complete | KB Production Ready*
+*Repo: https://github.com/LEO-ITC/lexe-max*
