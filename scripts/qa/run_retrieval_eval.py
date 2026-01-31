@@ -178,11 +178,11 @@ async def citation_lookup(
 ) -> list[dict]:
     """
     Direct database lookup for citation queries.
-    Tries RV first, then Sez+Num+Anno.
+    Tries RV column first, then RV in text (fallback), then Sez+Num+Anno.
     """
     results = []
 
-    # Strategy 1: RV lookup (most precise)
+    # Strategy 1: RV column lookup (most precise)
     if "rv" in citation:
         rows = await conn.fetch("""
             SELECT m.id as massima_id, m.document_id, m.anno, m.ingest_batch_id,
@@ -193,6 +193,19 @@ async def citation_lookup(
             LIMIT $2
         """, citation["rv"], top_k)
         results = [dict(row) for row in rows]
+
+        # Strategy 1b: RV in text fallback (handles NBSP and edge cases)
+        if not results:
+            rv_pattern = r"Rv\.?[\s\u00a0]+" + citation["rv"]
+            rows = await conn.fetch("""
+                SELECT m.id as massima_id, m.document_id, m.anno, m.ingest_batch_id,
+                       0.98 as score
+                FROM kb.massime m
+                WHERE m.is_active = TRUE
+                AND m.testo ~ $1
+                LIMIT $2
+            """, rv_pattern, top_k)
+            results = [dict(row) for row in rows]
 
     # Strategy 2: Sez + Num + Anno (if RV not found)
     if not results and "sezione" in citation and "numero" in citation:
