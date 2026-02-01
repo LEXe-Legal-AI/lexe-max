@@ -370,7 +370,7 @@ lexe-api/
 
 ## Contacts
 
-- **Repo**: https://github.com/LEO-ITC/lexe-max
+- **Repo**: https://github.com/LEXe-Legal-AI/lexe-max
 - **Branch**: `stage` (current), `main` (production)
 
 ---

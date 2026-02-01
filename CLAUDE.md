@@ -14,10 +14,10 @@ LEXe Legal Tools API - Separate service for Italian and European legal document 
 ## Architecture
 
 ```
-LEXe Services (completely separate from LEO)
+LEXe Services (completely separate from legacy)
 ├── lexe-api:8020      ← FastAPI service with legal tools
-├── lexe-postgres:5433 ← Document storage (separate from LEO)
-└── lexe-valkey:6380   ← Cache (separate from LEO)
+├── lexe-postgres:5433 ← Document storage (separate from legacy)
+└── lexe-valkey:6380   ← Cache (separate from legacy)
 ```
 
 ## Commands
@@ -34,7 +34,7 @@ ruff format src/
 # Run server
 uvicorn lexe_api.main:app --reload --port 8020
 
-# Docker (from leo-infra)
+# Docker (from lexe-infra)
 docker compose -f docker-compose.lexe.yml --env-file .env.lexe up -d
 ```
 
@@ -110,8 +110,8 @@ tool_health (
 | Service | Port | Note |
 |---------|------|------|
 | lexe-api | 8020 | Legal tools API |
-| lexe-postgres | 5433 | Separate from LEO (5432) |
-| lexe-valkey | 6380 | Separate from LEO (6379) |
+| lexe-postgres | 5433 | Separate from legacy (5432) |
+| lexe-valkey | 6380 | Separate from legacy (6379) |
 
 ## Environment Variables
 
@@ -139,12 +139,12 @@ FF_LEXE_EURLEX_ENABLED=true
 FF_LEXE_INFOLEX_ENABLED=true
 ```
 
-## Integration with LEO
+## Integration with LEXE Platform
 
-leo-orchestrator calls lexe-api via HTTP:
+lexe-orchestrator calls lexe-api via HTTP:
 
 ```python
-from leo_orchestrator.clients import LexeClient
+from lexe_orchestrator.clients import LexeClient
 
 client = LexeClient()
 result = await client.normattiva_search(
@@ -318,7 +318,7 @@ kb.golden_queries (query_text, query_type, expected_massima_id)
 
 **Phase 5: Production API** 🔜 NEXT
 - FastAPI endpoints for KB search
-- Integration with LEO TRIDENT
+- Integration with LEXE TRIDENT
 - Streaming/SSE support
 
 ## Alerting
@@ -334,4 +334,4 @@ When tools fail:
 *Created: 2026-01-13*
 *Updated: 2026-01-31*
 *Status: Phase 1-4 Complete | Citation Graph + Router*
-*Repo: https://github.com/LEO-ITC/lexe-max*
+*Repo: https://github.com/LEXe-Legal-AI/lexe-max*

@@ -158,8 +158,8 @@ Risultato: solo 9 documenti e 541 massime.
 
 | Piano (Architecture doc)                    | Staging reale                                |
 | ------------------------------------------- | -------------------------------------------- |
-| Container dedicato `lexe-kb` porta 5434     | Postgres condiviso `leo-postgres` porta 5432 |
-| User `lexe_kb`, DB `lexe_kb`                | User `leo`, DB `leo`, schema `kb`            |
+| Container dedicato `lexe-kb` porta 5434     | Postgres condiviso `lexe-postgres` porta 5432 |
+| User `lexe_kb`, DB `lexe_kb`                | User `lexe`, DB `lexe`, schema `kb`          |
 | pg_search (ParadeDB) per BM25               | **NON disponibile**, usa tsvector nativo     |
 | Tabella singola `kb.embeddings` multi-model | Tabelle separate `kb.emb_mistral`            |
 
@@ -318,12 +318,12 @@ Prompt strutturato → classificazione CONFERMA/CONTRASTA/INTERPRETA/CITA con co
 ssh -i ~/.ssh/id_stage_new root@91.99.229.111
 
 # Database
-docker exec -it leo-postgres psql -U leo -d leo
+docker exec -it lexe-postgres psql -U lexe -d lexe
 
 # Pipeline
-/opt/leo-platform/lexe-api/run_ingest.sh
-/opt/leo-platform/lexe-api/run_embeddings.sh
-/opt/leo-platform/lexe-api/run_retrieval_test.sh
+/opt/lexe-platform/lexe-api/run_ingest.sh
+/opt/lexe-platform/lexe-api/run_embeddings.sh
+/opt/lexe-platform/lexe-api/run_retrieval_test.sh
 ```
 
 ---
@@ -338,7 +338,7 @@ docker exec -it leo-postgres psql -U leo -d leo
 | 4   | API endpoint `/api/v1/kb/search`         | Esporre il retrieval                     |
 | 5   | Disambiguazione citazioni                | Rv match, exact, fuzzy                   |
 | 6   | Pesi edges + inferenza LLM               | CONFERMA vs CONTRASTA                    |
-| 7   | Integrazione LEO TRIDENT                 | Tool per ricerca massime                 |
+| 7   | Integrazione LEXE TRIDENT                | Tool per ricerca massime                 |
 
 ---
 
@@ -354,7 +354,7 @@ docker exec -it leo-postgres psql -U leo -d leo
 **Script su staging:**
 
 ```
-/opt/leo-platform/lexe-api/
+/opt/lexe-platform/lexe-api/
 ├── data/massimari/           # 63 PDF
 ├── scripts/
 │   ├── ingest_staging.py

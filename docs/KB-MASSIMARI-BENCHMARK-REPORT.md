@@ -1,7 +1,7 @@
 # KB Massimari - Report Completo Benchmark
 
 > Data: 2026-01-28 (Aggiornato)
-> Progetto: LEO-ITC / lexe-api
+> Progetto: LEXe-Legal-AI / lexe-api
 > Autori: Francesco + Claude Code
 
 ---
@@ -553,10 +553,11 @@ Il sistema KB Massimari e ora **PRODUCTION-READY**:
 1. **Deploy R1/R2-Local** come API endpoint in lexe-api
 2. **Graph expansion** con Apache AGE per citazioni incrociate
 3. **Multilingual reranker** test (`mmarco-mMiniLMv2`) se serve boost italiano
-4. **Integrazione LEO** via TRIDENT tool system
+4. **Integrazione LEXE** via TRIDENT tool system
 
 ---
 
 *"Dal caos domato" — Framework ORCHIDEA*
 
 *Ultimo aggiornamento: 2026-01-28*
+*Repo: https://github.com/LEXe-Legal-AI/lexe-max*

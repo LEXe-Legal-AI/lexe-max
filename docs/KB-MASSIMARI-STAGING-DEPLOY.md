@@ -27,7 +27,7 @@ Il KB Massimari è un sistema di retrieval ibrido (full-text + vector + graph) p
 ### 2.1 Stack Tecnologico
 
 ```
-91.99.229.111 (LEXe Staging)
+91.99.229.111 (LEXE Staging)
 ├── PostgreSQL 17.7
 │   ├── pgvector 0.8.1      # HNSW vector search
 │   ├── Apache AGE 1.6.0    # Graph database (Cypher)
@@ -471,20 +471,20 @@ async def classify_citation(
 ssh -i ~/.ssh/id_stage_new root@91.99.229.111
 
 # Database
-docker exec -it leo-postgres psql -U leo -d leo
+docker exec -it lexe-postgres psql -U lexe -d lexe
 ```
 
 ### 7.2 Script Runner
 
 ```bash
 # Ingestion
-/opt/leo-platform/lexe-api/run_ingest.sh
+/opt/lexe-platform/lexe-api/run_ingest.sh
 
 # Embeddings
-/opt/leo-platform/lexe-api/run_embeddings.sh
+/opt/lexe-platform/lexe-api/run_embeddings.sh
 
 # Retrieval test
-/opt/leo-platform/lexe-api/run_retrieval_test.sh
+/opt/lexe-platform/lexe-api/run_retrieval_test.sh
 ```
 
 ### 7.3 Query Utili
@@ -520,14 +520,14 @@ WHERE e.id IS NULL;
 | 5        | Calcolo pesi edges                 | 2h     |
 | 6        | Inferenza LLM (CONFERMA/CONTRASTA) | 4h     |
 | 7        | API endpoints per retrieval        | 4h     |
-| 8        | Integrazione con LEO TRIDENT       | 8h     |
+| 8        | Integrazione con LEXE TRIDENT      | 8h     |
 
 ---
 
 ## 9. Appendice: File Structure
 
 ```
-/opt/leo-platform/lexe-api/
+/opt/lexe-platform/lexe-api/
 ├── data/
 │   └── massimari/           # 63 PDF files
 ├── scripts/
@@ -546,4 +546,4 @@ WHERE e.id IS NULL;
 
 *Documento creato: 2026-01-28*
 *Autore: Claude Code*
-*Server: 91.99.229.111 (LEXe Staging)*
+*Server: 91.99.229.111 (LEXE Staging)*

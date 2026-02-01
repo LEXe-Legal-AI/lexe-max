@@ -21,7 +21,7 @@ Il modulo KB Massimari è un sistema di ingestion e retrieval per i massimari de
 
 | Componente | Tecnologia | Versione | Porta |
 |------------|------------|----------|-------|
-| Database | PostgreSQL | 17.7 | 5434 |
+| Database | PostgreSQL | 17.7 | 5432 |
 | Vector Search | pgvector | 0.7.4 | - |
 | BM25 Search | pg_search (ParadeDB) | 0.21.4 | - |
 | Graph DB | Apache AGE | 1.6.0 | - |
@@ -35,7 +35,7 @@ Il modulo KB Massimari è un sistema di ingestion e retrieval per i massimari de
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        LEXE-API                                  │
+│                        lexe-api                                  │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐         │
 │  │  Ingestion  │    │  Retrieval  │    │    API      │         │
@@ -44,7 +44,7 @@ Il modulo KB Massimari è un sistema di ingestion e retrieval per i massimari de
 │         │                  │                  │                 │
 │         ▼                  ▼                  ▼                 │
 │  ┌─────────────────────────────────────────────────────┐       │
-│  │                    lexe-kb (PostgreSQL 17)           │       │
+│  │              lexe-postgres (PostgreSQL 17)          │       │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐   │       │
 │  │  │pgvector │ │pg_search│ │  AGE    │ │ pg_trgm │   │       │
 │  │  │ (HNSW)  │ │ (BM25)  │ │ (Graph) │ │ (Fuzzy) │   │       │
@@ -63,24 +63,24 @@ Il modulo KB Massimari è un sistema di ingestion e retrieval per i massimari de
 
 ## Infrastruttura Docker
 
-### Container `lexe-kb`
+### Container `lexe-postgres`
 
 ```yaml
 # docker-compose.kb.yml
 services:
-  lexe-kb:
+  lexe-postgres:
     build:
       context: .
       dockerfile: Dockerfile.kb
-    container_name: lexe-kb
+    container_name: lexe-postgres
     ports:
-      - "5434:5432"
+      - "5432:5432"
     environment:
-      POSTGRES_USER: lexe_kb
-      POSTGRES_PASSWORD: lexe_kb_dev_password
-      POSTGRES_DB: lexe_kb
+      POSTGRES_USER: lexe
+      POSTGRES_PASSWORD: lexe_dev_password
+      POSTGRES_DB: lexe
     volumes:
-      - lexe_kb_data:/var/lib/postgresql/data
+      - lexe_data:/var/lib/postgresql/data
     command: >
       postgres
       -c shared_preload_libraries=age,pg_search
@@ -358,7 +358,7 @@ RETURNS TABLE(massima_id UUID, rrf_score FLOAT, dense_rank INT, sparse_rank INT)
 ### Avvio Infrastruttura
 
 ```bash
-# Start lexe-kb
+# Start lexe-postgres
 cd lexe-api
 docker compose -f docker-compose.kb.yml up -d
 
@@ -367,7 +367,7 @@ docker run -p 8500:8000 -d --name unstructured-api \
   downloads.unstructured.io/unstructured-io/unstructured-api:latest
 
 # Verifica
-docker ps --filter name=lexe-kb
+docker ps --filter name=lexe-postgres
 docker ps --filter name=unstructured
 curl http://localhost:8500/healthcheck
 ```
@@ -376,7 +376,7 @@ curl http://localhost:8500/healthcheck
 
 ```bash
 # Connessione
-docker exec -it lexe-kb psql -U lexe_kb -d lexe_kb
+docker exec -it lexe-postgres psql -U lexe -d lexe
 
 # Stats
 SELECT COUNT(*) FROM kb.documents;
@@ -553,7 +553,7 @@ FROM kb.qa_document_report;
 7. **Embeddings** - Benchmark `dlicari/distil-ita-legal-bert` vs BGE-M3
 8. **API REST** - Endpoint `/api/v1/kb/search`
 9. **Benchmark** - Confronto S1-S5 su query set
-10. **Integrazione LEO** - Tool TRIDENT per ricerca massime
+10. **Integrazione LEXE** - Tool TRIDENT per ricerca massime
 
 ---
 
@@ -590,3 +590,4 @@ lexe-api/
 
 *Ultimo aggiornamento: 2026-01-27 (Ingestion Profiles + QA System)*
 *Autore: Claude Code + Francesco*
+*Repo: https://github.com/LEXe-Legal-AI/lexe-max*

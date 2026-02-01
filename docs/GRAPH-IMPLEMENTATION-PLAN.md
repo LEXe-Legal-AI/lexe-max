@@ -23,9 +23,9 @@
 
 | Componente    | Container    | Stato         | Note          |
 | ------------- | ------------ | ------------- | ------------- |
-| Apache AGE    | leo-postgres | ✅ Disponibile | Cypher su PG  |
+| Apache AGE    | lexe-postgres | ✅ Disponibile | Cypher su PG  |
 | pgvector      | lexe-kb      | ✅ Attivo      | HNSW 1536dim  |
-| Grafana       | leo-grafana  | ✅ Deployed    | Dashboard     |
+| Grafana       | lexe-grafana  | ✅ Deployed    | Dashboard     |
 | PostgreSQL 17 | lexe-kb      | ✅ Attivo      | Needs AGE ext |
 
 **Decisione:** Usare lexe-kb con AGE extension (non container separato)
@@ -407,7 +407,7 @@ Panels:
 ### 6.3 React Component (future)
 
 ```typescript
-// leo-frontend/src/components/kb/GraphExplorer.tsx
+// lexe-frontend/src/components/kb/GraphExplorer.tsx
 // D3 force-directed graph visualization
 ```
 

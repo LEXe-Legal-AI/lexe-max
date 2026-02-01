@@ -75,21 +75,25 @@ lexe-max/
 
 ## 2. Riferimenti LEO (Legacy)
 
-### Critici (da rimuovere/rinominare)
+### Critici (COMPLETATI)
 | File | Riga | Contenuto | Azione |
 |------|------|-----------|--------|
-| tools/health_monitor.py | 144 | `# TODO: Implement email notification via leo-core email service` | Rimuovere "leo-core" dal commento |
+| [x] tools/health_monitor.py | 144 | `# TODO: Implement email notification via lexe-core email service` | ✅ Rinominato "leo-core" → "lexe-core" |
 
 ### Condivisi (OK - mantenere)
-- `docker-compose.kb.yml` linee 56-59: `leo-platform-network` (commentato, opzionale)
-- Network `shared_public` per Traefik (condiviso)
+- [x] `docker-compose.kb.yml` linee 56-59: `lexe-platform-network` (commentato, opzionale)
+- [x] Network `shared_public` per Traefik (condiviso)
 
 ### Statistiche
-- File con riferimenti LEO: 2
-- Riferimenti critici: 1 (solo TODO comment)
-- Riferimenti condivisi: 1 (commentato)
+- [x] File con riferimenti LEO: 2 → **0 (tutti rinominati)**
+- [x] Riferimenti critici: 1 → **0 (completati)**
+- [x] Riferimenti condivisi: 1 → **0 (rinominati a lexe-*)**
 
-**Verdict**: LEXE-MAX e **completamente indipendente da LEO**. Nessun import diretto, nessuna dipendenza runtime.
+**Nota Storica**: ⚠️ Tutti i riferimenti LEO sono stati completamente rinominati a LEXE (2026-02-01).
+- `leo-core` → `lexe-core`
+- `leo-platform-network` → `lexe-platform-network`
+
+**Verdict**: LEXE-MAX è **completamente indipendente da LEO**. Nessun import diretto, nessuna dipendenza runtime. Tutti i riferimenti legacy sono stati migrati.
 
 ---
 

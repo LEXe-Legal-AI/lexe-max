@@ -6,7 +6,7 @@ Override via environment variables for different environments.
 
 Local defaults (Windows dev):
     DB: lexe_kb on localhost:5434
-    PDFs: C:/PROJECTS/LEO-ITC/raccolta
+    PDFs: C:/PROJECTS/lexe-genesis/raccolta
     Unstructured: localhost:8500
 
 Staging (91.99.229.111):
