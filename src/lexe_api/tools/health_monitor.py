@@ -141,7 +141,7 @@ class ToolHealthMonitor:
         if settings.alert_webhook_url:
             await self._send_webhook_alert(tool_name, error, failure_count)
 
-        # TODO: Implement email notification via leo-core email service
+        # TODO: Implement email notification via lexe-core email service
         if settings.admin_email_list:
             logger.info(
                 "Would send email alert",
