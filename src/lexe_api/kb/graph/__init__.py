@@ -6,11 +6,17 @@ Citation Graph, Topic Classification, GraphRAG Reranking.
 Modules:
     - citation_extractor: Two-step citation extraction (extract -> resolve)
     - edge_builder: Dual-write builder (SQL + AGE)
-    - categories: Category definitions and hierarchy
-    - classifier: Hybrid topic classification
+    - categories: Category definitions and hierarchy (v1)
+    - classifier: Hybrid topic classification (v1)
     - norm_extractor: Norm canonicalization
     - overrule_detector: Turning points detection
     - graph_reranker: GraphRAG cached reranking
+
+Category Graph v2.4:
+    - categories_v2: Three-axis taxonomy (Materia + Natura + Ambito)
+    - materia_rules: Rule-based materia derivation with norm hints
+    - ambito_rules: High-precision ambito rules
+    - category_classifier_v2: Full classification pipeline
 """
 
 from enum import Enum
