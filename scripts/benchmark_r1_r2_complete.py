@@ -330,7 +330,7 @@ async def run_benchmark():
         print(f"\n** WINNER: {winner[0]} ({winner[1]['accuracy']:.1f}% accuracy) **")
 
     # Save results
-    output_path = Path("C:/PROJECTS/LEO-ITC/lexe-api/data/r1_r2_complete_benchmark.json")
+    output_path = Path("C:/PROJECTS/lexe-genesis/lexe-max/data/r1_r2_complete_benchmark.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:

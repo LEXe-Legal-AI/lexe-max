@@ -308,7 +308,7 @@ async def main():
             print(f"| {r.model_name} | {r.query_type} | {r.top_5_scores[0]:.4f} |")
 
     # Save results
-    output_path = Path("C:/PROJECTS/LEO-ITC/lexe-api/data/openrouter_benchmark_results.json")
+    output_path = Path("C:/PROJECTS/lexe-genesis/lexe-max/data/openrouter_benchmark_results.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     results = {

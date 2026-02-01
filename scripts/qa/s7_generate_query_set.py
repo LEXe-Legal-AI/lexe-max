@@ -8,7 +8,7 @@ Generates 200+ evaluation queries from four sources:
 4. Adversarial: 30 queries (negations, boundary cases)
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s7_generate_query_set.py
 """
 

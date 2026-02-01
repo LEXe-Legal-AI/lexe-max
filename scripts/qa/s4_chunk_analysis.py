@@ -8,7 +8,7 @@ For each massima in the current batch, computes deterministic features:
 - starts_with_legal_pattern flag
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s4_chunk_analysis.py
 """
 

@@ -8,7 +8,7 @@ Model: Mistral Small via OpenRouter
 Cache: by content_hash (deduplicates identical chunks)
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export OPENROUTER_API_KEY='sk-or-...'
     uv run python scripts/qa/s9_llm_borderline.py
 """

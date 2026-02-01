@@ -11,7 +11,7 @@ Re-ingests PDFs using profile-specific configurations:
 After guided ingestion, re-run Phases 4-10 with new ingest_batch_id.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/guided_ingestion.py
 """
 

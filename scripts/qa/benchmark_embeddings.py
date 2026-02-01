@@ -14,7 +14,7 @@ Steps:
 4. Compare R@5, R@10, MRR, nDCG
 
 Usage:
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export OPENROUTER_API_KEY='sk-or-...'
     uv run python scripts/qa/benchmark_embeddings.py
 """

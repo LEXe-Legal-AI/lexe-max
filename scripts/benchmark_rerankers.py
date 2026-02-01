@@ -431,7 +431,7 @@ async def run_benchmark():
         print(f"\n** WINNER: {winner} **")
 
     # Save results
-    output_path = Path("C:/PROJECTS/LEO-ITC/lexe-api/data/reranker_benchmark_results.json")
+    output_path = Path("C:/PROJECTS/lexe-genesis/lexe-max/data/reranker_benchmark_results.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     results_data = {

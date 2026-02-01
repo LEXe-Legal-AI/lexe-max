@@ -7,7 +7,7 @@ Computes R@5, R@10, MRR, nDCG@10, noise_rate_at_10.
 Uses Mistral Embed via OpenRouter for dense search.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export OPENROUTER_API_KEY='sk-or-...'
     uv run python scripts/qa/s7_run_retrieval_eval.py
 """

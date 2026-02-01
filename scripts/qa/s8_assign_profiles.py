@@ -15,7 +15,7 @@ Profiles (priority order):
 5. clean_standard: everything else
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s8_assign_profiles.py
 """
 

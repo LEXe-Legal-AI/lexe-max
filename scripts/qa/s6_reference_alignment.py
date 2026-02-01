@@ -8,7 +8,7 @@ Computes coverage_pct, fragmentation_score, fusion_score per document.
 Uses jaccard_similarity from deduplicator.py.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s6_reference_alignment.py
 """
 

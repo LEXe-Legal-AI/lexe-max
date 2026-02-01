@@ -12,7 +12,7 @@ Flags:
 - low_extraction (severity 3): <10 chars average per page
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s1_health_flags.py
 """
 

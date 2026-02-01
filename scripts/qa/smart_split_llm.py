@@ -192,6 +192,6 @@ if __name__ == "__main__":
             print(f"File not found: {pdf_path}")
     else:
         # Test su Rassegna Penale 2011
-        test_pdf = Path(r"C:\PROJECTS\LEO-ITC\raccolta\Rassegna Penale 2011.pdf")
+        test_pdf = Path(r"C:\PROJECTS\lexe-genesis\data\raccolta\Rassegna Penale 2011.pdf")
         if test_pdf.exists():
             test_single_pdf(test_pdf)

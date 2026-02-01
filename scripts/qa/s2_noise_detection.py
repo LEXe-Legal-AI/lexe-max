@@ -10,7 +10,7 @@ Detects noise patterns in extracted elements:
 Updates pdf_extraction_quality with noise counts.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s2_noise_detection.py
 """
 

@@ -472,7 +472,7 @@ async def run_benchmark(r1_only: bool = False, verbose: bool = False):
         print(f"Latency overhead: {lat_overhead:+.1f}%")
 
     # Save results
-    output_path = Path("C:/PROJECTS/LEO-ITC/lexe-api/data/retrieval_benchmark_results.json")
+    output_path = Path("C:/PROJECTS/lexe-genesis/lexe-max/data/retrieval_benchmark_results.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     results_data = {

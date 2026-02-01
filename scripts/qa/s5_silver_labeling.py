@@ -8,7 +8,7 @@ Step 3 - LLM only for residual uncertain (Mistral Small, cache by content_hash)
 Labels: massima, toc, citation_list, noise, uncertain
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export OPENROUTER_API_KEY='sk-or-...'
     uv run python scripts/qa/s5_silver_labeling.py
 """

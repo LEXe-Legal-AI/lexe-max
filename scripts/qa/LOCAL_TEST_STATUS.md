@@ -2,7 +2,7 @@
 
 **Data:** 2026-01-29 (updated)
 **Database:** lexe-kb (localhost:5434)
-**PDFs:** 63 in C:\PROJECTS\LEO-ITC\raccolta
+**PDFs:** 63 in C:\PROJECTS\lexe-genesis\data\raccolta
 
 ---
 

@@ -3,7 +3,7 @@ KB Massimari - Test Retrieval on Staging
 Tests R1 (full-text) and R2-Local (Mistral vector search).
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export PATH=$HOME/.local/bin:$PATH
     export OPENROUTER_API_KEY='sk-or-v1-...'
     uv run python scripts/test_retrieval_staging.py
@@ -16,7 +16,7 @@ import asyncpg
 import httpx
 
 # Config
-DB_URL = "postgresql://leo:stage_postgres_2026_secure@localhost:5432/leo"
+DB_URL = "postgresql://lexe:stage_postgres_2026_secure@localhost:5433/lexe"
 OPENROUTER_URL = "https://openrouter.ai/api/v1/embeddings"
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 MISTRAL_MODEL = "mistralai/mistral-embed-2312"

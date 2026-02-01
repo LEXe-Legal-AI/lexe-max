@@ -9,7 +9,7 @@ Resolves anno for each PDF from three sources:
 Flags conflicts between sources.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s1_year_resolution.py
 """
 

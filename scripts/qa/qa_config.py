@@ -10,8 +10,8 @@ Local defaults (Windows dev):
     Unstructured: localhost:8500
 
 Staging (91.99.229.111):
-    export QA_DB_URL="postgresql://leo:stage_postgres_2026_secure@localhost:5432/leo"
-    export QA_PDF_DIR="/opt/leo-platform/lexe-api/data/massimari"
+    export QA_DB_URL="postgresql://lexe:stage_postgres_2026_secure@localhost:5433/lexe"
+    export QA_PDF_DIR="/opt/lexe-platform/lexe-max/data/massimari"
 """
 
 import os
@@ -27,7 +27,7 @@ DB_URL = os.getenv(
 PDF_DIR = Path(
     os.getenv(
         "QA_PDF_DIR",
-        "C:/PROJECTS/LEO-ITC/raccolta",
+        "C:/PROJECTS/lexe-genesis/data/raccolta",
     )
 )
 

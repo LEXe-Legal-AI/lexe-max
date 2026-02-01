@@ -3,7 +3,7 @@
 
 FROM postgres:17-bookworm
 
-LABEL maintainer="LEO Platform <dev@itconsultingsrl.com>"
+LABEL maintainer="LEXE Platform <dev@lexe.pro>"
 LABEL description="PostgreSQL 17 with pgvector, Apache AGE, pg_search (ParadeDB), pg_trgm"
 LABEL version="1.0.0"
 

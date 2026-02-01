@@ -8,9 +8,9 @@ from uuid import uuid4
 import asyncpg
 import httpx
 
-DB_URL = "postgresql://leo:stage_postgres_2026_secure@localhost:5432/leo"
+DB_URL = "postgresql://lexe:stage_postgres_2026_secure@localhost:5433/lexe"
 UNSTRUCTURED_URL = "http://localhost:8500/general/v0/general"
-PDF_DIR = Path("/opt/leo-platform/lexe-api/data/massimari")
+PDF_DIR = Path("/opt/lexe-platform/lexe-max/data/massimari")
 MIN_LENGTH = 150
 
 

@@ -6,7 +6,7 @@ valid_chars_ratio, italian_tokens_ratio, non_alnum_ratio.
 Flags: is_empty, is_ocr_candidate, is_toc_candidate.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s1_page_extraction_stats.py
 """
 

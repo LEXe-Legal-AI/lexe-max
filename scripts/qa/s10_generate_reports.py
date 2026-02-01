@@ -14,7 +14,7 @@ Risk score (0=healthy, 1=broken):
 Grades: A (0-0.2), B (0.2-0.4), C (0.4-0.6), D (0.6-0.8), F (0.8-1.0)
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s10_generate_reports.py
 """
 

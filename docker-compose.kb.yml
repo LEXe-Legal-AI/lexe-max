@@ -53,7 +53,7 @@ networks:
   lexe-kb-network:
     name: lexe-kb-network
     driver: bridge
-  # Per connessione con leo-platform (opzionale)
-  # leo-platform-network:
+  # Per connessione con lexe-platform (opzionale)
+  # lexe-platform-network:
   #   external: true
-  #   name: leo-platform-network
+  #   name: lexe-platform-network

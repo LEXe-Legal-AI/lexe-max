@@ -397,7 +397,7 @@ async def main():
         print(f"  {ctype.capitalize()}: {count}")
 
     # Save to JSON for review
-    output_path = Path("C:/PROJECTS/LEO-ITC/lexe-api/data/extracted_indices.json")
+    output_path = Path("C:/PROJECTS/lexe-genesis/lexe-max/data/extracted_indices.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     output_data = []

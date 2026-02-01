@@ -5,7 +5,7 @@ Creates qa_run record, scans PDF directory, computes SHA256/pages/bytes,
 matches with existing kb.documents, populates kb.pdf_manifest.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s0_build_manifest.py
 """
 

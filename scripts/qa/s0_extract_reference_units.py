@@ -6,7 +6,7 @@ Conservative segmentation, lenient gate (min_length=80), saves everything.
 Stable normalization for content_hash.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s0_extract_reference_units.py
 """
 

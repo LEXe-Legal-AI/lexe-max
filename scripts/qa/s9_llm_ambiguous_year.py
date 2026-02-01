@@ -9,7 +9,7 @@ Max calls: ~5 per doc with conflict
 Cache: by content_hash of input text
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export OPENROUTER_API_KEY='sk-or-...'
     uv run python scripts/qa/s9_llm_ambiguous_year.py
 """

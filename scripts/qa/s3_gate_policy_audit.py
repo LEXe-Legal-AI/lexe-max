@@ -7,7 +7,7 @@ Re-processes all 63 PDFs through evaluate_gate() and logs EVERY decision
 Uses gate_policy.py module.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s3_gate_policy_audit.py
 """
 

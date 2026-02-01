@@ -3,7 +3,7 @@ KB Massimari - Recover Anno from PDFs
 Extracts year from first pages for PDFs without year in filename.
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export PATH=$HOME/.local/bin:$PATH
     uv run python scripts/ingest_recover_anno.py
 """
@@ -17,9 +17,9 @@ import asyncpg
 import httpx
 
 # Config
-DB_URL = "postgresql://leo:stage_postgres_2026_secure@localhost:5432/leo"
+DB_URL = "postgresql://lexe:stage_postgres_2026_secure@localhost:5433/lexe"
 UNSTRUCTURED_URL = "http://localhost:8500/general/v0/general"
-PDF_DIR = Path("/opt/leo-platform/lexe-api/data/massimari")
+PDF_DIR = Path("/opt/lexe-platform/lexe-max/data/massimari")
 
 # Gate policy thresholds
 MIN_LENGTH = 150

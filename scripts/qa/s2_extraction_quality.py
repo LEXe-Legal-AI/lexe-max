@@ -7,7 +7,7 @@ Aggregates page_extraction_stats into per-document extraction quality:
 - Overall quality_score and quality_grade (A/B/C/D)
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s2_extraction_quality.py
 """
 

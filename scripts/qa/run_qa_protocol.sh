@@ -11,11 +11,11 @@ set -euo pipefail
 #   ./run_qa_protocol.sh --phase 7          # Run only phase 7
 #   ./run_qa_protocol.sh --phase guided     # Run guided ingestion
 #
-# Logs: /opt/leo-platform/lexe-api/logs/qa/<timestamp>/
+# Logs: /opt/lexe-platform/lexe-max/logs/qa/<timestamp>/
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-LOG_DIR="/opt/leo-platform/lexe-api/logs/qa/$(date +%Y%m%d_%H%M%S)"
+LOG_DIR="/opt/lexe-platform/lexe-max/logs/qa/$(date +%Y%m%d_%H%M%S)"
 PHASE="all"
 
 # Parse args

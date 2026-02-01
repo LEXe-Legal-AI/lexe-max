@@ -357,7 +357,7 @@ if __name__ == "__main__":
     import sys
 
     # Default: directory massimari su staging
-    pdf_dir = Path(r"C:\PROJECTS\LEO-ITC\raccolta")
+    pdf_dir = Path(r"C:\PROJECTS\lexe-genesis\data\raccolta")
 
     if len(sys.argv) > 1:
         arg = sys.argv[1]

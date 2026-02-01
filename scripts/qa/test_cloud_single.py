@@ -9,7 +9,7 @@ import httpx
 UNSTRUCTURED_API_KEY = os.getenv("UNSTRUCTURED_API_KEY", "")
 UNSTRUCTURED_CLOUD_URL = "https://api.unstructuredapp.io/general/v0/general"
 
-PDF_PATH = Path(r"C:\PROJECTS\LEO-ITC\raccolta\Rassegna Penale 2012.pdf")
+PDF_PATH = Path(r"C:\PROJECTS\lexe-genesis\data\raccolta\Rassegna Penale 2012.pdf")
 
 print(f"API Key: {'SET' if UNSTRUCTURED_API_KEY else 'NOT SET'}")
 print(f"API Key value: {UNSTRUCTURED_API_KEY[:10]}..." if UNSTRUCTURED_API_KEY else "NO KEY")

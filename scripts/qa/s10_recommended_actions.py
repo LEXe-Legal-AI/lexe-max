@@ -8,7 +8,7 @@ Runs smoke tests on QA results and prints actionable recommendations:
 - Retrieval comparison by method
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     uv run python scripts/qa/s10_recommended_actions.py
 """
 

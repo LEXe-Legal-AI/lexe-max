@@ -6,10 +6,10 @@ Data dictionary and execution guide for the QA protocol.
 
 ```bash
 # On staging server (91.99.229.111)
-cd /opt/leo-platform/lexe-api
+cd /opt/lexe-platform/lexe-max
 
 # 1. Run migration
-psql -U leo -d leo -f scripts/qa/migrations/001_qa_protocol_tables.sql
+psql -U lexe -d lexe -f scripts/qa/migrations/001_qa_protocol_tables.sql
 
 # 2. Run all phases
 export OPENROUTER_API_KEY='sk-or-...'

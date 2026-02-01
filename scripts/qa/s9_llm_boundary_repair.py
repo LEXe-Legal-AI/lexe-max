@@ -8,7 +8,7 @@ Model: Mistral Small via OpenRouter
 Input: 3+ fragments + surrounding context (2000 chars)
 
 Usage (on staging server):
-    cd /opt/leo-platform/lexe-api
+    cd /opt/lexe-platform/lexe-max
     export OPENROUTER_API_KEY='sk-or-...'
     uv run python scripts/qa/s9_llm_boundary_repair.py
 """

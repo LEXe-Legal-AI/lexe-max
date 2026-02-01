@@ -87,7 +87,7 @@ def segment_reference_units_NEW(elements: list[dict]) -> list[dict]:
     return units
 
 
-pdf_path = Path(r"C:\PROJECTS\LEO-ITC\raccolta\2014 Mass civile Vol 1 pagg 408.pdf")
+pdf_path = Path(r"C:\PROJECTS\lexe-genesis\data\raccolta\2014 Mass civile Vol 1 pagg 408.pdf")
 
 print(f"Testing on: {pdf_path.name}")
 print("Extracting with local Unstructured (fast)...")
