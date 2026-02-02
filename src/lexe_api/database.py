@@ -306,5 +306,36 @@ class DatabaseClient:
             )
 
 
-# Global instance
+# Global instances
 db = DatabaseClient()
+
+# KB database pool (separate connection for massime)
+_kb_pool: asyncpg.Pool | None = None
+
+
+async def get_kb_pool() -> asyncpg.Pool:
+    """Get or create the KB database pool.
+
+    The KB database is separate from the main database and contains
+    the massime (38,718 case law summaries) with embeddings.
+    """
+    global _kb_pool
+    if _kb_pool is None:
+        kb_dsn = settings.kb_database_url or settings.database_url
+        _kb_pool = await asyncpg.create_pool(
+            kb_dsn,
+            min_size=2,
+            max_size=5,
+            command_timeout=30,
+        )
+        logger.info("KB database pool created", dsn=kb_dsn[:30] + "...")
+    return _kb_pool
+
+
+async def close_kb_pool() -> None:
+    """Close the KB database pool."""
+    global _kb_pool
+    if _kb_pool:
+        await _kb_pool.close()
+        _kb_pool = None
+        logger.info("KB database pool closed")

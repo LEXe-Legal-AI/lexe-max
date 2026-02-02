@@ -8,6 +8,9 @@ from lexe_api.models.schemas import (
     EurLexResponse,
     InfoLexRequest,
     InfoLexResponse,
+    KBMassimaResult,
+    KBSearchRequest,
+    KBSearchResponse,
     NormattivaRequest,
     NormattivaResponse,
     VigenzaResponse,
@@ -177,6 +180,156 @@ async def infolex_search(request: InfoLexRequest) -> InfoLexResponse:
 # =============================================================================
 
 
+# =============================================================================
+# KB Massime Search Endpoint
+# =============================================================================
+
+
+@router.post("/kb/search", response_model=KBSearchResponse)
+async def kb_search(request: KBSearchRequest) -> KBSearchResponse:
+    """Search the KB massime (case law summaries) using hybrid search.
+
+    Uses dense (embedding) + sparse (BM25) search with RRF fusion.
+
+    Examples:
+    - {"query": "danno ingiusto art. 2043 c.c."}
+    - {"query": "responsabilità contrattuale inadempimento", "top_k": 5}
+    - {"query": "divorzio assegno", "filters": {"materia": "famiglia"}}
+    """
+    try:
+        from lexe_api.kb.retrieval.hybrid import HybridSearchConfig, hybrid_search
+        from lexe_api.kb.config import EmbeddingChannel, EmbeddingModel
+        from lexe_api.database import get_kb_pool
+        import httpx
+
+        # Get embedding for the query using LiteLLM
+        query_embedding = await _get_query_embedding(request.query)
+        if not query_embedding:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to generate query embedding",
+            )
+
+        # Configure hybrid search
+        config = HybridSearchConfig(
+            dense_limit=request.top_k * 5,  # Get more candidates for fusion
+            bm25_limit=request.top_k * 5,
+            trgm_limit=request.top_k * 3,
+            rrf_k=60,
+            final_limit=request.top_k,
+            min_similarity=request.min_score,
+            model=EmbeddingModel.TEXT_EMBEDDING_3_SMALL,
+            channel=EmbeddingChannel.TESTO,
+        )
+
+        # Get KB database pool
+        pool = await get_kb_pool()
+
+        # Execute hybrid search
+        search_results = await hybrid_search(
+            query=request.query,
+            query_embedding=query_embedding,
+            config=config,
+            db_pool=pool,
+            filters=request.filters,
+        )
+
+        # Fetch full massima data for results
+        results = await _enrich_massime_results(search_results, pool)
+
+        return KBSearchResponse(
+            success=True,
+            query=request.query,
+            total_results=len(results),
+            results=results,
+            search_mode="hybrid",
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+async def _get_query_embedding(query: str) -> list[float] | None:
+    """Get embedding for a query using LiteLLM."""
+    import httpx
+
+    litellm_url = settings.litellm_api_base or "http://lexe-litellm:4000"
+    litellm_key = settings.litellm_api_key or ""
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                f"{litellm_url}/embeddings",
+                headers={"Authorization": f"Bearer {litellm_key}"},
+                json={
+                    "model": "text-embedding-3-small",
+                    "input": query,
+                },
+            )
+            if response.status_code == 200:
+                data = response.json()
+                return data["data"][0]["embedding"]
+            return None
+    except Exception:
+        return None
+
+
+async def _enrich_massime_results(
+    search_results: list,
+    pool,
+) -> list[KBMassimaResult]:
+    """Fetch full massima data and build response objects."""
+    if not search_results:
+        return []
+
+    import asyncpg
+
+    massima_ids = [str(r.massima_id) for r in search_results]
+
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            """
+            SELECT id, testo, sezione, numero, anno, rv, materia
+            FROM kb.massime
+            WHERE id = ANY($1::uuid[])
+            """,
+            massima_ids,
+        )
+
+    # Create lookup
+    massima_lookup = {str(row["id"]): row for row in rows}
+
+    results = []
+    for search_result in search_results:
+        massima_id = str(search_result.massima_id)
+        row = massima_lookup.get(massima_id)
+        if row:
+            results.append(
+                KBMassimaResult(
+                    massima_id=search_result.massima_id,
+                    testo=row["testo"],
+                    sezione=row["sezione"],
+                    numero=row["numero"],
+                    anno=row["anno"],
+                    rv=row["rv"],
+                    materia=row.get("materia"),
+                    score=search_result.rrf_score,
+                    dense_score=search_result.dense_score,
+                    sparse_score=search_result.bm25_score,
+                    rank=search_result.final_rank,
+                )
+            )
+
+    return results
+
+
+# =============================================================================
+# Tool Status
+# =============================================================================
+
+
 @router.get("/status")
 async def tools_status() -> dict:
     """Get status of all legal tools."""
@@ -197,6 +350,11 @@ async def tools_status() -> dict:
                 "enabled": settings.ff_infolex_enabled,
                 "healthy": health["infolex"].state == "healthy",
                 "circuit": health["infolex"].circuit_state.value,
+            },
+            "kb": {
+                "enabled": True,
+                "healthy": True,
+                "circuit": "closed",
             },
         }
     }
