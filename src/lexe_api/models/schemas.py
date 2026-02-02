@@ -269,6 +269,55 @@ class ToolHealthResponse(BaseModel):
 
 
 # =============================================================================
+# KB Massime Search Models
+# =============================================================================
+
+
+class KBSearchRequest(BaseModel):
+    """Request to search KB massime."""
+
+    query: str = Field(..., min_length=3, description="Search query in natural language")
+    top_k: int = Field(default=10, ge=1, le=50, description="Number of results to return")
+    min_score: float = Field(
+        default=0.0, ge=0.0, le=1.0, description="Minimum relevance score threshold"
+    )
+    filters: dict[str, Any] | None = Field(
+        None, description="Optional filters (materia, sezione, anno, etc.)"
+    )
+
+
+class KBMassimaResult(BaseModel):
+    """Single KB search result."""
+
+    massima_id: UUID
+    testo: str = Field(..., description="Testo della massima")
+    sezione: str | None = Field(None, description="Sezione (e.g., Sez. III)")
+    numero: str | None = Field(None, description="Numero sentenza")
+    anno: int | None = Field(None, description="Anno sentenza")
+    rv: str | None = Field(None, description="RV (numero identificativo)")
+    materia: str | None = Field(None, description="Materia/categoria")
+
+    # Search scores
+    score: float = Field(..., description="Combined relevance score")
+    dense_score: float | None = Field(None, description="Dense (embedding) score")
+    sparse_score: float | None = Field(None, description="Sparse (BM25) score")
+    rank: int = Field(..., description="Result rank (1-based)")
+
+
+class KBSearchResponse(BaseModel):
+    """Response from KB massime search."""
+
+    success: bool = Field(default=True)
+    query: str = Field(..., description="Original query")
+    total_results: int = Field(..., description="Number of results returned")
+    results: list[KBMassimaResult] = Field(default_factory=list)
+
+    # Search metadata
+    search_mode: str = Field(default="hybrid", description="Search mode used")
+    source: str = "kb_massime"
+
+
+# =============================================================================
 # Error Models
 # =============================================================================
 

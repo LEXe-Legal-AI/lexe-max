@@ -26,9 +26,14 @@ class Settings(BaseSettings):
 
     # Database
     database_url: str = "postgresql://lexe:lexe@localhost:5433/lexe"
+    kb_database_url: str | None = None  # Separate DB for KB massime (uses database_url if not set)
 
     # Redis/Valkey Cache
     redis_url: str = "redis://localhost:6380/0"
+
+    # LiteLLM (for embeddings)
+    litellm_api_base: str = "http://lexe-litellm:4000"
+    litellm_api_key: str = ""
 
     # Cache Settings
     cache_ttl_hours: int = 24

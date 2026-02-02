@@ -16,6 +16,42 @@ from lexe_api.tools.base import BaseLegalTool
 logger = structlog.get_logger(__name__)
 
 
+# Pre-defined codes with their official dates and numbers
+# These are required for correct URN generation
+CODICI_PREDEFINITI = {
+    "codice.civile": {
+        "date": "1942-03-16",
+        "number": "262",
+        "name": "R.D. 16 marzo 1942, n. 262",
+    },
+    "codice.penale": {
+        "date": "1930-10-19",
+        "number": "1398",
+        "name": "R.D. 19 ottobre 1930, n. 1398",
+    },
+    "codice.procedura.civile": {
+        "date": "1940-10-28",
+        "number": "1443",
+        "name": "R.D. 28 ottobre 1940, n. 1443",
+    },
+    "codice.procedura.penale": {
+        "date": "1988-09-22",
+        "number": "447",
+        "name": "D.P.R. 22 settembre 1988, n. 447",
+    },
+    "codice.navigazione": {
+        "date": "1942-03-30",
+        "number": "327",
+        "name": "R.D. 30 marzo 1942, n. 327",
+    },
+    "costituzione": {
+        "date": None,  # Constitution uses a different URN format
+        "number": None,
+        "name": "Costituzione della Repubblica Italiana",
+    },
+}
+
+
 class NormattivaTool(BaseLegalTool):
     """Tool for searching Italian legislation on Normattiva.it."""
 
@@ -48,6 +84,9 @@ class NormattivaTool(BaseLegalTool):
         """Build Normattiva URN from parameters.
 
         URN format: urn:nir:stato:legge:1990-08-07;241
+
+        For pre-defined codes (codice civile, codice penale, etc.),
+        the date and number are automatically inserted from CODICI_PREDEFINITI.
         """
         # Normalize act type
         act_map = {
@@ -62,9 +101,39 @@ class NormattivaTool(BaseLegalTool):
             "codice penale": "codice.penale",
             "cc": "codice.civile",
             "cp": "codice.penale",
+            "codice procedura civile": "codice.procedura.civile",
+            "cpc": "codice.procedura.civile",
+            "codice procedura penale": "codice.procedura.penale",
+            "cpp": "codice.procedura.penale",
+            "codice navigazione": "codice.navigazione",
         }
         norm_type = act_map.get(act_type.lower(), act_type.lower().replace(" ", "."))
 
+        # Check if this is a pre-defined code
+        if norm_type in CODICI_PREDEFINITI:
+            codice_info = CODICI_PREDEFINITI[norm_type]
+
+            # Special case for Constitution (no date/number)
+            if norm_type == "costituzione":
+                urn = f"urn:nir:stato:{norm_type}"
+            else:
+                # Use predefined date and number for codes
+                codice_date = codice_info["date"]
+                codice_number = codice_info["number"]
+                urn = f"urn:nir:stato:{norm_type}:{codice_date};{codice_number}"
+
+            if article:
+                urn += f"~art{article}"
+
+            logger.debug(
+                "Built URN for pre-defined code",
+                norm_type=norm_type,
+                codice_info=codice_info,
+                urn=urn,
+            )
+            return urn
+
+        # Standard URN building for laws, decrees, etc.
         urn = f"urn:nir:stato:{norm_type}"
 
         if date:
