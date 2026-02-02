@@ -1,43 +1,23 @@
-# LEXe API
+# LEXE-MAX
 
-Legal Tools API for Italian and European legislation search.
+Legal Tools API for LEXE Platform.
 
 ## Features
 
-- **Normattiva**: Italian legislation (leggi, decreti, codici)
-- **EUR-Lex**: European legislation (regolamenti, direttive)
-- **InfoLex**: Case law and commentary (Brocardi.it)
+- Normattiva integration
+- EUR-Lex integration  
+- Knowledge Base (massimari giurisprudenziali)
+- BM25 + Vector search
+- Apache AGE graph queries
 
-## Quick Start
+## Stack
+
+- FastAPI
+- PostgreSQL 17 + pgvector + Apache AGE + ParadeDB
+- LiteLLM gateway
+
+## Run
 
 ```bash
-# Install dependencies
-uv sync
-
-# Run development server
-uvicorn lexe_api.main:app --reload --port 8020
-
-# Run with Docker
-docker compose -f docker-compose.lexe.yml --env-file .env.lexe up -d
+docker compose up -d lexe-max
 ```
-
-## API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/tools/normattiva/search` | POST | Search Italian legislation |
-| `/api/v1/tools/eurlex/search` | POST | Search EU legislation |
-| `/api/v1/tools/infolex/search` | POST | Search case law |
-| `/health/status` | GET | Service health |
-
-## Architecture
-
-```
-lexe-api:8020      ← FastAPI service
-lexe-postgres:5433 ← Document storage
-lexe-valkey:6380   ← Cache
-```
-
-## License
-
-Proprietary - ITC Consulting SRL
