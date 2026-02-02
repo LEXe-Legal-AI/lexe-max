@@ -43,32 +43,35 @@ class Selectors:
     # =========================================================================
 
     class Brocardi:
-        """Selectors for brocardi.it."""
+        """Selectors for brocardi.it.
 
-        # Article content
-        ARTICLE_CONTAINER = ".articolo-container"
-        ARTICLE_TEXT = ".testo-articolo"
-        ARTICLE_RUBRICA = ".rubrica-articolo"
+        Updated 2026-02-02 to match actual HTML structure.
+        """
+
+        # Article content - actual Brocardi structure
+        ARTICLE_CONTAINER = ".content_articolo, #content_articolo"
+        ARTICLE_TEXT = ".corpoDelTesto.dispositivo, .corpoDelTesto"  # Contains the actual article text
+        ARTICLE_RUBRICA = "h1.titolocss, .titolo_articolo, h2.rubrica"
 
         # Brocardi commentary
-        SPIEGAZIONE = ".spiegazione-container"
-        RATIO = ".ratio-articolo"
+        SPIEGAZIONE = "#spiegazione, .spiegazione"  # Contains Brocardi explanation
+        RATIO = "#ratio, .ratio-articolo"
 
-        # Massime
-        MASSIME_CONTAINER = ".massime-container"
-        MASSIMA_ITEM = ".massima-item"
-        MASSIMA_AUTORITA = ".massima-autorita"
-        MASSIMA_DATA = ".massima-data"
-        MASSIMA_NUMERO = ".massima-numero"
-        MASSIMA_TESTO = ".massima-testo"
+        # Massime (jurisprudence)
+        MASSIME_CONTAINER = "#brocpiccgiu, #brocgiu, .massime-container"
+        MASSIMA_ITEM = ".massima, .giurisprudenza-item"
+        MASSIMA_AUTORITA = ".autorita, .provenienzaGiurisprudenza"
+        MASSIMA_DATA = ".data_massima, .dataGiurisprudenza"
+        MASSIMA_NUMERO = ".numero_massima, .numeroGiurisprudenza"
+        MASSIMA_TESTO = ".testo_massima, .testoGiurisprudenza, p"
 
         # Related content
-        RELAZIONI_CONTAINER = ".relazioni-container"
-        RELAZIONE_ITEM = ".relazione-item"
+        RELAZIONI_CONTAINER = "#relazioni, .relazioni-container"
+        RELAZIONE_ITEM = ".relazione, li a"
 
         # Footnotes
-        FOOTNOTES_CONTAINER = ".note-container"
-        FOOTNOTE_ITEM = ".nota-item"
+        FOOTNOTES_CONTAINER = "#note, .note-container"
+        FOOTNOTE_ITEM = ".nota, .note-item li"
 
     # =========================================================================
     # EUR-Lex Selectors (for fallback scraping)
