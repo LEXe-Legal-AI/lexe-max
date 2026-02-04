@@ -1,12 +1,22 @@
 [
   {
+    "model": "openai/text-embedding-3-small",
+    "provider": "OpenRouter",
+    "dims": 1536,
+    "recall_at_10": 0.95,
+    "mrr": 0.9199999999999999,
+    "avg_latency_ms": 30.372908621123344,
+    "throughput_per_sec": 32.92407758750288,
+    "errors": []
+  },
+  {
     "model": "multilingual-e5-large-instruct",
     "provider": "sentence-transformers",
     "dims": 1024,
     "recall_at_10": 0.9,
     "mrr": 0.825,
-    "avg_latency_ms": 50.32598370253438,
-    "throughput_per_sec": 19.870451135357357,
+    "avg_latency_ms": 51.21370999500005,
+    "throughput_per_sec": 19.52602145202191,
     "errors": []
   }
 ]
