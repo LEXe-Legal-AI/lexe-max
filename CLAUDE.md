@@ -294,6 +294,84 @@ kb.golden_queries (query_text, query_type, expected_massima_id)
 
 ---
 
+## KB Normativa (Altalex) — IN PROGRESS (2026-02-04)
+
+Knowledge Base per codici e leggi italiane da PDF Altalex.
+
+### Pipeline Architecture
+
+```
+PDF (Altalex 68 files)
+  → marker-pdf --disable_ocr --output_format json
+  → marker_chunker.py (group blocks into articles)
+  → PostgreSQL (kb.normativa_altalex extended)
+  → Embeddings (multilingual-e5-large-instruct, 1024 dims)
+  → Hybrid retrieval (Dense + FTS + Trigram + RRF)
+```
+
+### Chunking Results
+
+| Document | Articles | Valid | % |
+|----------|----------|-------|---|
+| GDPR | 98 | 98 | **100%** |
+| Codice Penale | 924 | 869 | **94%** |
+
+### Embedding Benchmark
+
+| Model | Recall@10 | MRR | Latency | Provider |
+|-------|-----------|-----|---------|----------|
+| multilingual-e5-large-instruct | **90%** | 0.825 | 50ms | sentence-transformers |
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `migrations/kb/012_normativa_altalex_v2.sql` | Schema extension for Altalex |
+| `src/lexe_api/kb/ingestion/marker_chunker.py` | JSON → Articles chunker |
+| `scripts/benchmark/mini_embedding_benchmark.py` | Embedding benchmark |
+
+### Schema Extension (v2)
+
+```sql
+-- New columns in kb.normativa_altalex
+articolo_num_norm INTEGER      -- Normalized number (2043 for "2043-bis")
+articolo_suffix TEXT           -- Suffix: bis, ter, quater, etc.
+articolo_sort_key TEXT         -- Sort key: 002043.bis
+global_key TEXT UNIQUE         -- Global key: altalex:cc:2043:bis
+testo_context TEXT             -- Text with ±200 char overlap
+commi JSONB                    -- Structured paragraphs
+riferimenti_parsed JSONB       -- Validated references
+riferimenti_raw TEXT[]         -- Raw references
+
+-- New tables
+kb.altalex_ingestion_logs      -- Ingestion tracking/quarantine
+kb.altalex_embeddings          -- Multi-dim embeddings (384-1536)
+kb.altalex_embedding_cache     -- Embedding cache
+```
+
+### Quick Commands
+
+```bash
+# Convert PDF to JSON (marker)
+marker_single "altalex pdf/file.pdf" --output_dir output --disable_ocr --output_format json
+
+# Test chunking on JSON
+python -m src.lexe_api.kb.ingestion.marker_chunker "output/file.json" CODICE
+
+# Run embedding benchmark
+python scripts/benchmark/mini_embedding_benchmark.py
+```
+
+### Status
+
+- [x] marker_chunker.py - Tested on GDPR (100%) and CP (94%)
+- [x] Migration 012 - Schema extension ready
+- [x] Embedding benchmark - e5-large selected (90% R@10)
+- [ ] Full pipeline integration
+- [ ] Batch 68 PDFs
+
+---
+
 ## Phases Status
 
 **Phase 1: Legal Tools** ✅ COMPLETE
@@ -332,6 +410,6 @@ When tools fail:
 
 ---
 *Created: 2026-01-13*
-*Updated: 2026-01-31*
-*Status: Phase 1-4 Complete | Citation Graph + Router*
+*Updated: 2026-02-04*
+*Status: Phase 1-4 Complete | KB Normativa in progress*
 *Repo: https://github.com/LEXe-Legal-AI/lexe-max*
