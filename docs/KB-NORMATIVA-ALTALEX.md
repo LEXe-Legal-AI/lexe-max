@@ -196,19 +196,58 @@ python -m src.lexe_api.kb.ingestion.marker_chunker "path/to/file.json" CODICE
 
 ---
 
-## Fasi Pendenti
+## Fasi Completate (Cont.)
 
-### FASE 4: Pipeline Integrata
-- [ ] Creare `altalex_pipeline.py` con staged processing
-- [ ] Integrare embedder con cache
-- [ ] UPSERT idempotente in DB
-- [ ] Quarantine per articoli invalidi
+### FASE 4: Pipeline Integrata ✅
 
-### FASE 5: Batch 68 PDF
-- [ ] Generare JSON marker per tutti i PDF
-- [ ] Validare chunking per ogni documento
-- [ ] Eseguire batch overnight
-- [ ] Verificare metriche finali
+**File:** `src/lexe_api/kb/ingestion/altalex_pipeline.py`
+
+Pipeline a 4 stadi:
+1. **Chunk** - marker_chunker.py (JSON → Articles)
+2. **Validate** - Validazione articoli (min/max text length)
+3. **Embed** - OpenRouter batch (NO FALLBACK!)
+4. **Store** - PostgreSQL UPSERT (da implementare)
+
+**File:** `src/lexe_api/kb/ingestion/openrouter_embedder.py`
+
+Client OpenRouter per text-embedding-3-small con:
+- Batch processing (50 articoli/batch)
+- Cache in-memory
+- Retry con backoff
+- **NO FALLBACK** - se OpenRouter non disponibile, pipeline si ferma
+
+---
+
+### FASE 5: Batch 68 PDF ✅
+
+**Data:** 2026-02-04
+
+**Risultati Finali:**
+
+| Metrica | Valore |
+|---------|--------|
+| **File processati** | 69 |
+| **Articoli totali** | 14,091 |
+| **Articoli embedded** | 13,354 |
+| **Quarantine** | 737 |
+| **Success rate** | **94.8%** |
+| **Tempo marker** | ~95 min |
+| **Tempo embedding** | ~10 min |
+| **Tempo totale** | ~105 min |
+
+**Top 5 documenti per articoli:**
+
+| Codice | Documento | Articoli | Embedded |
+|--------|-----------|----------|----------|
+| CC | Codice Civile | 3,542 | 2,987 |
+| CPP | Codice Procedura Penale | 1,237 | 1,236 |
+| CP | Codice Penale | 924 | 869 |
+| APPALTI | Codice Appalti | 476 | 474 |
+| CAP | Codice Assicurazioni | 417 | 417 |
+
+**Articoli in quarantine (737):**
+- 555 dal Codice Civile (articoli abrogati)
+- ~180 da altri codici (testo vuoto o troppo lungo)
 
 ---
 
