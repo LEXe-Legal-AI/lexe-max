@@ -34,6 +34,7 @@ from uuid import UUID, uuid4
 
 import structlog
 
+from .altalex_store import AltalexStore, StoreResult
 from .marker_chunker import ExtractedArticle, MarkerChunker
 from .openrouter_embedder import (
     BatchEmbeddingResult,
@@ -185,6 +186,7 @@ class AltalexPipeline:
         config: PipelineConfig | None = None,
         embedder: OpenRouterEmbedder | None = None,
         db_pool: Any | None = None,
+        store: AltalexStore | None = None,
     ):
         """
         Inizializza pipeline.
@@ -192,12 +194,21 @@ class AltalexPipeline:
         Args:
             config: Configurazione pipeline
             embedder: Embedder OpenRouter (creato se None)
-            db_pool: Pool connessioni DB (opzionale)
+            db_pool: Pool connessioni DB (opzionale, per creare store)
+            store: AltalexStore preconfigurato (priorità su db_pool)
         """
         self.config = config or PipelineConfig()
         self._embedder = embedder
         self._db_pool = db_pool
         self._chunker = MarkerChunker()
+
+        # Store: usa quello passato, o crea da db_pool
+        if store is not None:
+            self._store = store
+        elif db_pool is not None:
+            self._store = AltalexStore(db_pool)
+        else:
+            self._store = None
 
     async def _get_embedder(self) -> OpenRouterEmbedder:
         """Ottieni o crea embedder."""
@@ -384,6 +395,7 @@ class AltalexPipeline:
         records: list[ArticleRecord],
         codice: str,
         source_file: str,
+        include_valid: bool = False,
     ) -> tuple[list[ArticleRecord], UUID | None]:
         """
         Stage 4: Store in PostgreSQL con UPSERT.
@@ -392,39 +404,60 @@ class AltalexPipeline:
             records: Lista ArticleRecord con embeddings
             codice: Codice documento
             source_file: Path file sorgente
+            include_valid: Include VALID articles (without embeddings)
 
         Returns:
             (records aggiornati, document_id)
         """
-        if self._db_pool is None:
-            logger.warning("No DB pool configured, skipping store stage")
+        if self._store is None:
+            logger.warning("No store configured, skipping store stage")
             return records, None
 
-        embedded_records = [r for r in records if r.status == ArticleStatus.EMBEDDED]
+        # Get records to store - EMBEDDED, or VALID if include_valid=True
+        statuses_to_store = {ArticleStatus.EMBEDDED}
+        if include_valid:
+            statuses_to_store.add(ArticleStatus.VALID)
 
-        if not embedded_records:
-            logger.warning("No embedded articles to store")
+        records_to_store = [r for r in records if r.status in statuses_to_store]
+
+        if not records_to_store:
+            logger.warning("No articles to store")
             return records, None
 
-        logger.info("Starting store stage", total=len(embedded_records))
+        logger.info("Starting store stage", total=len(records_to_store))
 
-        # TODO: Implementare UPSERT effettivo quando DB pool disponibile
-        # Per ora, marca come stored per test
-        document_id = uuid4()
-        stored_count = 0
+        # Prepare articles with embeddings for batch store
+        articles_with_embeddings = [
+            (record.article, record.embedding)
+            for record in records_to_store
+        ]
 
-        for record in embedded_records:
-            # Simula store
-            record.db_id = uuid4()
-            record.status = ArticleStatus.STORED
-            stored_count += 1
+        # Batch UPSERT
+        result = await self._store.store_batch(
+            articles=articles_with_embeddings,
+            codice=codice,
+            embedding_model="openai/text-embedding-3-small",
+            source_file=source_file,
+            batch_size=self.config.db_batch_size,
+        )
+
+        # Update records with stored IDs
+        stored_map = {sa.articolo: sa for sa in result.articles}
+        for record in records_to_store:
+            stored = stored_map.get(record.article.articolo_num)
+            if stored:
+                record.db_id = stored.id
+                record.status = ArticleStatus.STORED
 
         logger.info(
             "Store stage complete",
-            stored=stored_count,
-            document_id=str(document_id),
+            inserted=result.inserted,
+            updated=result.updated,
+            failed=result.failed,
         )
 
+        # Return first stored ID as document reference
+        document_id = result.articles[0].id if result.articles else None
         return records, document_id
 
     async def _quarantine_stage(
@@ -458,10 +491,25 @@ class AltalexPipeline:
             codice=codice,
         )
 
-        # TODO: Implementare salvataggio in kb.altalex_ingestion_logs
-        # Per ora, solo log
         for record in quarantine_records:
             record.status = ArticleStatus.QUARANTINE
+
+            # Log to database if store available
+            if self._store is not None:
+                await self._store.log_ingestion(
+                    source_file=source_file,
+                    codice=codice,
+                    articolo=record.article.articolo_num,
+                    stage="validate",
+                    status="quarantine",
+                    message="; ".join(record.errors) if record.errors else None,
+                    details={
+                        "warnings": record.warnings,
+                        "testo_length": len(record.article.testo or ""),
+                        "rubrica": record.article.rubrica,
+                    },
+                )
+
             logger.debug(
                 "Quarantine article",
                 articolo=record.article.articolo_num,
@@ -553,12 +601,13 @@ class AltalexPipeline:
             # ============================================================
             # STAGE 4: STORAGE
             # ============================================================
-            if not skip_store and self._db_pool:
+            if not skip_store and self._store is not None:
                 current_stage = PipelineStage.STORE
                 store_start = time.time()
 
                 records, document_id = await self._store_stage(
-                    records, codice, str(json_path)
+                    records, codice, str(json_path),
+                    include_valid=skip_embed,  # Store VALID articles if embed was skipped
                 )
                 stats.stored_articles = sum(
                     1 for r in records if r.status == ArticleStatus.STORED
@@ -615,6 +664,33 @@ class AltalexPipeline:
         )
 
         return result
+
+
+async def create_pipeline_with_db(
+    config: PipelineConfig | None = None,
+) -> AltalexPipeline:
+    """
+    Create pipeline con connessione DB dalla Knowledge Base.
+
+    Args:
+        config: Configurazione pipeline
+
+    Returns:
+        AltalexPipeline con store configurato
+
+    Raises:
+        Exception: Se connessione DB fallisce
+    """
+    from ...database import get_kb_pool
+
+    pool = await get_kb_pool()
+    store = AltalexStore(pool)
+
+    return AltalexPipeline(
+        config=config,
+        store=store,
+        db_pool=pool,
+    )
 
 
 async def run_single(
