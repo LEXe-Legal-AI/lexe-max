@@ -1,7 +1,7 @@
 # QA Protocol - Local Test Status
 
 **Data:** 2026-01-29 (updated)
-**Database:** lexe-kb (localhost:5434)
+**Database:** lexe-max (localhost:5436)
 **PDFs:** 63 in C:\PROJECTS\lexe-genesis\data\raccolta
 
 ---

@@ -24,22 +24,22 @@
 | Componente    | Container    | Stato         | Note          |
 | ------------- | ------------ | ------------- | ------------- |
 | Apache AGE    | lexe-postgres | ✅ Disponibile | Cypher su PG  |
-| pgvector      | lexe-kb      | ✅ Attivo      | HNSW 1536dim  |
+| pgvector      | lexe-max      | ✅ Attivo      | HNSW 1536dim  |
 | Grafana       | lexe-grafana  | ✅ Deployed    | Dashboard     |
-| PostgreSQL 17 | lexe-kb      | ✅ Attivo      | Needs AGE ext |
+| PostgreSQL 17 | lexe-max      | ✅ Attivo      | Needs AGE ext |
 
-**Decisione:** Usare lexe-kb con AGE extension (non container separato)
+**Decisione:** Usare lexe-max con AGE extension (non container separato)
 
 ---
 
 ## Fase 0: Setup AGE Extension
 
-### 0.1 Aggiungere AGE a lexe-kb
+### 0.1 Aggiungere AGE a lexe-max
 
 **File:** `docker-compose.kb.yml`
 
 ```yaml
-lexe-kb:
+lexe-max:
   image: apache/age:PG17_latest  # Cambia da postgres:17
   # ... rest config invariato
 ```

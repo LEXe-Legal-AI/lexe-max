@@ -18,7 +18,7 @@ Assicurati che Docker Desktop sia in esecuzione.
 
 ```bash
 cd lexe-api
-docker build -f Dockerfile.kb -t lexe-kb:latest .
+docker build -f Dockerfile.kb -t lexe-max:latest .
 ```
 
 ### 3. Avvia il database
@@ -35,13 +35,13 @@ LEXE_KB_PASSWORD=your_secure_password docker compose -f docker-compose.kb.yml up
 
 ```bash
 # Check container running
-docker ps | grep lexe-kb
+docker ps | grep lexe-max
 
 # Check logs
-docker logs lexe-kb
+docker logs lexe-max
 
 # Connect e test
-docker exec -it lexe-kb psql -U lexe_kb -d lexe_kb -c "SELECT extname, extversion FROM pg_extension;"
+docker exec -it lexe-max psql -U lexe_max -d lexe_max -c "SELECT extname, extversion FROM pg_extension;"
 ```
 
 ## Connessione
@@ -50,16 +50,16 @@ docker exec -it lexe-kb psql -U lexe_kb -d lexe_kb -c "SELECT extname, extversio
 |-----------|--------|
 | Host | localhost |
 | Port | 5434 |
-| Database | lexe_kb |
-| User | lexe_kb |
+| Database | lexe_max |
+| User | lexe_max |
 | Password | (vedi LEXE_KB_PASSWORD) |
 
 ```bash
 # psql
-psql -h localhost -p 5434 -U lexe_kb -d lexe_kb
+psql -h localhost -p 5434 -U lexe_max -d lexe_max
 
 # Connection string
-postgresql://lexe_kb:password@localhost:5434/lexe_kb
+postgresql://lexe_max:password@localhost:5436/lexe_max
 ```
 
 ## Schema

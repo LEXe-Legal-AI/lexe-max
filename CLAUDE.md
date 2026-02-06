@@ -176,7 +176,7 @@ Knowledge Base per i massimari della Corte di Cassazione.
 
 | Container | Porta | Descrizione |
 |-----------|-------|-------------|
-| lexe-kb | 5434 | PostgreSQL 17 + pgvector 0.7.4 |
+| lexe-max | 5434 | PostgreSQL 17 + pgvector 0.7.4 |
 
 ### Retrieval Architecture
 
@@ -294,81 +294,195 @@ kb.golden_queries (query_text, query_type, expected_massima_id)
 
 ---
 
-## KB Normativa (Altalex) — IN PROGRESS (2026-02-04)
+## KB Normativa (Altalex) — BATCH READY (2026-02-06)
 
 Knowledge Base per codici e leggi italiane da PDF Altalex.
 
-### Pipeline Architecture
+### Pipeline Architecture (4 Fonti)
 
 ```
-PDF (Altalex 68 files)
-  → marker-pdf --disable_ocr --output_format json
-  → marker_chunker.py (group blocks into articles)
-  → PostgreSQL (kb.normativa_altalex extended)
-  → Embeddings (multilingual-e5-large-instruct, 1024 dims)
-  → Hybrid retrieval (Dense + FTS + Trigram + RRF)
+┌─────────────────────────────────────────────────────────────────┐
+│                    PDF ALTALEX (primaria)                        │
+│           Docling + LLM extraction → JSON                        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              CONFRONTO OFFLINE (parallelo)                       │
+│   ┌─────────────────┐         ┌─────────────────┐               │
+│   │ STUDIO CATALDI  │         │ BROCARDI LOCAL  │               │
+│   │   (24 codici)   │         │ (CC,CP,CPC,CPP) │               │
+│   └────────┬────────┘         └────────┬────────┘               │
+│            └──────────┬────────────────┘                        │
+│                       ▼                                          │
+│              SIMILARITY CHECK                                    │
+│         ┌─────────────────────────┐                             │
+│         │ sim >= 0.70 → CONFIRM   │                             │
+│         │ 0.40 <= sim < 0.70 →    │                             │
+│         │    PARTIAL (usa migliore)│                             │
+│         │ sim < 0.40 → CONFLICT   │─────┐                       │
+│         └─────────────────────────┘     │                       │
+└─────────────────────────────────────────│───────────────────────┘
+                                          │
+                                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    FALLBACK ONLINE                               │
+│   ┌─────────────────┐         ┌─────────────────┐               │
+│   │ BROCARDI ONLINE │         │   NORMATTIVA    │               │
+│   │  (rate limited) │         │  (API ufficiale)│               │
+│   └─────────────────┘         └─────────────────┘               │
+│         Solo per: CONFLICT, EMPTY, watchlist critica            │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### Chunking Results
+### Article Classification (2 Assi Indipendenti)
 
-| Document | Articles | Valid | % |
-|----------|----------|-------|---|
-| GDPR | 98 | 98 | **100%** |
-| Codice Penale | 924 | 869 | **94%** |
+**ArticleIdentityClass** (per ordinamento, range, dedup):
+| Classe | Descrizione | Esempio |
+|--------|-------------|---------|
+| `BASE` | Articolo numerico puro | 2043, 1, 360 |
+| `SUFFIX` | Con suffisso latino | 2635-ter, 360-bis |
+| `SPECIAL` | Fuori schema | disp. transitorie, allegati |
 
-### Embedding Benchmark
+**ArticleQualityClass** (per validi/deboli/enrichment):
+| Classe | Criteri | Mappatura |
+|--------|---------|-----------|
+| `VALID_STRONG` | Testo presente, struttura coerente, >150 chars | validi |
+| `VALID_SHORT` | Corto ma semanticamente pieno, definizioni | validi |
+| `WEAK` | Incompleto, segnali taglio, rumore | deboli |
+| `EMPTY` | Vuoto, "abrogato", "omissis" | deboli |
+| `INVALID` | Estrazione rotta, heading catturato | invalidi |
 
-| Model | Recall@10 | MRR | Latency | Provider |
-|-------|-----------|-----|---------|----------|
-| multilingual-e5-large-instruct | **90%** | 0.825 | 50ms | sentence-transformers |
+**Suffissi latini supportati:**
+```
+bis, ter, quater, quinquies, sexies, septies, octies,
+novies, nonies, decies, undecies, duodecies, terdecies,
+quaterdecies, quinquiesdecies, sexiesdecies, septiesdecies, octiesdecies
+```
 
-### Key Files
+### Tabella Batch Standard
 
-| File | Purpose |
-|------|---------|
-| `migrations/kb/012_normativa_altalex_v2.sql` | Schema extension for Altalex |
-| `src/lexe_api/kb/ingestion/marker_chunker.py` | JSON → Articles chunker |
-| `scripts/benchmark/mini_embedding_benchmark.py` | Embedding benchmark |
+| Colonna | Descrizione |
+|---------|-------------|
+| `documento` | Nome/codice documento |
+| `dal` | Primo articolo (sort_key) |
+| `al` | Ultimo articolo (sort_key) |
+| `totale` | Articoli unici estratti (inclusi SUFFIX) |
+| `validi` | VALID_STRONG + VALID_SHORT |
+| `deboli` | WEAK + EMPTY |
+| `invalidi` | INVALID (contati a parte) |
+| `sospetti` | Articoli con warning critici |
+| `coverage_pct` | % copertura vs expected set |
+
+### Risultati Gold (2 campioni)
+
+| Documento | Articoli | Validi | Deboli | Invalidi | Sospetti |
+|-----------|----------|--------|--------|----------|----------|
+| Codice Civile | 3,208 | 3,201 | 3 | 4 | 0 |
+| Codice Crisi Impresa | 415 | 414 | 1 | 0 | 0 |
+
+### Enrichment Policy
+
+**Trigger enrichment quando:**
+1. Articolo `WEAK` o `EMPTY`
+2. Articolo in **watchlist** (226 articoli chiave: CC, CP, CCI, TUB, TUF)
+3. Mismatch hash tra fonti
+4. Buchi di coverage (articoli attesi non trovati)
+
+**Fonti offline disponibili:**
+| Fonte | Codici | Path |
+|-------|--------|------|
+| Studio Cataldi | TUB, TUF, TUIR, TUE, TUEL, TUI, TUSL, +17 altri | `C:/Mie pagine Web/giur e cod/www.studiocataldi.it/normativa` |
+| Brocardi Local | CC (in download), CP, CPC, CPP | `C:/Mie pagine Web/broc-civ/www.brocardi.it` |
+
+### Quick Commands - BATCH ESTRAZIONE
+
+```bash
+# ══════════════════════════════════════════════════════════════════
+# STEP 1: Estrazione PDF con Docling + LLM
+# ══════════════════════════════════════════════════════════════════
+
+# Singolo documento con OCR e GPU
+cd C:/PROJECTS/lexe-genesis/lexe-max
+uv run python scripts/llm_assisted_extraction.py \
+  "C:/PROJECTS/lexe-genesis/altalex pdf/Costituzione e 4 codici/codice-civile-30-dicembre-2025-DEF pdf.pdf" \
+  --codice CC --ocr
+
+# Batch tutti i PDF
+uv run python scripts/llm_assisted_extraction.py --batch --ocr
+
+# ══════════════════════════════════════════════════════════════════
+# STEP 2: Quality Report
+# ══════════════════════════════════════════════════════════════════
+
+# Genera report qualità per tutti i JSON estratti
+uv run python scripts/generate_quality_report.py
+
+# Output: altalex pdf/lexe_quality_report.json e .csv
+
+# ══════════════════════════════════════════════════════════════════
+# STEP 3: Ingestion Pipeline (4 fonti)
+# ══════════════════════════════════════════════════════════════════
+
+# Test singolo documento (dry-run)
+uv run python scripts/ingestion_pipeline.py --doc CC --dry-run --no-online
+
+# Processa con enrichment offline
+uv run python scripts/ingestion_pipeline.py --doc CC
+
+# Batch tutti (quando fonti offline complete)
+uv run python scripts/ingestion_pipeline.py --all
+
+# ══════════════════════════════════════════════════════════════════
+# STEP 4: Test Parser Offline
+# ══════════════════════════════════════════════════════════════════
+
+# Test Studio Cataldi parser
+uv run python scripts/studio_cataldi_parser.py
+
+# Test Brocardi parser
+uv run python scripts/brocardi_parser.py
+```
+
+### Key Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/llm_assisted_extraction.py` | PDF → JSON con Docling + LLM |
+| `scripts/article_classification.py` | Classification v2 (2 assi) |
+| `scripts/generate_quality_report.py` | Quality report batch |
+| `scripts/ingestion_pipeline.py` | Pipeline 4 fonti |
+| `scripts/studio_cataldi_parser.py` | Parser HTML Studio Cataldi |
+| `scripts/brocardi_parser.py` | Parser HTML Brocardi offline |
+| `scripts/enrichment_policy.py` | Policy e trigger enrichment |
 
 ### Schema Extension (v2)
 
 ```sql
--- New columns in kb.normativa_altalex
-articolo_num_norm INTEGER      -- Normalized number (2043 for "2043-bis")
-articolo_suffix TEXT           -- Suffix: bis, ter, quater, etc.
-articolo_sort_key TEXT         -- Sort key: 002043.bis
-global_key TEXT UNIQUE         -- Global key: altalex:cc:2043:bis
-testo_context TEXT             -- Text with ±200 char overlap
-commi JSONB                    -- Structured paragraphs
-riferimenti_parsed JSONB       -- Validated references
-riferimenti_raw TEXT[]         -- Raw references
+-- Columns per normalizzazione articolo
+articolo_num_norm INTEGER      -- 2043 per "2043-bis"
+articolo_suffix TEXT           -- "bis", "ter", "quater"...
+articolo_sort_key TEXT         -- "002043.02" per sort naturale
+global_key TEXT UNIQUE         -- "altalex:cc:2043:bis"
 
--- New tables
-kb.altalex_ingestion_logs      -- Ingestion tracking/quarantine
-kb.altalex_embeddings          -- Multi-dim embeddings (384-1536)
-kb.altalex_embedding_cache     -- Embedding cache
+-- Provenance e enrichment
+testo_context TEXT             -- Overlap ±200 chars
+canonical_source VARCHAR(50)   -- 'pdf_altalex'
+mirror_source VARCHAR(50)      -- 'brocardi' | 'studio_cataldi'
+validation_status VARCHAR(20)  -- 'pending', 'verified', 'content_diff'
 ```
 
-### Quick Commands
+### Status Batch
 
-```bash
-# Convert PDF to JSON (marker)
-marker_single "altalex pdf/file.pdf" --output_dir output --disable_ocr --output_format json
-
-# Test chunking on JSON
-python -m src.lexe_api.kb.ingestion.marker_chunker "output/file.json" CODICE
-
-# Run embedding benchmark
-python scripts/benchmark/mini_embedding_benchmark.py
-```
-
-### Status
-
-- [x] marker_chunker.py - Tested on GDPR (100%) and CP (94%)
-- [x] Migration 012 - Schema extension ready
-- [x] Embedding benchmark - e5-large selected (90% R@10)
-- [ ] Full pipeline integration
-- [ ] Batch 68 PDFs
+- [x] Docling extraction with OCR+GPU - **Tested CC, CCI**
+- [x] Article classification v2 (2 assi) - **Ready**
+- [x] Quality report generator - **Ready**
+- [x] Studio Cataldi parser - **280 articoli TUB testati**
+- [x] Brocardi parser - **384 articoli CC (download in corso)**
+- [x] Ingestion pipeline 4 fonti - **Ready**
+- [ ] Brocardi download completo - **In progress**
+- [ ] Batch 69 PDF - **Next**
+- [ ] Fallback online - **Pending**
 
 ---
 
@@ -394,10 +508,29 @@ python scripts/benchmark/mini_embedding_benchmark.py
 - Query router with direct lookup
 - Guardrail v3.2.3 for data quality
 
-**Phase 5: Production API** 🔜 NEXT
+**Phase 5: KB Normativa** 🔄 IN PROGRESS
+- [x] PDF extraction pipeline (Docling + LLM)
+- [x] Article classification v2 (2 assi: identity + quality)
+- [x] 4-source ingestion architecture
+- [x] Offline parsers (Studio Cataldi, Brocardi)
+- [ ] Batch 69 PDF extraction
+- [ ] Embeddings generation
+- [ ] Integration with retrieval layer
+
+**Phase 6: Production API** 🔜 NEXT
 - FastAPI endpoints for KB search
 - Integration with LEXE TRIDENT
 - Streaming/SSE support
+
+---
+
+## Documentation
+
+| File | Descrizione |
+|------|-------------|
+| `docs/SCHEMA_KB_OVERVIEW.md` | Schema PostgreSQL+pgvector completo |
+| `docs/KB-HANDOFF.md` | Handoff KB Massimari |
+| `docs/ARTICLE_EXTRACTION_STRATEGIES.md` | Strategie estrazione articoli |
 
 ## Alerting
 

@@ -16,7 +16,7 @@ Costruire un sistema di retrieval ibrido per la giurisprudenza italiana (massima
 
 ### Fase 1 — Setup e Estrazione (27 gennaio, mattina)
 
-**Ambiente:** locale, container `lexe-kb` (PostgreSQL 17.7, porta 5434)
+**Ambiente:** locale, container `lexe-max` (PostgreSQL 17.7, porta 5434)
 
 **Test estrazione PDF:** confronto tra due metodi su 3 PDF campione.
 
@@ -158,8 +158,8 @@ Risultato: solo 9 documenti e 541 massime.
 
 | Piano (Architecture doc)                    | Staging reale                                |
 | ------------------------------------------- | -------------------------------------------- |
-| Container dedicato `lexe-kb` porta 5434     | Postgres condiviso `lexe-postgres` porta 5432 |
-| User `lexe_kb`, DB `lexe_kb`                | User `lexe`, DB `lexe`, schema `kb`          |
+| Container dedicato `lexe-max` porta 5434     | Postgres condiviso `lexe-postgres` porta 5432 |
+| User `lexe_max`, DB `lexe_max`                | User `lexe`, DB `lexe`, schema `kb`          |
 | pg_search (ParadeDB) per BM25               | **NON disponibile**, usa tsvector nativo     |
 | Tabella singola `kb.embeddings` multi-model | Tabelle separate `kb.emb_mistral`            |
 

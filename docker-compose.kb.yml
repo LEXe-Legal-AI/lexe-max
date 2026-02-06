@@ -2,23 +2,23 @@
 # PostgreSQL 17 con pgvector + AGE + pg_search + pg_trgm
 
 services:
-  lexe-kb:
+  lexe-max:
     build:
       context: .
       dockerfile: Dockerfile.kb
-    container_name: lexe-kb
-    hostname: lexe-kb
+    container_name: lexe-max
+    hostname: lexe-max
     restart: unless-stopped
     ports:
-      - "5434:5432"
+      - "5436:5432"
     environment:
-      POSTGRES_USER: ${LEXE_KB_USER:-lexe_kb}
-      POSTGRES_PASSWORD: ${LEXE_KB_PASSWORD:-lexe_kb_dev_password}
-      POSTGRES_DB: ${LEXE_KB_DB:-lexe_kb}
+      POSTGRES_USER: ${LEXE_MAX_USER:-lexe_max}
+      POSTGRES_PASSWORD: ${LEXE_MAX_PASSWORD:-lexe_max_dev_password}
+      POSTGRES_DB: ${LEXE_MAX_DB:-lexe_max}
       # Tuning per vector search
       POSTGRES_INITDB_ARGS: "--encoding=UTF8"
     volumes:
-      - lexe_kb_data:/var/lib/postgresql/data
+      - lexe_max_data:/var/lib/postgresql/data
       # Mount migrazioni per development
       - ./migrations/kb:/docker-entrypoint-initdb.d:ro
     command: >
@@ -37,23 +37,19 @@ services:
       -c wal_buffers=16MB
       -c checkpoint_completion_target=0.9
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-lexe_kb} -d $${POSTGRES_DB:-lexe_kb}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-lexe_max} -d $${POSTGRES_DB:-lexe_max}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
     networks:
-      - lexe-kb-network
+      - lexe-max-network
 
 volumes:
-  lexe_kb_data:
-    name: lexe_kb_data
+  lexe_max_data:
+    name: lexe_max_data
 
 networks:
-  lexe-kb-network:
-    name: lexe-kb-network
+  lexe-max-network:
+    name: lexe-max-network
     driver: bridge
-  # Per connessione con lexe-platform (opzionale)
-  # lexe-platform-network:
-  #   external: true
-  #   name: lexe-platform-network
