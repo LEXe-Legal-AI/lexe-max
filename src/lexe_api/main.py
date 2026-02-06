@@ -1,6 +1,6 @@
-"""LEXe API - Legal Tools Service.
+"""LEXe Max - Knowledge Base Service.
 
-FastAPI application for Italian and European legal document search.
+FastAPI application for legal knowledge base (massimari, normativa).
 """
 
 # Configure structured logging
@@ -13,7 +13,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from lexe_api import __version__
 from lexe_api.api.health import router as health_router
-from lexe_api.api.tools import router as tools_router
 from lexe_api.cache import cache
 from lexe_api.config import settings
 from lexe_api.database import db
@@ -50,7 +49,7 @@ async def lifespan(app: FastAPI):
     """Application lifespan events."""
     # Startup
     logger.info(
-        "Starting LEXe API",
+        "Starting LEXe Max KB",
         version=__version__,
         host=settings.api_host,
         port=settings.api_port,
@@ -67,25 +66,24 @@ async def lifespan(app: FastAPI):
     yield
 
     # Shutdown
-    logger.info("Shutting down LEXe API")
+    logger.info("Shutting down LEXe Max KB")
     await cache.disconnect()
     await db.disconnect()
 
 
 # Create FastAPI app
 app = FastAPI(
-    title="LEXe API",
+    title="LEXe Max - Knowledge Base",
     description=(
-        "Legal Tools Service for Italian and European legislation.\n\n"
-        "## Tools\n"
-        "- **Normattiva**: Italian legislation (leggi, decreti, codici)\n"
-        "- **EUR-Lex**: European legislation (regolamenti, direttive)\n"
-        "- **InfoLex**: Case law and commentary (Brocardi.it)\n\n"
+        "Legal Knowledge Base Service.\n\n"
         "## Features\n"
-        "- Vigenza verification\n"
-        "- Cache-first lookup with database persistence\n"
-        "- Circuit breaker for external source resilience\n"
-        "- Health monitoring and alerting"
+        "- **Massimari**: Cassazione case law summaries (38K+ massime)\n"
+        "- **Normativa**: Italian legislation from Altalex PDFs\n"
+        "- **Hybrid Search**: Dense + Sparse + RRF fusion\n"
+        "- **Citation Graph**: Cross-reference navigation\n"
+        "- **Norm Graph**: Article citation lookup\n\n"
+        "## Note\n"
+        "Legal tools (normattiva, eurlex, infolex) are served by lexe-tools-it:8021"
     ),
     version=__version__,
     lifespan=lifespan,
@@ -104,30 +102,18 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health_router)
-app.include_router(tools_router)
 
 
 @app.get("/")
 async def root():
     """Root endpoint with API info."""
     return {
-        "name": "LEXe API",
+        "name": "LEXe Max - Knowledge Base",
         "version": __version__,
-        "description": "Legal Tools Service",
+        "description": "Legal Knowledge Base Service",
         "docs": "/docs",
         "health": "/health/status",
-        "tools": {
-            "normattiva": {
-                "search": "POST /api/v1/tools/normattiva/search",
-                "vigenza": "POST /api/v1/tools/normattiva/vigenza",
-            },
-            "eurlex": {
-                "search": "POST /api/v1/tools/eurlex/search",
-            },
-            "infolex": {
-                "search": "POST /api/v1/tools/infolex/search",
-            },
-        },
+        "note": "Legal tools served by lexe-tools-it:8021",
     }
 
 
