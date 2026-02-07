@@ -16,9 +16,39 @@ LEXe Legal Tools API - Separate service for Italian and European legal document 
 ```
 LEXe Services (completely separate from legacy)
 ├── lexe-api:8020      ← FastAPI service with legal tools
-├── lexe-postgres:5433 ← Document storage (separate from legacy)
+├── lexe-max:5436      ← KB Legal database (normativa, embeddings)
+├── lexe-postgres:5435 ← Sistema database (Logto, core)
 └── lexe-valkey:6380   ← Cache (separate from legacy)
 ```
+
+## ⚠️ DATABASE - IMPORTANTE!
+
+| Container | Porta | Scopo | User/DB |
+|-----------|-------|-------|---------|
+| **lexe-max** | 5436 | **KB LEGAL** (usa questo!) | lexe_max/lexe_max |
+| lexe-postgres | 5435 | Sistema (Logto, core) | lexe/lexe |
+
+**REGOLA:** Per KB Legal (normativa, massime, embeddings) → **lexe-max:5436**
+
+```bash
+# STAGING - KB queries
+ssh -i ~/.ssh/id_stage_new root@91.99.229.111
+docker exec lexe-max psql -U lexe_max -d lexe_max -c "SELECT * FROM kb.normativa LIMIT 5;"
+
+# LOCALE - KB queries
+docker exec lexe-max psql -U lexe_kb -d lexe_kb -c "SELECT * FROM kb.normativa LIMIT 5;"
+```
+
+## KB Database Content (lexe-max)
+
+| Tabella | Staging | Descrizione |
+|---------|---------|-------------|
+| kb.work | 69 | Codici/leggi (CC, CP, CPC, CPP, COST, TUB...) |
+| kb.normativa | 6,335 | Articoli (da Brocardi) |
+| kb.normativa_chunk | 10,246 | Chunks per retrieval |
+| kb.normativa_chunk_embeddings | ~3,300 | Embeddings (text-embedding-3-small) |
+| kb.annotation | 13,281 | Note Brocardi |
+| kb.annotation_embeddings | 13,180 | Embeddings annotations |
 
 ## Commands
 ```bash
