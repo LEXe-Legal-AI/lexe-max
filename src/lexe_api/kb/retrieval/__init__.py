@@ -35,8 +35,14 @@ from .hybrid import (
 )
 from .reranker import (
     BGEReranker,
+    CrossEncoderReranker,
+    NormativaRerankedResult,
     RerankedResult,
+    RerankerConfig,
+    RerankerModel,
     calculate_rerank_lift,
+    get_reranker,
+    rerank_normativa_chunks,
     rerank_results,
 )
 from .sparse import (
@@ -108,9 +114,15 @@ __all__ = [
     "calculate_precision_at_k",
     # reranker
     "BGEReranker",
+    "CrossEncoderReranker",
+    "NormativaRerankedResult",
     "RerankedResult",
-    "rerank_results",
+    "RerankerConfig",
+    "RerankerModel",
     "calculate_rerank_lift",
+    "get_reranker",
+    "rerank_normativa_chunks",
+    "rerank_results",
     # graph
     "GraphNode",
     "GraphEdge",
