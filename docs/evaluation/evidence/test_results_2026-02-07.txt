@@ -1,0 +1,170 @@
+# LEXE KB Normativa - Hybrid Search Test Results
+# Date: 2026-02-07 18:00 UTC
+# Environment: Staging (lexe-max:5436)
+# Model: text-embedding-3-small (1536 dims)
+
+================================================================================
+TEST 1: Criminal Procedure Query
+================================================================================
+
+Query: sequestro preventivo beni
+Generating embedding...
+===================================================================================================================
+Code  Art        #  Source RRF     Dense  Sparse  Preview
+-------------------------------------------------------------------------------------------------------------------
+CPP   104-bis    0  BOTH   0.0293  0.606  0.0048  - [ ] 1-quinquies. Nel processo di cognizione devono es
+CPP   104-bis    3  BOTH   0.0273  0.577  0.0100  a continuità produttiva, il giudice dispone la prosecuz
+CPC   670        0  DENSE  0.0164  0.635  0.0000  ## Il giudice può autorizzare il sequestro giudiziario:
+CPP   104-bis    4  SPARSE 0.0161  0.000  0.0100  asi in cui il sequestro preventivo o la confisca abbian
+CPC   679        0  DENSE  0.0161  0.634  0.0000  Il sequestro conservativo sugli immobili si esegue con
+CPP   104-bis    1  SPARSE 0.0159  0.000  0.0070  i imprese ammesse all'amministrazione straordinaria di
+CPP   319        0  DENSE  0.0159  0.626  0.0000  - [x] 1. Se l'imputato o il responsabile civile offre c
+CPP   183-quater 1  DENSE  0.0156  0.623  0.0000  utorità giudiziaria competente ad amministrare i beni s
+CPC   686        0  DENSE  0.0154  0.620  0.0000  Il sequestro conservativo si converte in pignoramento a
+CP    189        1  DENSE  0.0152  0.615  0.0000  anzie delle obbligazioni per le quali è ammessa l'ipote
+CPC   671        0  DENSE  0.0149  0.613  0.0000  ## Il giudice, su istanza del creditore che ha fondato
+CPP   255        0  DENSE  0.0147  0.613  0.0000  1. L'autorità giudiziaria può procedere al sequestro pr
+CPC   685        0  DENSE  0.0145  0.612  0.0000  ## In caso di pericolo di deterioramento delle cose che
+CPP   321        0  DENSE  0.0143  0.610  0.0000  - [x] 1. Quando vi è pericolo che la libera disponibili
+CPP   264        1  DENSE  0.0141  0.609  0.0000  comma 1 o immediatamente dopo il sequestro, se le cose
+
+ANALYSIS:
+- Cross-code retrieval: CPP (7), CPC (5), CP (1)
+- Top result: CPP 104-bis (sequestro preventivo) - CORRECT
+- BOTH source: 2 results (highest RRF scores)
+- DENSE only: 10 results
+- SPARSE only: 3 results
+
+================================================================================
+TEST 2: Constitutional Law Query
+================================================================================
+
+Query: diritto di voto
+Generating embedding...
+===================================================================================================================
+Code  Art        #  Source RRF     Dense  Sparse  Preview
+-------------------------------------------------------------------------------------------------------------------
+CC    2351       0  BOTH   0.0320  0.543  0.4333  Ogni azione attribuisce il diritto di voto.  Salvo quan
+COST  48         0  BOTH   0.0318  0.637  0.1085  Titolo IV - Rapporti politici  Sono elettori tutti i ci
+CC    2370       1  BOTH   0.0300  0.595  0.0534  l voto per corrispondenza o in via elettronica. Chi esp
+CC    2538       0  BOTH   0.0290  0.494  0.1021  Nelle assemblee hanno diritto di voto coloro che risult
+CC    2543       0  BOTH   0.0286  0.506  0.0534  La nomina del collegio sindacale è obbligatoria nei cas
+CC    2352       0  BOTH   0.0282  0.470  0.1153  Nel caso di pegno o usufrutto sulle azioni, il diritto
+CC    2351       1  BOTH   0.0279  0.523  0.0500  strumenti finanziari di cui agli articoli 2346, sesto c
+CC    2370       0  BOTH   0.0275  0.568  0.0500  coloro ai quali spetta il diritto di voto.  Lo statuto
+CC    2372       0  BOTH   0.0266  0.513  0.0500  ai nell'assemblea  spetta il  diritto di  voto possono
+CC    2368       1  BOTH   0.0257  0.441  0.1615  ci Altalex dall'art.  dall'art.  1,  1, comma 1, lett.
+CC    1550       0  BOTH   0.0247  0.502  0.0500  I diritti accessori e gli obblighi inerenti ai titoli d
+COST  75         0  BOTH   0.0239  0.501  0.0125  l'abrogazione, totale o parziale, di una legge o di un
+CC    2501-quinquies 1  BOTH   0.0237  0.474  0.0500  e di cui al primo comma non è richiesta se vi rinuncian
+CC    2353       0  BOTH   0.0237  0.459  0.0500  Salvo diversa disposizione dello statuto, le azioni di
+CC    2501-quater 1  BOTH   0.0231  0.470  0.0500  soci e i possessori di altri strumenti finanziari che a
+
+ANALYSIS:
+- Cross-code retrieval: CC (13), COST (2)
+- Constitutional articles found:
+  - COST 48 (Diritto di voto) at rank 2 - CORRECT
+  - COST 75 (Referendum) at rank 12
+- ALL results are BOTH source - Maximum hybrid benefit
+- CC corporate voting articles (2351, 2352, 2370) correctly retrieved
+
+================================================================================
+TEST 3: Civil Law Query
+================================================================================
+
+Query: responsabilità extracontrattuale danno ingiusto
+Generating embedding...
+===================================================================================================================
+Code  Art        #  Source RRF     Dense  Sparse  Preview
+-------------------------------------------------------------------------------------------------------------------
+CC    1338       0  DENSE  0.0164  0.629  0.0000  La parte che, conoscendo o dovendo conoscere l'esistenz
+CC    1218       0  DENSE  0.0161  0.626  0.0000  Il debitore che non esegue esattamente la prestazione d
+CC    1398       0  DENSE  0.0159  0.611  0.0000  Colui che ha contrattato come rappresentante senza aver
+CC    2044       0  DENSE  0.0156  0.606  0.0000  Non è responsabile chi cagiona il danno per legittima d
+CC    1463       0  DENSE  0.0154  0.595  0.0000  Nei contratti con prestazioni corrispettive, la parte l
+CC    1466       0  DENSE  0.0152  0.591  0.0000  Nei contratti indicati dall'articolo 1420 l'impossibili
+CC    1438       0  DENSE  0.0147  0.590  0.0000  La minaccia di far valere un diritto può essere causa d
+CC    1448       0  DENSE  0.0147  0.590  0.0000  Se vi è sproporzione tra la prestazione di una parte e
+CC    1443       0  DENSE  0.0145  0.583  0.0000  Se il contratto è annullato per incapacità di uno dei c
+CC    2030       0  DENSE  0.0143  0.582  0.0000  Il gestore è soggetto alle stesse obbligazioni che deri
+CC    2043       0  DENSE  0.0141  0.582  0.0000  Qualunque fatto doloso o colposo che cagiona ad altri u
+CC    2045       0  DENSE  0.0139  0.580  0.0000  Quando chi ha compiuto il fatto dannoso vi è stato cost
+CC    2035       0  DENSE  0.0137  0.577  0.0000  Chi ha eseguito una prestazione per uno scopo che, anch
+CC    2042       0  DENSE  0.0135  0.577  0.0000  L'azione di arricchimento non è proponibile quando il d
+CC    2767       0  DENSE  0.0133  0.574  0.0000  Nel caso di assicurazione della responsabilità civile,
+
+ANALYSIS:
+- Single code retrieval: CC (15)
+- Art. 2043 (Tort liability - canonical article) at rank 11
+- Related articles found:
+  - CC 2044 (Legittima difesa) at rank 4
+  - CC 2045 (Stato di necessità) at rank 12
+- ALL results are DENSE only (no FTS matches)
+- Reason: Italian stemming differences in query terms
+
+================================================================================
+DATABASE VERIFICATION
+================================================================================
+
+$ docker exec lexe-max psql -U lexe_max -d lexe_max -c "
+SELECT w.code,
+       COUNT(DISTINCT n.id) as articoli,
+       COUNT(DISTINCT c.id) as chunks,
+       COUNT(DISTINCT e.chunk_id) as embeddings
+FROM kb.work w
+LEFT JOIN kb.normativa n ON n.work_id = w.id
+LEFT JOIN kb.normativa_chunk c ON c.work_id = w.id
+LEFT JOIN kb.normativa_chunk_embeddings e ON e.chunk_id = c.id
+GROUP BY w.code
+ORDER BY COUNT(DISTINCT n.id) DESC
+LIMIT 10;"
+
+ code  | articoli | chunks | embeddings
+-------+----------+--------+------------
+ CC    |     3221 |   4054 |       4054
+ CPC   |     1055 |   2192 |       2192
+ CP    |      962 |   1310 |       1310
+ CPP   |      958 |   2494 |       2494
+ COST  |      139 |    196 |        196
+
+COVERAGE: 100% for all codes
+
+================================================================================
+ANNOTATIONS VERIFICATION
+================================================================================
+
+$ docker exec lexe-max psql -U lexe_max -d lexe_max -c "
+SELECT 'annotation' as tipo, COUNT(*) as total FROM kb.annotation
+UNION ALL
+SELECT 'annotation_embeddings', COUNT(*) FROM kb.annotation_embeddings;"
+
+            tipo            | total
+----------------------------+-------
+ annotation                 | 13281
+ annotation_embeddings      | 13180
+
+ANNOTATION COVERAGE: 99.2%
+
+================================================================================
+SAMPLE DATA VERIFICATION
+================================================================================
+
+EMBEDDINGS PER CODICE:
+============================================================
+CC: 4,054 embeddings (1536 dims)
+CPP: 2,494 embeddings (1536 dims)
+CPC: 2,192 embeddings (1536 dims)
+CP: 1,310 embeddings (1536 dims)
+COST: 196 embeddings (1536 dims)
+
+FTS (tsvector) COVERAGE:
+============================================================
+CC: 4,054 fts entries
+CPP: 2,494 fts entries
+CPC: 2,192 fts entries
+CP: 1,310 fts entries
+COST: 196 fts entries
+
+================================================================================
+END OF TEST LOG
+================================================================================
