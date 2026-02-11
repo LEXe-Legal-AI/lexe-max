@@ -19,7 +19,6 @@ import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterator
 
 import structlog
 
@@ -31,35 +30,29 @@ ARTICOLO_HEADER_PATTERNS = [
     # HTML-style headers from marker: <h1><b>Articolo 17</b></h1> or <h1><b>Art. 17</b></h1>
     # Also handles <span> tags before Art: <h3><span id="..."></span>ART. 5 (...)
     # Uses (?:<[^>]+>)* to skip any nested tags (span, b, etc.) before Art.
-    re.compile(
-        r'<h\d[^>]*>(?:<[^>]+>)*\s*(?:Articolo|Art\.?)\s*(\d+(?:-\w+)?)',
-        re.IGNORECASE
-    ),
+    re.compile(r"<h\d[^>]*>(?:<[^>]+>)*\s*(?:Articolo|Art\.?)\s*(\d+(?:-\w+)?)", re.IGNORECASE),
     # Altalex format: <p block-type="Text"><b>Art. 3.</b> <b>Rubrica...</b></p>
     # The <b> tag wraps the article number
-    re.compile(
-        r'<p[^>]*>(?:<b>\s*)?(?:Articolo|Art\.?)\s*(\d+(?:-\w+)?)',
-        re.IGNORECASE
-    ),
+    re.compile(r"<p[^>]*>(?:<b>\s*)?(?:Articolo|Art\.?)\s*(\d+(?:-\w+)?)", re.IGNORECASE),
     # Plain text header: Art. 17. or Articolo 17
-    re.compile(r'^(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\.\s*', re.IGNORECASE | re.MULTILINE),
+    re.compile(r"^(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\.\s*", re.IGNORECASE | re.MULTILINE),
     # Plain text without period: Articolo 17 or Art. 17
-    re.compile(r'^(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\s*$', re.IGNORECASE | re.MULTILINE),
+    re.compile(r"^(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\s*$", re.IGNORECASE | re.MULTILINE),
     # Bold markdown: **Articolo 17** or **Art. 17**
-    re.compile(r'^\*\*(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\*\*', re.IGNORECASE | re.MULTILINE),
+    re.compile(r"^\*\*(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\*\*", re.IGNORECASE | re.MULTILINE),
     # Paragraph with Art.: <p block-type="Text">Art. 3-bis.</p>
-    re.compile(r'<p[^>]*>(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\.</p>', re.IGNORECASE),
+    re.compile(r"<p[^>]*>(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\.</p>", re.IGNORECASE),
     # Art. anywhere followed by rubrica in parentheses: "...text... ART. 318-bis (Ambito di applicazione)"
     # Common in Text blocks where article header is mid-text
     re.compile(
-        r'ART\.?\s*(\d+(?:-(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|sexiesdecies|septiesdecies|octiesdecies))?)\s*\(',
-        re.IGNORECASE
+        r"ART\.?\s*(\d+(?:-(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|sexiesdecies|septiesdecies|octiesdecies))?)\s*\(",
+        re.IGNORECASE,
     ),
     # Bold Art. N. anywhere in text: "...section title <b>Art. 172.</b> <b>Rubrica</b>..."
     # Common in CCI where section headers precede article headers in same block
     re.compile(
-        r'<b>Art\.?\s*(\d+(?:-(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|sexiesdecies|septiesdecies|octiesdecies))?)\.</b>',
-        re.IGNORECASE
+        r"<b>Art\.?\s*(\d+(?:-(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|sexiesdecies|septiesdecies|octiesdecies))?)\.</b>",
+        re.IGNORECASE,
     ),
 ]
 
@@ -69,28 +62,29 @@ ARTICOLO_HEADER_PATTERNS = [
 # terdecies(13), quaterdecies(14), quinquiesdecies(15), sexiesdecies(16),
 # septiesdecies(17), octiesdecies(18)
 ARTICOLO_NUM_PATTERN = re.compile(
-    r'^(\d+)(?:[-\s]?(bis|ter|quater|quinquies|sexies|septies|octies|novies|nonies|'
-    r'decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|'
-    r'sexiesdecies|septiesdecies|octiesdecies))?$',
-    re.IGNORECASE
+    r"^(\d+)(?:[-\s]?(bis|ter|quater|quinquies|sexies|septies|octies|novies|nonies|"
+    r"decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|"
+    r"sexiesdecies|septiesdecies|octiesdecies))?$",
+    re.IGNORECASE,
 )
 
 # Hierarchy patterns
-LIBRO_PATTERN = re.compile(r'Libro\s+([IVX]+)', re.IGNORECASE)
-TITOLO_PATTERN = re.compile(r'Titolo\s+([IVX]+)', re.IGNORECASE)
-CAPO_PATTERN = re.compile(r'Capo\s+([IVX]+)', re.IGNORECASE)
-SEZIONE_PATTERN = re.compile(r'Sezione\s+([IVX]+)', re.IGNORECASE)
+LIBRO_PATTERN = re.compile(r"Libro\s+([IVX]+)", re.IGNORECASE)
+TITOLO_PATTERN = re.compile(r"Titolo\s+([IVX]+)", re.IGNORECASE)
+CAPO_PATTERN = re.compile(r"Capo\s+([IVX]+)", re.IGNORECASE)
+SEZIONE_PATTERN = re.compile(r"Sezione\s+([IVX]+)", re.IGNORECASE)
 
 # Rubrica detection (text immediately after article header)
 RUBRICA_PATTERN = re.compile(
-    r'^[A-Z][^.!?\n]{5,200}[.)]?\s*$',  # Capitalized, 5-200 chars, ends with . or )
-    re.MULTILINE
+    r"^[A-Z][^.!?\n]{5,200}[.)]?\s*$",  # Capitalized, 5-200 chars, ends with . or )
+    re.MULTILINE,
 )
 
 
 @dataclass
 class MarkerBlock:
     """A single block from marker JSON output."""
+
     block_id: str
     block_type: str  # SectionHeader, TextBlock, ListBlock, Table, etc.
     text: str
@@ -99,7 +93,7 @@ class MarkerBlock:
     position: int = 0  # Position in document
 
     @classmethod
-    def from_dict(cls, data: dict, position: int = 0) -> "MarkerBlock":
+    def from_dict(cls, data: dict, position: int = 0) -> MarkerBlock:
         """Create from marker JSON block."""
         html = data.get("html", "")
         text = data.get("text", "")
@@ -121,11 +115,11 @@ class MarkerBlock:
     def _html_to_text(html: str) -> str:
         """Extract plain text from HTML."""
         # Remove img tags
-        text = re.sub(r'<img[^>]*>', '', html)
+        text = re.sub(r"<img[^>]*>", "", html)
         # Remove HTML tags but keep content
-        text = re.sub(r'<[^>]+>', ' ', text)
+        text = re.sub(r"<[^>]+>", " ", text)
         # Normalize whitespace
-        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r"\s+", " ", text)
         return text.strip()
 
 
@@ -134,14 +128,14 @@ class ExtractedArticle:
     """Extracted article from marker JSON."""
 
     # Article identification
-    articolo_num: str           # "17", "2043-bis"
-    articolo_num_norm: int      # 17, 2043
-    articolo_suffix: str | None # None, "bis", "ter"
+    articolo_num: str  # "17", "2043-bis"
+    articolo_num_norm: int  # 17, 2043
+    articolo_suffix: str | None  # None, "bis", "ter"
 
     # Content
-    rubrica: str | None         # Article title
-    testo: str                  # Clean text
-    testo_context: str = ""     # Text with overlap
+    rubrica: str | None  # Article title
+    testo: str  # Clean text
+    testo_context: str = ""  # Text with overlap
 
     # Hierarchy
     libro: str | None = None
@@ -169,7 +163,7 @@ class ExtractedArticle:
     def compute_hash(self) -> str:
         """SHA256 of normalized text."""
         normalized = self.testo.lower().strip()
-        normalized = re.sub(r'\s+', ' ', normalized)
+        normalized = re.sub(r"\s+", " ", normalized)
         self.content_hash = hashlib.sha256(normalized.encode()).hexdigest()
         return self.content_hash
 
@@ -220,7 +214,7 @@ class MarkerChunker:
         json_path = Path(json_path)
         logger.info("Processing marker JSON", path=str(json_path), codice=codice)
 
-        with open(json_path, "r", encoding="utf-8") as f:
+        with open(json_path, encoding="utf-8") as f:
             data = json.load(f)
 
         # Extract blocks
@@ -268,9 +262,9 @@ class MarkerChunker:
         # Pattern 4: Root is the document with children
         else:
             # Try to iterate keys looking for block-like structures
-            for key, value in data.items():
+            for _key, value in data.items():
                 if isinstance(value, list):
-                    for i, item in enumerate(value):
+                    for _i, item in enumerate(value):
                         if isinstance(item, dict) and ("block_type" in item or "text" in item):
                             blocks.extend(self._flatten_block(item, len(blocks)))
 
@@ -413,7 +407,7 @@ class MarkerChunker:
             return num, suffix
 
         # Fallback: try to extract just the number
-        num_match = re.match(r'(\d+)', articolo_num)
+        num_match = re.match(r"(\d+)", articolo_num)
         if num_match:
             return int(num_match.group(1)), None
 
@@ -440,11 +434,13 @@ class MarkerChunker:
                 continue
 
             # First non-empty text might be rubrica
-            if rubrica is None and len(text) <= self.max_rubrica_chars:
-                # Check if it looks like a rubrica
-                if RUBRICA_PATTERN.match(text):
-                    rubrica = text.rstrip('.')
-                    continue
+            if (
+                rubrica is None
+                and len(text) <= self.max_rubrica_chars
+                and RUBRICA_PATTERN.match(text)
+            ):
+                rubrica = text.rstrip(".")
+                continue
 
             testo_blocks.append(text)
 
@@ -482,22 +478,22 @@ class MarkerChunker:
     def _clean_text(self, text: str) -> str:
         """Clean article text."""
         # Remove HTML tags
-        text = re.sub(r'<[^>]+>', '', text)
+        text = re.sub(r"<[^>]+>", "", text)
 
         # Normalize whitespace
-        text = re.sub(r'\n{3,}', '\n\n', text)
-        text = re.sub(r' +', ' ', text)
+        text = re.sub(r"\n{3,}", "\n\n", text)
+        text = re.sub(r" +", " ", text)
 
         # Fix common encoding issues
         replacements = {
-            '\ufffd': '"',
-            '\u2019': "'",
-            '\u2018': "'",
-            '\u201c': '"',
-            '\u201d': '"',
-            '\u2013': '-',
-            '\u2014': '-',
-            '\xa0': ' ',
+            "\ufffd": '"',
+            "\u2019": "'",
+            "\u2018": "'",
+            "\u201c": '"',
+            "\u201d": '"',
+            "\u2013": "-",
+            "\u2014": "-",
+            "\xa0": " ",
         }
         for old, new in replacements.items():
             text = text.replace(old, new)
@@ -513,7 +509,7 @@ class MarkerChunker:
             if i > 0:
                 prev = articles[i - 1]
                 if prev.testo:
-                    prev_text = prev.testo[-self.overlap_chars:]
+                    prev_text = prev.testo[-self.overlap_chars :]
                     context_parts.append(f"[...] {prev_text}")
 
             # Current article
@@ -523,7 +519,7 @@ class MarkerChunker:
             if i < len(articles) - 1:
                 next_art = articles[i + 1]
                 if next_art.testo:
-                    next_text = next_art.testo[:self.overlap_chars]
+                    next_text = next_art.testo[: self.overlap_chars]
                     context_parts.append(f"{next_text} [...]")
 
             article.testo_context = "\n\n".join(context_parts)
@@ -556,8 +552,8 @@ def validate_article(article: ExtractedArticle) -> tuple[bool, list[str]]:
 
     # 5. Anti-hallucination: articolo num should appear in context
     # This is a WARNING, not an error
-    art_pattern = re.compile(rf'art(?:icolo)?\.?\s*{article.articolo_num}', re.IGNORECASE)
-    full_text = (article.rubrica or '') + ' ' + article.testo
+    art_pattern = re.compile(rf"art(?:icolo)?\.?\s*{article.articolo_num}", re.IGNORECASE)
+    full_text = (article.rubrica or "") + " " + article.testo
     if not art_pattern.search(full_text):
         article.warnings.append(
             f"articolo_num '{article.articolo_num}' not found in text (check header extraction)"
@@ -580,9 +576,9 @@ if __name__ == "__main__":
     chunker = MarkerChunker()
     articles = chunker.process_file(json_file, codice)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Extracted {len(articles)} articles from {json_file}")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     # Stats
     with_rubrica = sum(1 for a in articles if a.rubrica)
@@ -592,20 +588,20 @@ if __name__ == "__main__":
     print(f"With warnings: {with_warnings}/{len(articles)}")
 
     # Show first 5 and last 5
-    print(f"\nFirst 5 articles:")
+    print("\nFirst 5 articles:")
     for art in articles[:5]:
         warn = " [!]" if art.warnings else ""
         print(f"  Art. {art.articolo_num}{warn}: {art.rubrica or '(no rubrica)'}")
         print(f"    Testo: {art.testo[:80]}...")
 
     if len(articles) > 10:
-        print(f"\nLast 5 articles:")
+        print("\nLast 5 articles:")
         for art in articles[-5:]:
             warn = " [!]" if art.warnings else ""
             print(f"  Art. {art.articolo_num}{warn}: {art.rubrica or '(no rubrica)'}")
 
     # Validation
-    print(f"\nValidation:")
+    print("\nValidation:")
     invalid = 0
     for art in articles:
         valid, errors = validate_article(art)

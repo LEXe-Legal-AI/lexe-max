@@ -14,24 +14,23 @@ Questo adapter gestisce solo la cartella normativa/ per FASE 1.
 """
 
 import re
+from collections.abc import AsyncIterator
 from datetime import datetime
 from pathlib import Path
-from typing import AsyncIterator
 
 import structlog
 
+from lexe_api.kb.ingestion.deterministic_cleaner import StudioCataldiCleaner
+from lexe_api.kb.ingestion.legal_numbers_extractor import extract_canonical_ids
+from lexe_api.kb.ingestion.structure_extractor import StructureExtractor
+from lexe_api.kb.ingestion.urn_generator import URNGenerator
 from lexe_api.kb.sources.base_adapter import (
     BaseLegalSourceAdapter,
-    FetchError,
     ParseError,
     ProgressCallback,
     TrustLevel,
 )
 from lexe_api.kb.sources.models import ArticleExtract
-from lexe_api.kb.ingestion.deterministic_cleaner import StudioCataldiCleaner
-from lexe_api.kb.ingestion.structure_extractor import StructureExtractor
-from lexe_api.kb.ingestion.urn_generator import URNGenerator
-from lexe_api.kb.ingestion.legal_numbers_extractor import extract_canonical_ids
 
 logger = structlog.get_logger(__name__)
 
@@ -55,13 +54,14 @@ CODICE_DIRECTORIES = {
 # Pattern per identificare file articolo
 ARTICLE_FILE_PATTERN = re.compile(
     r"art(?:icolo)?[\-_]?(\d+[\-_]?(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies)?)",
-    re.IGNORECASE
+    re.IGNORECASE,
 )
 
 
 # ============================================================
 # STUDIOCATALDI ADAPTER
 # ============================================================
+
 
 class StudioCataldiAdapter(BaseLegalSourceAdapter):
     """
@@ -390,15 +390,13 @@ class StudioCataldiAdapter(BaseLegalSourceAdapter):
             )
 
         except Exception as e:
-            raise ParseError(
-                "studiocataldi",
-                f"Failed to parse {file_path}: {e}"
-            )
+            raise ParseError("studiocataldi", f"Failed to parse {file_path}: {e}")
 
 
 # ============================================================
 # FACTORY FUNCTION
 # ============================================================
+
 
 def create_studiocataldi_adapter(
     mirror_path: str | Path | None = None,

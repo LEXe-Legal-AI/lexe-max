@@ -5,6 +5,7 @@ Graph augmentation pesato con Apache AGE.
 Espande risultati seguendo relazioni semantiche nel knowledge graph.
 """
 
+import contextlib
 from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
@@ -242,7 +243,8 @@ async def build_same_principle_edges(
                       AND e1.channel = 'testo'
                     LIMIT 1
                     """,
-                    m1, m2,
+                    m1,
+                    m2,
                 )
 
                 if emb_sim is None or emb_sim < embedding_similarity_threshold:
@@ -255,10 +257,7 @@ async def build_same_principle_edges(
                 section_score = 1.0 if same_section else 0.0
 
                 weight = (
-                    0.3 * norm_score +
-                    0.4 * emb_sim +
-                    0.2 * temporal_score +
-                    0.1 * section_score
+                    0.3 * norm_score + 0.4 * emb_sim + 0.2 * temporal_score + 0.1 * section_score
                 )
 
                 # Inserisci in edge_weights table
@@ -271,11 +270,18 @@ async def build_same_principle_edges(
                     ON CONFLICT (source_id, target_id, edge_type)
                     DO UPDATE SET weight = EXCLUDED.weight
                     """,
-                    m1, m2, weight, norm_overlap, emb_sim, year_diff, same_section,
+                    m1,
+                    m2,
+                    weight,
+                    norm_overlap,
+                    emb_sim,
+                    year_diff,
+                    same_section,
                 )
 
                 # Crea edge in AGE graph
-                try:
+                with contextlib.suppress(Exception):
+                    # AGE non disponibile
                     await conn.execute(
                         """
                         SELECT * FROM cypher('lexe_jurisprudence', $$
@@ -284,10 +290,10 @@ async def build_same_principle_edges(
                             SET r.weight = $3
                         $$) as (r agtype)
                         """,
-                        str(m1), str(m2), weight,
+                        str(m1),
+                        str(m2),
+                        weight,
                     )
-                except Exception:
-                    pass  # AGE non disponibile
 
                 edges_created += 1
 

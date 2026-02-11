@@ -26,12 +26,29 @@ from .graph import (
     get_related_massime,
     graph_expand_weighted,
 )
+from .graph_reranker import (
+    GraphExpandedResult,
+    GraphRAGConfig,
+    calculate_graph_hit_rate,
+    calculate_rank_change,
+    compute_graph_boost,
+    graph_expand_sql,
+    hybrid_search_with_graph,
+    rerank_with_graph,
+)
 from .hybrid import (
     HybridSearchResult,
     calculate_precision_at_k,
     hybrid_search,
     hybrid_search_multi_model,
     reciprocal_rank_fusion,
+)
+from .norm_booster import (
+    NormBoostConfig,
+    NormBoostedResult,
+    boost_by_norm,
+    get_norm_citing_massime,
+    hybrid_search_with_norm_boost,
 )
 from .reranker import (
     BGEReranker,
@@ -44,6 +61,20 @@ from .reranker import (
     get_reranker,
     rerank_normativa_chunks,
     rerank_results,
+)
+from .router import (
+    LookupResult,
+    ParsedCitation,
+    ParsedNorm,
+    RoutedSearchResult,
+    RouterResult,
+    RouteType,
+    citation_lookup,
+    classify_query,
+    norm_lookup,
+    parse_citation,
+    route_query,
+    routed_search,
 )
 from .sparse import (
     SparseSearchConfig,
@@ -59,37 +90,6 @@ from .temporal import (
     calculate_recency_score,
     extract_temporal_from_query,
     fetch_massima_dates,
-)
-from .router import (
-    RouteType,
-    LookupResult,
-    ParsedCitation,
-    ParsedNorm,
-    RouterResult,
-    RoutedSearchResult,
-    parse_citation,
-    classify_query,
-    citation_lookup,
-    norm_lookup,
-    route_query,
-    routed_search,
-)
-from .norm_booster import (
-    NormBoostConfig,
-    NormBoostedResult,
-    boost_by_norm,
-    hybrid_search_with_norm_boost,
-    get_norm_citing_massime,
-)
-from .graph_reranker import (
-    GraphExpandedResult,
-    GraphRAGConfig,
-    graph_expand_sql,
-    rerank_with_graph,
-    hybrid_search_with_graph,
-    calculate_graph_hit_rate,
-    calculate_rank_change,
-    compute_graph_boost,
 )
 
 __all__ = [

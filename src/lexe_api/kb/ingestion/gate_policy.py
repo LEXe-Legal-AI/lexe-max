@@ -58,9 +58,7 @@ class GateResult:
 
 
 # Citation counting pattern (from ingest_staging.py)
-_CITATION_COUNT_PATTERN = re.compile(
-    r"Cass\.|Sez\.\s*\d|n\.\s*\d+|Rv\.\s*\d+"
-)
+_CITATION_COUNT_PATTERN = re.compile(r"Cass\.|Sez\.\s*\d|n\.\s*\d+|Rv\.\s*\d+")
 
 
 def evaluate_gate(

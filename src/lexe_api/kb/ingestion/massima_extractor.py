@@ -4,10 +4,10 @@ LEXE Knowledge Base - Massima Extractor
 Estrazione massime atomiche con evidenza (Chunk A + B).
 """
 
+import contextlib
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date
-from typing import Optional
 
 import structlog
 
@@ -57,9 +57,7 @@ RV_PATTERN = re.compile(
 )
 
 # Pattern per data decisione
-DATE_PATTERN = re.compile(
-    r"(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})"
-)
+DATE_PATTERN = re.compile(r"(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})")
 
 
 @dataclass
@@ -67,7 +65,7 @@ class ExtractedCitation:
     """Citazione estratta da massima."""
 
     sezione: str | None = None  # "U", "1", "L", etc.
-    numero: str | None = None   # Numero sentenza
+    numero: str | None = None  # Numero sentenza
     anno: int | None = None
     data_decisione: date | None = None
     rv: str | None = None
@@ -170,12 +168,8 @@ def extract_citation(text: str) -> ExtractedCitation:
         year = match.group(5)
 
         if day and month and year:
-            try:
-                citation.data_decisione = date(
-                    int(year), int(month), int(day)
-                )
-            except ValueError:
-                pass
+            with contextlib.suppress(ValueError):
+                citation.data_decisione = date(int(year), int(month), int(day))
         citation.anno = int(year) if year else None
 
         citation.rv = match.group(6)
@@ -202,14 +196,12 @@ def extract_citation(text: str) -> ExtractedCitation:
     if not citation.data_decisione:
         date_match = DATE_PATTERN.search(text)
         if date_match:
-            try:
+            with contextlib.suppress(ValueError):
                 citation.data_decisione = date(
                     int(date_match.group(3)),
                     int(date_match.group(2)),
                     int(date_match.group(1)),
                 )
-            except ValueError:
-                pass
 
     return citation
 
@@ -315,10 +307,7 @@ def extract_massime_from_elements(
             section_path = None
 
         # Calcola quality score basato su caratteri validi
-        valid_chars = sum(
-            1 for c in testo
-            if c.isalnum() or c.isspace() or c in '.,;:!?()-"\''
-        )
+        valid_chars = sum(1 for c in testo if c.isalnum() or c.isspace() or c in ".,;:!?()-\"'")
         text_quality = valid_chars / len(testo) if testo else 0
 
         massima = ExtractedMassima(
@@ -405,8 +394,7 @@ def calculate_massima_importance(
 
     # Sezioni Unite = +0.2
     if is_sezioni_unite or (
-        massima.citation.normalized_sezione and
-        massima.citation.normalized_sezione == "U"
+        massima.citation.normalized_sezione and massima.citation.normalized_sezione == "U"
     ):
         score += 0.2
 
@@ -457,6 +445,7 @@ CITATION_ANCHOR_PATTERNS = [
 @dataclass
 class CitationAnchor:
     """Ancora di citazione trovata nel testo."""
+
     pattern_name: str
     match_text: str
     start_pos: int
@@ -476,14 +465,14 @@ def find_citation_anchors(text: str) -> list[CitationAnchor]:
 
     pattern_names = ["rv", "sez", "cass", "sent"]
 
-    for pattern, name in zip(CITATION_ANCHOR_PATTERNS, pattern_names):
+    for pattern, name in zip(CITATION_ANCHOR_PATTERNS, pattern_names, strict=False):
         for match in pattern.finditer(text):
             pos = (match.start(), match.end())
             if pos not in seen_positions:
                 seen_positions.add(pos)
 
                 # Calcola line number
-                line_num = text[:match.start()].count("\n") + 1
+                line_num = text[: match.start()].count("\n") + 1
 
                 anchors.append(
                     CitationAnchor(
@@ -508,18 +497,41 @@ def split_into_sentences(text: str) -> list[tuple[str, int, int]]:
         Lista di (sentence_text, start_pos, end_pos)
     """
     # Abbreviazioni comuni che non terminano frase
-    ABBREVIATIONS = {
-        "sez", "cass", "sent", "ord", "rv", "art", "artt",
-        "pag", "pagg", "cfr", "nn", "vol", "ss", "segg",
-        "cit", "op", "loc", "es", "ecc", "dott", "prof",
-        "avv", "ing", "sig", "sigg", "s.p.a", "s.r.l",
+    abbreviations = {
+        "sez",
+        "cass",
+        "sent",
+        "ord",
+        "rv",
+        "art",
+        "artt",
+        "pag",
+        "pagg",
+        "cfr",
+        "nn",
+        "vol",
+        "ss",
+        "segg",
+        "cit",
+        "op",
+        "loc",
+        "es",
+        "ecc",
+        "dott",
+        "prof",
+        "avv",
+        "ing",
+        "sig",
+        "sigg",
+        "s.p.a",
+        "s.r.l",
     }
 
     sentences: list[tuple[str, int, int]] = []
     last_end = 0
 
     # Pattern semplice: punto seguito da spazio e maiuscola, o fine testo
-    sentence_end = re.compile(r'\.(?:\s+[A-Z]|\s*$)')
+    sentence_end = re.compile(r"\.(?:\s+[A-Z]|\s*$)")
 
     for match in sentence_end.finditer(text):
         # Controlla se il punto è dopo un'abbreviazione
@@ -527,14 +539,14 @@ def split_into_sentences(text: str) -> list[tuple[str, int, int]]:
         # Trova la parola prima del punto
         word_before = ""
         i = start - 1
-        while i >= 0 and (text[i].isalpha() or text[i] == '.'):
+        while i >= 0 and (text[i].isalpha() or text[i] == "."):
             word_before = text[i] + word_before
             i -= 1
 
-        word_before_clean = word_before.lower().rstrip('.')
+        word_before_clean = word_before.lower().rstrip(".")
 
         # Se è un'abbreviazione, salta
-        if word_before_clean in ABBREVIATIONS:
+        if word_before_clean in abbreviations:
             continue
 
         end_pos = match.start() + 1  # Include il punto
@@ -574,7 +586,7 @@ def extract_window_around_citation(
     """
     # Trova la frase che contiene la citazione
     citation_sentence_idx = -1
-    for i, (sent, start, end) in enumerate(sentences):
+    for i, (_sent, start, end) in enumerate(sentences):
         if start <= anchor.start_pos < end:
             citation_sentence_idx = i
             break
@@ -622,10 +634,7 @@ def should_split_block(
 
     # Check lunghezza media per citazione
     avg_len = text_length / len(anchors)
-    if avg_len > 800:
-        return True
-
-    return False
+    return avg_len > 800
 
 
 def extract_massime_citation_anchored(
@@ -745,10 +754,7 @@ def _create_massima_from_window(
     citation = extract_citation(window_text)
 
     # Quality score
-    valid_chars = sum(
-        1 for c in testo
-        if c.isalnum() or c.isspace() or c in '.,;:!?()-"\''
-    )
+    valid_chars = sum(1 for c in testo if c.isalnum() or c.isspace() or c in ".,;:!?()-\"'")
     text_quality = valid_chars / len(testo) if testo else 0
 
     return ExtractedMassima(

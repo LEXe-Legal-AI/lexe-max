@@ -10,21 +10,18 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4
 
 import structlog
 
-from ..config import EmbeddingChannel, EmbeddingModel, KBConfig
-from .citation_parser import extract_all_citations, get_cited_norms, get_cited_pronounce
-from .cleaner import clean_legal_text, compute_content_hash, normalize_for_hash
+from ..config import EmbeddingChannel, KBConfig
+from .citation_parser import extract_all_citations
 from .deduplicator import Deduplicator
 from .embedder import EmbeddingClient, MultiEmbedder
 from .extractor import ExtractionResult, extract_pdf_with_quality
 from .massima_extractor import (
     ExtractedMassima,
-    calculate_massima_importance,
     extract_massime_from_elements,
     extract_tema,
 )
@@ -302,10 +299,12 @@ class IngestionPipeline:
             for massima in massime:
                 citations = extract_all_citations(massima.testo)
                 for c in citations:
-                    all_citations.append({
-                        "massima_hash": massima.content_hash,
-                        "citation": c.to_dict(),
-                    })
+                    all_citations.append(
+                        {
+                            "massima_hash": massima.content_hash,
+                            "citation": c.to_dict(),
+                        }
+                    )
 
             logger.info(
                 "Citations extracted",
@@ -319,9 +318,7 @@ class IngestionPipeline:
             job.current_step = "Deduplicazione"
             job.progress_pct = 70
 
-            items_to_dedup = [
-                (m.content_hash, m.testo_normalizzato) for m in massime
-            ]
+            items_to_dedup = [(m.content_hash, m.testo_normalizzato) for m in massime]
             dedup_result = self.deduplicator.deduplicate_batch(items_to_dedup)
 
             job.duplicates_found = dedup_result.exact_duplicates + dedup_result.near_duplicates

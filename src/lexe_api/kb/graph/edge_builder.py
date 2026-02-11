@@ -14,8 +14,6 @@ Features:
 import json
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
-from uuid import UUID
 
 import structlog
 
@@ -31,7 +29,7 @@ class GraphRunMetrics:
     run_id: int
     run_type: str
     started_at: datetime
-    completed_at: Optional[datetime] = None
+    completed_at: datetime | None = None
     status: str = "running"
 
     # Counts
@@ -71,10 +69,11 @@ class GraphRunMetrics:
 # GRAPH RUN MANAGEMENT
 # ============================================================
 
+
 async def create_graph_run(
     conn,
     run_type: str,
-    config: Optional[dict] = None,
+    config: dict | None = None,
 ) -> int:
     """
     Create a new graph run record.
@@ -147,6 +146,7 @@ async def fail_graph_run(conn, run_id: int, error_message: str) -> None:
 # SQL EDGE INSERTION
 # ============================================================
 
+
 async def insert_edges_sql(
     conn,
     edges: list[ResolvedCitation],
@@ -178,7 +178,7 @@ async def insert_edges_sql(
     ]
 
     # Batch insert with ON CONFLICT DO NOTHING (dedup constraint handles it)
-    result = await conn.executemany(
+    await conn.executemany(
         """
         INSERT INTO kb.graph_edges
             (source_id, target_id, edge_type, relation_subtype, confidence, weight, evidence, context_span, run_id)
@@ -195,6 +195,7 @@ async def insert_edges_sql(
 # ============================================================
 # AGE EDGE INSERTION
 # ============================================================
+
 
 async def insert_edges_age(
     conn,
@@ -251,6 +252,7 @@ async def insert_edges_age(
 # DUAL-WRITE
 # ============================================================
 
+
 async def insert_edges_dual(
     conn,
     edges: list[ResolvedCitation],
@@ -281,6 +283,7 @@ async def insert_edges_dual(
 # ============================================================
 # BATCH FETCHING
 # ============================================================
+
 
 async def fetch_massime_batch(
     conn,
@@ -357,6 +360,7 @@ async def count_active_massime(conn) -> int:
 # CLEANUP
 # ============================================================
 
+
 async def delete_edges_for_run(conn, run_id: int) -> int:
     """Delete all edges for a specific run (for rollback)."""
     result = await conn.execute(
@@ -369,7 +373,7 @@ async def delete_edges_for_run(conn, run_id: int) -> int:
     return count
 
 
-async def get_edge_stats(conn, run_id: Optional[int] = None) -> dict:
+async def get_edge_stats(conn, run_id: int | None = None) -> dict:
     """Get edge statistics, optionally for a specific run."""
     where_clause = "WHERE run_id = $1" if run_id else ""
     params = [run_id] if run_id else []

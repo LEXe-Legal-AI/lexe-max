@@ -274,7 +274,7 @@ async def keyword_boost_search(
                 massima_keywords = {k.lower() for k in row["keywords"]}
                 overlap = len(keywords_lower & massima_keywords)
                 if overlap > 0:
-                    result.score *= keyword_boost ** overlap
+                    result.score *= keyword_boost**overlap
 
     # Riordina
     results.sort(key=lambda x: x.score, reverse=True)

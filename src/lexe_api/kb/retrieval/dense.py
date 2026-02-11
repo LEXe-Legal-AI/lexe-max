@@ -62,7 +62,7 @@ async def dense_search(
 
     # Costruisci query con partial index hint
     # L'index viene usato automaticamente grazie a WHERE model = X
-    base_query = """
+    base_query = f"""
     SELECT
         e.massima_id,
         1 - (e.embedding <=> $1::vector({dims})) as similarity
@@ -71,7 +71,7 @@ async def dense_search(
     WHERE e.model = $2
       AND e.channel = $3
       AND 1 - (e.embedding <=> $1::vector({dims})) >= $4
-    """.format(dims=dims)
+    """
 
     params = [
         query_embedding,
@@ -178,10 +178,7 @@ async def dense_search_multi_model(
         )
         return model, await dense_search(embedding, config, db_pool, filters)
 
-    tasks = [
-        search_single(model, emb)
-        for model, emb in query_embeddings.items()
-    ]
+    tasks = [search_single(model, emb) for model, emb in query_embeddings.items()]
 
     results = await asyncio.gather(*tasks)
     return dict(results)

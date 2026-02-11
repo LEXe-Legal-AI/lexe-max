@@ -10,34 +10,53 @@ Plus Topic L2 for granular classification (with abstain option).
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Set
 
 
 @dataclass
 class CategoryDef:
     """Definition of a category with metadata."""
+
     id: str
     name: str
     description: str
-    keywords: List[str]
-    parent_id: Optional[str] = None
+    keywords: list[str]
+    parent_id: str | None = None
 
 
 # =============================================================================
 # AXIS A: MATERIA (Subject Matter) - 6 values
 # =============================================================================
 
-MATERIE: Dict[str, CategoryDef] = {
+MATERIE: dict[str, CategoryDef] = {
     "CIVILE": CategoryDef(
         id="CIVILE",
         name="Diritto Civile",
         description="Obbligazioni, contratti, proprietà, famiglia, successioni",
         keywords=[
-            "contratto", "obbligazione", "responsabilità civile", "proprietà",
-            "possesso", "servitù", "usufrutto", "locazione", "compravendita",
-            "donazione", "successione", "testamento", "famiglia", "matrimonio",
-            "separazione", "divorzio", "affidamento", "mantenimento", "alimenti",
-            "risarcimento", "danno", "inadempimento", "risoluzione", "rescissione",
+            "contratto",
+            "obbligazione",
+            "responsabilità civile",
+            "proprietà",
+            "possesso",
+            "servitù",
+            "usufrutto",
+            "locazione",
+            "compravendita",
+            "donazione",
+            "successione",
+            "testamento",
+            "famiglia",
+            "matrimonio",
+            "separazione",
+            "divorzio",
+            "affidamento",
+            "mantenimento",
+            "alimenti",
+            "risarcimento",
+            "danno",
+            "inadempimento",
+            "risoluzione",
+            "rescissione",
         ],
     ),
     "PENALE": CategoryDef(
@@ -45,11 +64,32 @@ MATERIE: Dict[str, CategoryDef] = {
         name="Diritto Penale",
         description="Reati, pene, circostanze, imputabilità",
         keywords=[
-            "reato", "delitto", "contravvenzione", "pena", "reclusione",
-            "arresto", "multa", "ammenda", "dolo", "colpa", "preterintenzione",
-            "tentativo", "concorso", "circostanze", "aggravanti", "attenuanti",
-            "imputabilità", "prescrizione", "estinzione", "sospensione condizionale",
-            "omicidio", "lesioni", "furto", "rapina", "truffa", "appropriazione",
+            "reato",
+            "delitto",
+            "contravvenzione",
+            "pena",
+            "reclusione",
+            "arresto",
+            "multa",
+            "ammenda",
+            "dolo",
+            "colpa",
+            "preterintenzione",
+            "tentativo",
+            "concorso",
+            "circostanze",
+            "aggravanti",
+            "attenuanti",
+            "imputabilità",
+            "prescrizione",
+            "estinzione",
+            "sospensione condizionale",
+            "omicidio",
+            "lesioni",
+            "furto",
+            "rapina",
+            "truffa",
+            "appropriazione",
         ],
     ),
     "LAVORO": CategoryDef(
@@ -57,11 +97,30 @@ MATERIE: Dict[str, CategoryDef] = {
         name="Diritto del Lavoro",
         description="Rapporto di lavoro, licenziamento, previdenza",
         keywords=[
-            "lavoro", "lavoratore", "datore", "licenziamento", "dimissioni",
-            "retribuzione", "tfr", "ferie", "permessi", "straordinario",
-            "contratto collettivo", "sindacato", "sciopero", "inps", "inail",
-            "previdenza", "pensione", "contributi", "subordinazione", "parasubordinazione",
-            "somministrazione", "appalto", "distacco", "trasferimento d'azienda",
+            "lavoro",
+            "lavoratore",
+            "datore",
+            "licenziamento",
+            "dimissioni",
+            "retribuzione",
+            "tfr",
+            "ferie",
+            "permessi",
+            "straordinario",
+            "contratto collettivo",
+            "sindacato",
+            "sciopero",
+            "inps",
+            "inail",
+            "previdenza",
+            "pensione",
+            "contributi",
+            "subordinazione",
+            "parasubordinazione",
+            "somministrazione",
+            "appalto",
+            "distacco",
+            "trasferimento d'azienda",
         ],
     ),
     "TRIBUTARIO": CategoryDef(
@@ -69,11 +128,27 @@ MATERIE: Dict[str, CategoryDef] = {
         name="Diritto Tributario",
         description="Imposte, accertamento, riscossione, contenzioso tributario",
         keywords=[
-            "imposta", "tributo", "iva", "irpef", "ires", "irap", "imu",
-            "accertamento", "avviso", "cartella esattoriale", "riscossione",
-            "agenzia delle entrate", "equitalia", "agenzia riscossione",
-            "evasione", "elusione", "sanzioni tributarie", "contenzioso tributario",
-            "commissione tributaria", "ricorso tributario", "studi di settore",
+            "imposta",
+            "tributo",
+            "iva",
+            "irpef",
+            "ires",
+            "irap",
+            "imu",
+            "accertamento",
+            "avviso",
+            "cartella esattoriale",
+            "riscossione",
+            "agenzia delle entrate",
+            "equitalia",
+            "agenzia riscossione",
+            "evasione",
+            "elusione",
+            "sanzioni tributarie",
+            "contenzioso tributario",
+            "commissione tributaria",
+            "ricorso tributario",
+            "studi di settore",
         ],
     ),
     "AMMINISTRATIVO": CategoryDef(
@@ -81,12 +156,27 @@ MATERIE: Dict[str, CategoryDef] = {
         name="Diritto Amministrativo",
         description="PA, atto amministrativo, appalti, urbanistica",
         keywords=[
-            "pubblica amministrazione", "atto amministrativo", "provvedimento",
-            "autorizzazione", "concessione", "permesso di costruire", "scia",
-            "silenzio assenso", "accesso agli atti", "trasparenza", "appalto pubblico",
-            "gara", "bando", "aggiudicazione", "urbanistica", "edilizia",
-            "espropriazione per pubblica utilità", "tar", "consiglio di stato",
-            "giurisdizione amministrativa", "risarcimento danni da pa",
+            "pubblica amministrazione",
+            "atto amministrativo",
+            "provvedimento",
+            "autorizzazione",
+            "concessione",
+            "permesso di costruire",
+            "scia",
+            "silenzio assenso",
+            "accesso agli atti",
+            "trasparenza",
+            "appalto pubblico",
+            "gara",
+            "bando",
+            "aggiudicazione",
+            "urbanistica",
+            "edilizia",
+            "espropriazione per pubblica utilità",
+            "tar",
+            "consiglio di stato",
+            "giurisdizione amministrativa",
+            "risarcimento danni da pa",
         ],
     ),
     "CRISI": CategoryDef(
@@ -94,12 +184,23 @@ MATERIE: Dict[str, CategoryDef] = {
         name="Crisi d'Impresa e Insolvenza",
         description="Fallimento, concordato, liquidazione giudiziale",
         keywords=[
-            "fallimento", "liquidazione giudiziale", "concordato preventivo",
-            "concordato fallimentare", "amministrazione straordinaria",
-            "stato passivo", "ammissione al passivo", "insinuazione",
-            "revocatoria fallimentare", "azione revocatoria", "curatore",
-            "giudice delegato", "comitato creditori", "piano attestato",
-            "accordi di ristrutturazione", "sovraindebitamento", "esdebitazione",
+            "fallimento",
+            "liquidazione giudiziale",
+            "concordato preventivo",
+            "concordato fallimentare",
+            "amministrazione straordinaria",
+            "stato passivo",
+            "ammissione al passivo",
+            "insinuazione",
+            "revocatoria fallimentare",
+            "azione revocatoria",
+            "curatore",
+            "giudice delegato",
+            "comitato creditori",
+            "piano attestato",
+            "accordi di ristrutturazione",
+            "sovraindebitamento",
+            "esdebitazione",
         ],
     ),
 }
@@ -112,16 +213,31 @@ MATERIA_ORDER = ["CIVILE", "PENALE", "LAVORO", "TRIBUTARIO", "AMMINISTRATIVO", "
 # AXIS B: NATURA (Legal Nature) - 2 values
 # =============================================================================
 
-NATURE: Dict[str, CategoryDef] = {
+NATURE: dict[str, CategoryDef] = {
     "SOSTANZIALE": CategoryDef(
         id="SOSTANZIALE",
         name="Diritto Sostanziale",
         description="Diritti, obblighi, responsabilità, elementi costitutivi",
         keywords=[
-            "diritto", "obbligo", "responsabilità", "elemento costitutivo",
-            "presupposti", "requisiti", "fattispecie", "titolarità", "legittimazione",
-            "danno", "nesso causale", "colpa", "dolo", "buona fede", "diligenza",
-            "interpretazione", "qualificazione", "natura giuridica", "effetti",
+            "diritto",
+            "obbligo",
+            "responsabilità",
+            "elemento costitutivo",
+            "presupposti",
+            "requisiti",
+            "fattispecie",
+            "titolarità",
+            "legittimazione",
+            "danno",
+            "nesso causale",
+            "colpa",
+            "dolo",
+            "buona fede",
+            "diligenza",
+            "interpretazione",
+            "qualificazione",
+            "natura giuridica",
+            "effetti",
         ],
     ),
     "PROCESSUALE": CategoryDef(
@@ -129,11 +245,29 @@ NATURE: Dict[str, CategoryDef] = {
         name="Diritto Processuale",
         description="Procedura, ammissibilità, competenza, termini, impugnazioni",
         keywords=[
-            "procedimento", "processo", "giudizio", "competenza", "giurisdizione",
-            "legittimazione processuale", "interesse ad agire", "ammissibilità",
-            "procedibilità", "ricorso", "appello", "impugnazione", "termine",
-            "decadenza", "preclusione", "notifica", "nullità", "sanatoria",
-            "onere della prova", "prova", "istruttoria", "motivazione", "sentenza",
+            "procedimento",
+            "processo",
+            "giudizio",
+            "competenza",
+            "giurisdizione",
+            "legittimazione processuale",
+            "interesse ad agire",
+            "ammissibilità",
+            "procedibilità",
+            "ricorso",
+            "appello",
+            "impugnazione",
+            "termine",
+            "decadenza",
+            "preclusione",
+            "notifica",
+            "nullità",
+            "sanatoria",
+            "onere della prova",
+            "prova",
+            "istruttoria",
+            "motivazione",
+            "sentenza",
         ],
     ),
 }
@@ -146,16 +280,31 @@ NATURA_ORDER = ["SOSTANZIALE", "PROCESSUALE"]
 # Only applicable when natura=PROCESSUALE
 # =============================================================================
 
-AMBITI: Dict[str, CategoryDef] = {
+AMBITI: dict[str, CategoryDef] = {
     "GIUDIZIO": CategoryDef(
         id="GIUDIZIO",
         name="Giudizio di Cognizione",
         description="Istruttoria, prove, competenza, notifiche, contraddittorio",
         keywords=[
-            "competenza", "giurisdizione", "notifica", "contraddittorio",
-            "istruttoria", "prova", "onere della prova", "ctu", "testimone",
-            "giudice istruttore", "udienza", "comparsa", "memoria", "termine",
-            "decadenza", "preclusione", "costituzione", "contumacia", "nullità",
+            "competenza",
+            "giurisdizione",
+            "notifica",
+            "contraddittorio",
+            "istruttoria",
+            "prova",
+            "onere della prova",
+            "ctu",
+            "testimone",
+            "giudice istruttore",
+            "udienza",
+            "comparsa",
+            "memoria",
+            "termine",
+            "decadenza",
+            "preclusione",
+            "costituzione",
+            "contumacia",
+            "nullità",
         ],
     ),
     "IMPUGNAZIONI": CategoryDef(
@@ -163,11 +312,25 @@ AMBITI: Dict[str, CategoryDef] = {
         name="Impugnazioni",
         description="Appello, ricorso per cassazione, revocazione, opposizione di terzo",
         keywords=[
-            "impugnazione", "appello", "ricorso", "cassazione", "revocazione",
-            "opposizione di terzo", "termine breve", "termine lungo", "motivi",
-            "violazione di legge", "vizio di motivazione", "error in iudicando",
-            "error in procedendo", "inammissibilità", "improcedibilità",
-            "controricorso", "ricorso incidentale", "rinuncia", "desistenza",
+            "impugnazione",
+            "appello",
+            "ricorso",
+            "cassazione",
+            "revocazione",
+            "opposizione di terzo",
+            "termine breve",
+            "termine lungo",
+            "motivi",
+            "violazione di legge",
+            "vizio di motivazione",
+            "error in iudicando",
+            "error in procedendo",
+            "inammissibilità",
+            "improcedibilità",
+            "controricorso",
+            "ricorso incidentale",
+            "rinuncia",
+            "desistenza",
         ],
     ),
     "ESECUZIONE": CategoryDef(
@@ -175,10 +338,19 @@ AMBITI: Dict[str, CategoryDef] = {
         name="Esecuzione Forzata",
         description="Pignoramento, espropriazione, precetto, opposizioni esecutive",
         keywords=[
-            "esecuzione", "titolo esecutivo", "precetto", "pignoramento",
-            "espropriazione", "vendita forzata", "assegnazione", "distribuzione",
-            "opposizione all'esecuzione", "opposizione agli atti esecutivi",
-            "sospensione dell'esecuzione", "terzo pignorato", "custodia",
+            "esecuzione",
+            "titolo esecutivo",
+            "precetto",
+            "pignoramento",
+            "espropriazione",
+            "vendita forzata",
+            "assegnazione",
+            "distribuzione",
+            "opposizione all'esecuzione",
+            "opposizione agli atti esecutivi",
+            "sospensione dell'esecuzione",
+            "terzo pignorato",
+            "custodia",
         ],
     ),
     "MISURE": CategoryDef(
@@ -186,10 +358,20 @@ AMBITI: Dict[str, CategoryDef] = {
         name="Misure Cautelari",
         description="Provvedimenti d'urgenza, sequestri, sospensione",
         keywords=[
-            "cautelare", "cautela", "urgenza", "periculum in mora",
-            "fumus boni iuris", "sequestro conservativo", "sequestro giudiziario",
-            "provvedimento d'urgenza", "700", "inibitoria", "sospensione",
-            "revoca", "modifica", "reclamo cautelare",
+            "cautelare",
+            "cautela",
+            "urgenza",
+            "periculum in mora",
+            "fumus boni iuris",
+            "sequestro conservativo",
+            "sequestro giudiziario",
+            "provvedimento d'urgenza",
+            "700",
+            "inibitoria",
+            "sospensione",
+            "revoca",
+            "modifica",
+            "reclamo cautelare",
         ],
     ),
     "UNKNOWN": CategoryDef(
@@ -207,7 +389,7 @@ AMBITO_ORDER = ["GIUDIZIO", "IMPUGNAZIONI", "ESECUZIONE", "MISURE", "UNKNOWN"]
 # TOPIC L2 (Granular topics under each Materia)
 # =============================================================================
 
-TOPICS_L2: Dict[str, Dict[str, CategoryDef]] = {
+TOPICS_L2: dict[str, dict[str, CategoryDef]] = {
     "CIVILE": {
         "CIVILE_OBBLIGAZIONI": CategoryDef(
             id="CIVILE_OBBLIGAZIONI",
@@ -398,7 +580,7 @@ TOPICS_L2: Dict[str, Dict[str, CategoryDef]] = {
 }
 
 
-def get_all_topic_l2_ids() -> List[str]:
+def get_all_topic_l2_ids() -> list[str]:
     """Return flat list of all Topic L2 IDs."""
     result = []
     for materia_topics in TOPICS_L2.values():
@@ -406,31 +588,21 @@ def get_all_topic_l2_ids() -> List[str]:
     return result
 
 
-def get_topics_for_materia(materia: str) -> Dict[str, CategoryDef]:
+def get_topics_for_materia(materia: str) -> dict[str, CategoryDef]:
     """Return Topic L2 definitions for a given Materia."""
     return TOPICS_L2.get(materia, {})
 
 
-def get_all_materia_keywords() -> Dict[str, Set[str]]:
+def get_all_materia_keywords() -> dict[str, set[str]]:
     """Return materia -> keywords mapping for classifier."""
-    return {
-        materia: set(cat.keywords)
-        for materia, cat in MATERIE.items()
-    }
+    return {materia: set(cat.keywords) for materia, cat in MATERIE.items()}
 
 
-def get_all_natura_keywords() -> Dict[str, Set[str]]:
+def get_all_natura_keywords() -> dict[str, set[str]]:
     """Return natura -> keywords mapping for classifier."""
-    return {
-        natura: set(cat.keywords)
-        for natura, cat in NATURE.items()
-    }
+    return {natura: set(cat.keywords) for natura, cat in NATURE.items()}
 
 
-def get_all_ambito_keywords() -> Dict[str, Set[str]]:
+def get_all_ambito_keywords() -> dict[str, set[str]]:
     """Return ambito -> keywords mapping for classifier (excluding UNKNOWN)."""
-    return {
-        ambito: set(cat.keywords)
-        for ambito, cat in AMBITI.items()
-        if ambito != "UNKNOWN"
-    }
+    return {ambito: set(cat.keywords) for ambito, cat in AMBITI.items() if ambito != "UNKNOWN"}

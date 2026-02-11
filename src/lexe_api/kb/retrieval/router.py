@@ -24,7 +24,7 @@ v3.3.0: Added norm graph lookup
 import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
 import structlog
@@ -41,17 +41,20 @@ logger = structlog.get_logger(__name__)
 # ROUTE TYPES
 # ============================================================
 
+
 class RouteType(str, Enum):
     """Query route classification."""
-    CITATION_RV = "citation_rv"           # Has RV reference
+
+    CITATION_RV = "citation_rv"  # Has RV reference
     CITATION_SEZ_NUM_ANNO = "citation_sez_num_anno"  # Has Sez/Num/Anno
     CITATION_NUM_ANNO = "citation_num_anno"  # Has Num/Anno only
-    NORM = "norm"                          # Has norm reference (art. 2043 c.c., L. 241/1990)
-    SEMANTIC = "semantic"                  # General semantic query
+    NORM = "norm"  # Has norm reference (art. 2043 c.c., L. 241/1990)
+    SEMANTIC = "semantic"  # General semantic query
 
 
 class LookupResult(str, Enum):
     """Lookup resolution result."""
+
     RV_EXACT = "rv_exact"
     RV_TEXT = "rv_text"
     SEZ_NUM_ANNO = "sez_num_anno"
@@ -84,13 +87,15 @@ NUM_ANNO_PATTERN = re.compile(
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class ParsedCitation:
     """Parsed citation from query."""
-    rv: Optional[str] = None
-    sezione: Optional[str] = None
-    numero: Optional[str] = None
-    anno: Optional[int] = None
+
+    rv: str | None = None
+    sezione: str | None = None
+    numero: str | None = None
+    anno: int | None = None
     raw_match: str = ""
 
     def is_valid(self) -> bool:
@@ -101,12 +106,13 @@ class ParsedCitation:
 @dataclass
 class ParsedNorm:
     """Parsed norm reference from query."""
-    code: str                          # CC, CPC, CP, LEGGE, DLGS, etc.
-    article: Optional[str] = None      # for codes: 2043, 360
-    suffix: Optional[str] = None       # bis, ter, quater...
-    number: Optional[str] = None       # for laws: 241, 50
-    year: Optional[int] = None         # for laws: 1990, 2016
-    canonical_id: str = ""             # CC:2043, LEGGE:241:1990
+
+    code: str  # CC, CPC, CP, LEGGE, DLGS, etc.
+    article: str | None = None  # for codes: 2043, 360
+    suffix: str | None = None  # bis, ter, quater...
+    number: str | None = None  # for laws: 241, 50
+    year: int | None = None  # for laws: 1990, 2016
+    canonical_id: str = ""  # CC:2043, LEGGE:241:1990
 
     @classmethod
     def from_dict(cls, d: dict) -> "ParsedNorm":
@@ -125,12 +131,13 @@ class ParsedNorm:
 @dataclass
 class RouterResult:
     """Result of query routing."""
+
     route_type: RouteType
-    citation: Optional[ParsedCitation] = None
-    norm: Optional[ParsedNorm] = None
+    citation: ParsedCitation | None = None
+    norm: ParsedNorm | None = None
 
     # If direct lookup succeeded
-    lookup_result: Optional[LookupResult] = None
+    lookup_result: LookupResult | None = None
     massima_ids: list[UUID] = field(default_factory=list)
     scores: list[float] = field(default_factory=list)
 
@@ -142,19 +149,21 @@ class RouterResult:
 @dataclass
 class RoutedSearchResult:
     """Combined search result with routing info."""
+
     massima_id: UUID
     score: float
     rank: int
     source: str  # rv_exact, rv_text, sez_num_anno, num_anno, hybrid
 
     # Component scores (for hybrid)
-    dense_score: Optional[float] = None
-    sparse_score: Optional[float] = None
+    dense_score: float | None = None
+    sparse_score: float | None = None
 
 
 # ============================================================
 # CITATION PARSING
 # ============================================================
+
 
 def normalize_rv(rv: str) -> str:
     """Normalize RV: strip leading zeros, remove suffix."""
@@ -188,7 +197,7 @@ def normalize_numero(numero: str) -> str:
     return stripped if stripped else "0"
 
 
-def parse_citation(query: str) -> Optional[ParsedCitation]:
+def parse_citation(query: str) -> ParsedCitation | None:
     """
     Parse citation reference from query.
 
@@ -225,7 +234,7 @@ def parse_citation(query: str) -> Optional[ParsedCitation]:
 
 def classify_query(
     query: str,
-) -> tuple[RouteType, Optional[ParsedCitation], Optional[ParsedNorm]]:
+) -> tuple[RouteType, ParsedCitation | None, ParsedNorm | None]:
     """
     Classify query and extract citation/norm if present.
 
@@ -269,6 +278,7 @@ def classify_query(
 # ============================================================
 # CITATION LOOKUP
 # ============================================================
+
 
 async def citation_lookup(
     conn: Any,
@@ -395,6 +405,7 @@ async def citation_lookup(
 # NORM LOOKUP
 # ============================================================
 
+
 async def norm_lookup(
     conn: Any,
     norm: ParsedNorm,
@@ -469,6 +480,7 @@ async def norm_lookup(
 # ROUTER
 # ============================================================
 
+
 async def route_query(
     query: str,
     conn: Any,
@@ -501,9 +513,7 @@ async def route_query(
     # If citation detected, try direct lookup
     if citation:
         result.lookup_attempted = True
-        massima_ids, scores, lookup_result = await citation_lookup(
-            conn, citation, limit
-        )
+        massima_ids, scores, lookup_result = await citation_lookup(conn, citation, limit)
 
         if massima_ids:
             result.lookup_hit = True
@@ -514,9 +524,7 @@ async def route_query(
     # If norm detected, try norm lookup
     elif norm:
         result.lookup_attempted = True
-        massima_ids, scores, lookup_result = await norm_lookup(
-            conn, norm, limit
-        )
+        massima_ids, scores, lookup_result = await norm_lookup(conn, norm, limit)
 
         if massima_ids:
             result.lookup_hit = True
@@ -576,14 +584,12 @@ async def routed_search(
                 source=route_result.lookup_result.value,
             )
             for i, (mid, score) in enumerate(
-                zip(route_result.massima_ids, route_result.scores)
+                zip(route_result.massima_ids, route_result.scores, strict=False)
             )
         ]
 
     # Fallback to hybrid search
-    hybrid_results = await hybrid_search_fn(
-        query, query_embedding, hybrid_config, conn
-    )
+    hybrid_results = await hybrid_search_fn(query, query_embedding, hybrid_config, conn)
 
     return [
         RoutedSearchResult(

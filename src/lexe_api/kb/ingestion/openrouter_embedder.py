@@ -30,17 +30,20 @@ MAX_RETRIES = 3
 
 class OpenRouterUnavailableError(Exception):
     """Raised when OpenRouter API is not available and there's no fallback."""
+
     pass
 
 
 class OpenRouterRateLimitError(Exception):
     """Raised when hitting rate limits."""
+
     pass
 
 
 @dataclass
 class EmbeddingResult:
     """Risultato embedding singolo."""
+
     text_hash: str
     embedding: list[float]
     dims: int
@@ -51,6 +54,7 @@ class EmbeddingResult:
 @dataclass
 class BatchEmbeddingResult:
     """Risultato batch embedding."""
+
     results: list[EmbeddingResult]
     total_tokens: int
     total_latency_ms: float
@@ -179,7 +183,7 @@ class OpenRouterEmbedder:
 
                 if response.status_code == 429:
                     # Rate limit - wait and retry
-                    wait_time = 2 ** attempt
+                    wait_time = 2**attempt
                     logger.warning(
                         "Rate limited, waiting",
                         wait_seconds=wait_time,
@@ -222,7 +226,7 @@ class OpenRouterEmbedder:
                     error=str(e),
                 )
                 if attempt < self.max_retries - 1:
-                    await asyncio.sleep(2 ** attempt)
+                    await asyncio.sleep(2**attempt)
 
             except httpx.ConnectError as e:
                 last_error = e
@@ -230,9 +234,7 @@ class OpenRouterEmbedder:
                     "Cannot connect to OpenRouter",
                     error=str(e),
                 )
-                raise OpenRouterUnavailableError(
-                    f"Cannot connect to OpenRouter API: {e}"
-                ) from e
+                raise OpenRouterUnavailableError(f"Cannot connect to OpenRouter API: {e}") from e
 
             except Exception as e:
                 last_error = e
@@ -242,7 +244,7 @@ class OpenRouterEmbedder:
                     error=str(e),
                 )
                 if attempt < self.max_retries - 1:
-                    await asyncio.sleep(2 ** attempt)
+                    await asyncio.sleep(2**attempt)
 
         raise OpenRouterUnavailableError(
             f"Failed to generate embedding after {self.max_retries} attempts: {last_error}"
@@ -278,16 +280,18 @@ class OpenRouterEmbedder:
         uncached_indices: list[int] = []
         uncached_texts: list[str] = []
 
-        for i, (text, text_hash) in enumerate(zip(texts, text_hashes)):
+        for i, (text, text_hash) in enumerate(zip(texts, text_hashes, strict=False)):
             if use_cache and text_hash in self._cache:
                 self._cache_hits += 1
-                all_results.append(EmbeddingResult(
-                    text_hash=text_hash,
-                    embedding=self._cache[text_hash],
-                    dims=len(self._cache[text_hash]),
-                    model=self.model,
-                    latency_ms=0.0,
-                ))
+                all_results.append(
+                    EmbeddingResult(
+                        text_hash=text_hash,
+                        embedding=self._cache[text_hash],
+                        dims=len(self._cache[text_hash]),
+                        model=self.model,
+                        latency_ms=0.0,
+                    )
+                )
             else:
                 self._cache_misses += 1
                 uncached_indices.append(i)
@@ -330,7 +334,7 @@ class OpenRouterEmbedder:
                     )
 
                     if response.status_code == 429:
-                        wait_time = 2 ** attempt
+                        wait_time = 2**attempt
                         logger.warning(
                             "Rate limited on batch, waiting",
                             wait_seconds=wait_time,
@@ -382,7 +386,7 @@ class OpenRouterEmbedder:
                         error=str(e),
                     )
                     if attempt < self.max_retries - 1:
-                        await asyncio.sleep(2 ** attempt)
+                        await asyncio.sleep(2**attempt)
                     else:
                         # Mark all in this batch as failed
                         for idx in batch_original_indices:

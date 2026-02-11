@@ -25,6 +25,7 @@ logger = structlog.get_logger(__name__)
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class GraphExpandedResult:
     """Risultato con graph expansion info."""
@@ -61,17 +62,20 @@ class GraphRAGConfig:
     # Boost settings
     graph_boost_factor: float = 0.15  # Additive boost for graph-connected
     depth_decay: float = 0.7  # Decay per hop (0.7^depth)
-    edge_type_weights: dict[str, float] = field(default_factory=lambda: {
-        "CITES": 1.0,
-        "CONFIRMS": 1.2,
-        "OVERRULES": 0.8,
-        "DISTINGUISHES": 0.6,
-    })
+    edge_type_weights: dict[str, float] = field(
+        default_factory=lambda: {
+            "CITES": 1.0,
+            "CONFIRMS": 1.2,
+            "OVERRULES": 0.8,
+            "DISTINGUISHES": 0.6,
+        }
+    )
 
 
 # ============================================================
 # GRAPH EXPANSION (SQL-based)
 # ============================================================
+
 
 async def graph_expand_sql(
     seed_ids: list[UUID],
@@ -215,6 +219,7 @@ async def graph_expand_sql(
 # GRAPH-BOOSTED RERANKING
 # ============================================================
 
+
 def compute_graph_boost(
     expansion_info: dict,
     config: GraphRAGConfig,
@@ -252,11 +257,11 @@ def compute_graph_boost(
     depth_multiplier = config.depth_decay ** (min_depth - 1)
 
     # Final boost
-    boost = config.graph_boost_factor * (
-        0.4 * seed_bonus +
-        0.3 * edge_score +
-        0.3 * weight_score
-    ) * depth_multiplier
+    boost = (
+        config.graph_boost_factor
+        * (0.4 * seed_bonus + 0.3 * edge_score + 0.3 * weight_score)
+        * depth_multiplier
+    )
 
     return boost
 
@@ -291,7 +296,7 @@ async def rerank_with_graph(
         return []
 
     # Step 1: Extract seeds (top K)
-    seeds = [r.massima_id for r in hybrid_results[:config.seed_count]]
+    seeds = [r.massima_id for r in hybrid_results[: config.seed_count]]
 
     # Step 2: Graph expand
     expanded = await graph_expand_sql(seeds, conn, config)
@@ -313,21 +318,25 @@ async def rerank_with_graph(
 
         final_score = r.rrf_score + graph_boost
 
-        results.append(GraphExpandedResult(
-            massima_id=r.massima_id,
-            original_score=r.rrf_score,
-            original_rank=r.final_rank,
-            graph_boost=graph_boost,
-            final_score=final_score,
-            final_rank=0,  # Will be set after sorting
-            is_graph_connected=is_connected or is_seed,
-            connected_to_seeds=expansion_info.get("seeds", []) if is_connected else ([r.massima_id] if is_seed else []),
-            edge_types=expansion_info.get("edge_types", []),
-            total_edge_weight=expansion_info.get("total_weight", 0.0),
-            min_path_length=expansion_info.get("min_depth", 0) if is_connected else 0,
-            dense_score=r.dense_score,
-            bm25_score=r.bm25_score,
-        ))
+        results.append(
+            GraphExpandedResult(
+                massima_id=r.massima_id,
+                original_score=r.rrf_score,
+                original_rank=r.final_rank,
+                graph_boost=graph_boost,
+                final_score=final_score,
+                final_rank=0,  # Will be set after sorting
+                is_graph_connected=is_connected or is_seed,
+                connected_to_seeds=expansion_info.get("seeds", [])
+                if is_connected
+                else ([r.massima_id] if is_seed else []),
+                edge_types=expansion_info.get("edge_types", []),
+                total_edge_weight=expansion_info.get("total_weight", 0.0),
+                min_path_length=expansion_info.get("min_depth", 0) if is_connected else 0,
+                dense_score=r.dense_score,
+                bm25_score=r.bm25_score,
+            )
+        )
 
     # Step 4: Re-sort by final score
     results.sort(key=lambda x: x.final_score, reverse=True)
@@ -355,6 +364,7 @@ async def rerank_with_graph(
 # ============================================================
 # FULL PIPELINE
 # ============================================================
+
 
 async def hybrid_search_with_graph(
     query: str,
@@ -413,6 +423,7 @@ async def hybrid_search_with_graph(
 # ============================================================
 # METRICS
 # ============================================================
+
 
 def calculate_graph_hit_rate(results: list[GraphExpandedResult], k: int = 10) -> float:
     """Calculate % of top-K results that are graph-connected."""

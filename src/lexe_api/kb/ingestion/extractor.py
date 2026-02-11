@@ -156,20 +156,14 @@ def calculate_ocr_metrics(text: str) -> OCRQualityMetrics:
         return OCRQualityMetrics()
 
     # 1. Valid chars ratio
-    valid_chars = sum(
-        1
-        for c in text
-        if c.isalnum() or c.isspace() or c in '.,;:!?()-"\''
-    )
+    valid_chars = sum(1 for c in text if c.isalnum() or c.isspace() or c in ".,;:!?()-\"'")
     valid_chars_ratio = valid_chars / len(text) if text else 0
 
     # 2. Italian tokens ratio
     words = re.findall(r"\b[a-zA-ZàèéìòùÀÈÉÌÒÙ]+\b", text.lower())
     if words:
         # Token italiano se e' stopword o ha lunghezza > 2
-        italian_words = sum(
-            1 for w in words if w in ITALIAN_STOPWORDS or len(w) > 2
-        )
+        italian_words = sum(1 for w in words if w in ITALIAN_STOPWORDS or len(w) > 2)
         italian_ratio = italian_words / len(words)
     else:
         italian_ratio = 0
@@ -264,9 +258,7 @@ async def extract_pdf_with_quality(
             )
 
         # Calcola metriche OCR sul testo completo
-        all_text = " ".join(
-            e.text for e in extracted if e.text
-        )
+        all_text = " ".join(e.text for e in extracted if e.text)
         metrics = calculate_ocr_metrics(all_text)
 
         extraction_time = (time.time() - start_time) * 1000

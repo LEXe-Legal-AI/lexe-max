@@ -5,10 +5,10 @@ Architettura:
 - Due classifier in parallelo (Gemini Flash + Qwen)
 - Un giudice (Mistral Large) per risolvere disagreement
 """
+
 import asyncio
 import json
 from dataclasses import dataclass
-from typing import List, Optional, Set, Tuple
 
 import httpx
 
@@ -30,7 +30,7 @@ class LLMResolverResult:
     model_b_confidence: float
     agreement: bool  # True se A == B
     judge_called: bool
-    judge_label: Optional[str] = None
+    judge_label: str | None = None
 
 
 @dataclass
@@ -38,9 +38,9 @@ class LLMResolverInput:
     """Input chirurgico per LLM resolver."""
 
     testo: str
-    sezione: Optional[str]
-    norme: List[str]
-    candidate_set: Set[str]
+    sezione: str | None
+    norme: list[str]
+    candidate_set: set[str]
     fallback_reason: str  # "delta_basso", "conf_bassa", etc.
 
 
@@ -120,8 +120,8 @@ async def _call_single_llm(
     api_key: str,
     model: str,
     prompt: str,
-    candidate_set: Set[str],
-) -> Tuple[str, float, str]:
+    candidate_set: set[str],
+) -> tuple[str, float, str]:
     """
     Chiama singolo LLM e parse risposta.
 

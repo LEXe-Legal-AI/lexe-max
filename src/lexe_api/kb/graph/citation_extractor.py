@@ -13,14 +13,14 @@ Features (v3.2.1):
 - Evidence tracking for debugging
 """
 
+import contextlib
 import re
 from dataclasses import dataclass, field
-from typing import Optional
 from uuid import UUID
 
 import structlog
 
-from lexe_api.kb.graph import RelationSubtype, RELATION_INDICATORS
+from lexe_api.kb.graph import RELATION_INDICATORS, RelationSubtype
 
 logger = structlog.get_logger(__name__)
 
@@ -62,18 +62,19 @@ CITATION_PATTERNS = [
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class CitationMention:
     """Raw mention extracted from text."""
 
     # Parsed fields
-    rv: Optional[str] = None
-    rv_raw: Optional[str] = None  # Original before normalization
-    sezione: Optional[str] = None
-    numero: Optional[str] = None
-    numero_raw: Optional[str] = None  # Original before normalization
-    numero_norm: Optional[str] = None  # After lstrip("0")
-    anno: Optional[int] = None
+    rv: str | None = None
+    rv_raw: str | None = None  # Original before normalization
+    sezione: str | None = None
+    numero: str | None = None
+    numero_raw: str | None = None  # Original before normalization
+    numero_norm: str | None = None  # After lstrip("0")
+    anno: int | None = None
 
     # Context
     raw_span: str = ""
@@ -81,7 +82,7 @@ class CitationMention:
     pattern_type: str = ""
 
     # Relation indicator (detected from surrounding text)
-    indicator: Optional[str] = None  # CONFIRMS, DISTINGUISHES, OVERRULES
+    indicator: str | None = None  # CONFIRMS, DISTINGUISHES, OVERRULES
 
 
 @dataclass
@@ -91,7 +92,7 @@ class ResolvedCitation:
     source_id: UUID
     target_id: UUID
     relation_type: str = "CITES"  # Always CITES for now
-    relation_subtype: Optional[str] = None  # CONFIRMS, DISTINGUISHES, OVERRULES
+    relation_subtype: str | None = None  # CONFIRMS, DISTINGUISHES, OVERRULES
 
     # Scoring (v3.2.1)
     confidence: float = 1.0
@@ -106,6 +107,7 @@ class ResolvedCitation:
 # ============================================================
 # NORMALIZATION FUNCTIONS (v3.2.1 Migliorie #3)
 # ============================================================
+
 
 def normalize_numero(numero: str) -> str:
     """
@@ -152,7 +154,8 @@ def normalize_sezione(sezione: str) -> str:
 # RELATION INDICATOR DETECTION
 # ============================================================
 
-def detect_indicator(text: str, position: int, window: int = 50) -> Optional[str]:
+
+def detect_indicator(text: str, position: int, window: int = 50) -> str | None:
     """
     Detect relation indicator from text surrounding the citation.
 
@@ -169,7 +172,11 @@ def detect_indicator(text: str, position: int, window: int = 50) -> Optional[str
     before_text = text[start:position].lower()
 
     # Check indicators in priority order (OVERRULES > DISTINGUISHES > CONFIRMS)
-    for subtype in [RelationSubtype.OVERRULES, RelationSubtype.DISTINGUISHES, RelationSubtype.CONFIRMS]:
+    for subtype in [
+        RelationSubtype.OVERRULES,
+        RelationSubtype.DISTINGUISHES,
+        RelationSubtype.CONFIRMS,
+    ]:
         patterns = RELATION_INDICATORS.get(subtype, [])
         for pattern in patterns:
             if re.search(pattern, before_text, re.IGNORECASE):
@@ -181,6 +188,7 @@ def detect_indicator(text: str, position: int, window: int = 50) -> Optional[str
 # ============================================================
 # STEP 1: EXTRACT MENTIONS
 # ============================================================
+
 
 def extract_mentions(testo: str) -> list[CitationMention]:
     """
@@ -206,13 +214,16 @@ def extract_mentions(testo: str) -> list[CitationMention]:
     logger.debug(
         "Mentions extracted",
         count=len(mentions),
-        by_type={pt: sum(1 for m in mentions if m.pattern_type == pt) for pt in ["rv", "sez_num_anno", "num_anno", "sentenza"]},
+        by_type={
+            pt: sum(1 for m in mentions if m.pattern_type == pt)
+            for pt in ["rv", "sez_num_anno", "num_anno", "sentenza"]
+        },
     )
 
     return mentions
 
 
-def _parse_match(match: re.Match, pattern_type: str) -> Optional[CitationMention]:
+def _parse_match(match: re.Match, pattern_type: str) -> CitationMention | None:
     """Parse regex match into CitationMention based on pattern type."""
     mention = CitationMention()
 
@@ -227,20 +238,16 @@ def _parse_match(match: re.Match, pattern_type: str) -> Optional[CitationMention
         mention.numero_raw = numero_raw
         mention.numero_norm = normalize_numero(numero_raw)
         mention.numero = mention.numero_norm  # Use normalized as primary
-        try:
+        with contextlib.suppress(ValueError, TypeError):
             mention.anno = int(match.group(3))
-        except (ValueError, TypeError):
-            pass
 
     elif pattern_type in ("num_anno", "sentenza"):
         numero_raw = match.group(1)
         mention.numero_raw = numero_raw
         mention.numero_norm = normalize_numero(numero_raw)
         mention.numero = mention.numero_norm
-        try:
+        with contextlib.suppress(ValueError, TypeError):
             mention.anno = int(match.group(2))
-        except (ValueError, TypeError):
-            pass
 
     return mention
 
@@ -249,11 +256,12 @@ def _parse_match(match: re.Match, pattern_type: str) -> Optional[CitationMention
 # STEP 2: RESOLVE MENTIONS
 # ============================================================
 
+
 async def resolve_mention(
     mention: CitationMention,
     conn,  # asyncpg.Connection
-    source_massima_id: Optional[UUID] = None,
-) -> tuple[Optional[UUID], str]:
+    source_massima_id: UUID | None = None,
+) -> tuple[UUID | None, str]:
     """
     Step 2: Resolve mention to massima_id with cascade fallback.
 
@@ -363,6 +371,7 @@ async def resolve_mention(
 # WEIGHT CALCULATION (v3.2.1 Miglioria #1)
 # ============================================================
 
+
 def compute_weight(mention: CitationMention, resolver: str) -> float:
     """
     Compute weight for edge pruning.
@@ -428,6 +437,7 @@ def build_evidence(mention: CitationMention, resolver: str) -> dict:
 # DEDUPLICATION (v3.2.1 Miglioria #2)
 # ============================================================
 
+
 def dedupe_mentions(
     resolved: list[tuple[UUID, CitationMention, UUID, str]],
 ) -> list[ResolvedCitation]:
@@ -467,10 +477,12 @@ def dedupe_mentions(
 
         if key in seen:
             # Keep if better confidence
-            if confidence > seen[key].confidence:
-                seen[key] = citation
-            # Or if same confidence but has indicator and existing doesn't
-            elif confidence == seen[key].confidence and subtype and not seen[key].relation_subtype:
+            if (
+                confidence > seen[key].confidence
+                or confidence == seen[key].confidence
+                and subtype
+                and not seen[key].relation_subtype
+            ):
                 seen[key] = citation
         else:
             seen[key] = citation
@@ -481,6 +493,7 @@ def dedupe_mentions(
 # ============================================================
 # FULL EXTRACTION PIPELINE
 # ============================================================
+
 
 async def extract_citations_for_massima(
     massima_id: UUID,

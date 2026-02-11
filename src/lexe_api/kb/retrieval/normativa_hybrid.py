@@ -26,6 +26,7 @@ logger = structlog.get_logger(__name__)
 # Configuration
 # =============================================================================
 
+
 @dataclass
 class NormativaDBConfig:
     """Database configuration for KB Normativa."""
@@ -100,6 +101,7 @@ async def close_normativa_pool() -> None:
 # Embedding Service
 # =============================================================================
 
+
 async def get_embedding(
     text: str,
     config: HybridSearchConfig | None = None,
@@ -123,8 +125,7 @@ async def get_embedding(
 
     if not api_key:
         raise ValueError(
-            "OPENROUTER_API_KEY environment variable not set. "
-            "Required for embedding generation."
+            "OPENROUTER_API_KEY environment variable not set. Required for embedding generation."
         )
 
     start = time.perf_counter()
@@ -157,6 +158,7 @@ async def get_embedding(
 # =============================================================================
 # Hybrid Search
 # =============================================================================
+
 
 async def hybrid_search_normativa(
     query: str,
@@ -195,7 +197,7 @@ async def hybrid_search_normativa(
     code_filter = ""
     code_values: list[Any] = []
     if codes:
-        placeholders = ", ".join(f"${i+7}" for i in range(len(codes)))
+        placeholders = ", ".join(f"${i + 7}" for i in range(len(codes)))
         code_filter = f"AND w.code IN ({placeholders})"
         code_values = codes
 
@@ -205,9 +207,7 @@ async def hybrid_search_normativa(
                 conn, query_embedding, top_k, code_filter, code_values, cfg
             )
         elif mode == SearchMode.SPARSE:
-            results = await _sparse_only_search(
-                conn, query, top_k, code_filter, code_values
-            )
+            results = await _sparse_only_search(conn, query, top_k, code_filter, code_values)
         else:
             # Default: Hybrid (Dense + Sparse + RRF)
             results = await _hybrid_rrf_search(
@@ -417,6 +417,7 @@ def _rows_to_results(rows: list[asyncpg.Record]) -> list[NormativaSearchResult]:
 # =============================================================================
 # Corpus Statistics
 # =============================================================================
+
 
 async def get_normativa_stats(pool: asyncpg.Pool) -> dict[str, Any]:
     """

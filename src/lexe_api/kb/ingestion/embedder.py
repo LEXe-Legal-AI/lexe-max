@@ -145,7 +145,7 @@ class EmbeddingClient:
                     error=str(e),
                 )
                 if attempt < self.max_retries - 1:
-                    await asyncio.sleep(2 ** attempt)
+                    await asyncio.sleep(2**attempt)
                 else:
                     raise
 
@@ -156,7 +156,7 @@ class EmbeddingClient:
                     error=str(e),
                 )
                 if attempt < self.max_retries - 1:
-                    await asyncio.sleep(2 ** attempt)
+                    await asyncio.sleep(2**attempt)
                 else:
                     raise
 
@@ -220,7 +220,7 @@ class EmbeddingClient:
                         error=str(e),
                     )
                     if attempt < self.max_retries - 1:
-                        await asyncio.sleep(2 ** attempt)
+                        await asyncio.sleep(2**attempt)
                     else:
                         raise
 
@@ -388,7 +388,7 @@ class MultiEmbedder:
         embeddings = await self.client.embed_batch(texts, model, batch_size)
 
         results = []
-        for i, (emb, massima_id) in enumerate(zip(embeddings, ids)):
+        for _i, (emb, massima_id) in enumerate(zip(embeddings, ids, strict=False)):
             result = EmbeddingResult(
                 embedding=emb,
                 model=model,

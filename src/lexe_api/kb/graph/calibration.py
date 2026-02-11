@@ -3,10 +3,10 @@ Isotonic Calibration for Category Graph v2.5
 
 Calibra confidence scores usando isotonic regression per ridurre ECE.
 """
+
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 from sklearn.isotonic import IsotonicRegression
@@ -16,7 +16,7 @@ class IsotonicCalibrator:
     """Calibra confidence scores usando isotonic regression."""
 
     def __init__(self):
-        self.model: Optional[IsotonicRegression] = None
+        self.model: IsotonicRegression | None = None
         self.version: str = ""
         self.trained_on: str = ""
 
@@ -101,10 +101,10 @@ class IsotonicCalibrator:
 
 
 # Singleton globale
-_calibrator: Optional[IsotonicCalibrator] = None
+_calibrator: IsotonicCalibrator | None = None
 
 
-def get_calibrator(cal_path: Optional[Path] = None) -> IsotonicCalibrator:
+def get_calibrator(cal_path: Path | None = None) -> IsotonicCalibrator:
     """
     Get or create singleton calibrator.
 

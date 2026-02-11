@@ -7,8 +7,6 @@ Handles articles and embeddings with idempotent inserts.
 
 import json
 from dataclasses import dataclass
-from datetime import datetime
-from typing import Any
 from uuid import UUID
 
 import asyncpg
@@ -22,6 +20,7 @@ logger = structlog.get_logger(__name__)
 @dataclass
 class StoredArticle:
     """Result of storing an article."""
+
     id: UUID
     global_key: str
     codice: str
@@ -32,6 +31,7 @@ class StoredArticle:
 @dataclass
 class StoreResult:
     """Result of batch store operation."""
+
     inserted: int
     updated: int
     failed: int
@@ -215,39 +215,40 @@ class AltalexStore:
 
         # Process in batches
         for i in range(0, len(articles), batch_size):
-            batch = articles[i:i + batch_size]
+            batch = articles[i : i + batch_size]
 
-            async with self._pool.acquire() as conn:
-                async with conn.transaction():
-                    for article, embedding in batch:
-                        try:
-                            result = await self.store_article(
-                                article=article,
-                                codice=codice,
-                                embedding=embedding,
-                                embedding_model=embedding_model,
-                                source_file=source_file,
-                                conn=conn,  # Pass connection for batch
-                            )
+            async with self._pool.acquire() as conn, conn.transaction():
+                for article, embedding in batch:
+                    try:
+                        result = await self.store_article(
+                            article=article,
+                            codice=codice,
+                            embedding=embedding,
+                            embedding_model=embedding_model,
+                            source_file=source_file,
+                            conn=conn,  # Pass connection for batch
+                        )
 
-                            if result.is_new:
-                                inserted += 1
-                            else:
-                                updated += 1
+                        if result.is_new:
+                            inserted += 1
+                        else:
+                            updated += 1
 
-                            stored_articles.append(result)
+                        stored_articles.append(result)
 
-                        except Exception as e:
-                            failed += 1
-                            errors.append({
+                    except Exception as e:
+                        failed += 1
+                        errors.append(
+                            {
                                 "articolo": article.articolo_num,
                                 "error": str(e),
-                            })
-                            logger.warning(
-                                "Failed to store article",
-                                articolo=article.articolo_num,
-                                error=str(e),
-                            )
+                            }
+                        )
+                        logger.warning(
+                            "Failed to store article",
+                            articolo=article.articolo_num,
+                            error=str(e),
+                        )
 
         logger.info(
             "Batch store complete",

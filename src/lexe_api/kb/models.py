@@ -3,13 +3,11 @@ LEXE Knowledge Base - Pydantic Models
 """
 
 from datetime import date, datetime
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 from .config import EmbeddingChannel, EmbeddingModel, SystemConfig
-
 
 # ============================================================
 # Document Models
@@ -23,8 +21,8 @@ class DocumentBase(BaseModel):
     anno: int
     volume: int
     tipo: str  # 'civile' | 'penale'
-    titolo: Optional[str] = None
-    pagine: Optional[int] = None
+    titolo: str | None = None
+    pagine: int | None = None
 
 
 class DocumentCreate(DocumentBase):
@@ -55,11 +53,11 @@ class Document(DocumentBase):
 
     id: UUID
     source_hash: str
-    ocr_quality_score: Optional[float] = None
-    ocr_valid_chars_ratio: Optional[float] = None
-    ocr_italian_tokens_ratio: Optional[float] = None
-    ocr_citation_regex_success: Optional[float] = None
-    processed_at: Optional[datetime] = None
+    ocr_quality_score: float | None = None
+    ocr_valid_chars_ratio: float | None = None
+    ocr_italian_tokens_ratio: float | None = None
+    ocr_citation_regex_success: float | None = None
+    processed_at: datetime | None = None
     created_at: datetime
 
     class Config:
@@ -76,8 +74,8 @@ class SectionBase(BaseModel):
 
     level: int  # 1=parte, 2=capitolo, 3=sezione, 4=sottosezione
     titolo: str
-    pagina_inizio: Optional[int] = None
-    pagina_fine: Optional[int] = None
+    pagina_inizio: int | None = None
+    pagina_fine: int | None = None
     section_path: str  # "PARTE I > Cap. 1 > Sez. 2"
 
 
@@ -85,7 +83,7 @@ class SectionCreate(SectionBase):
     """Model per creazione sezione."""
 
     document_id: UUID
-    parent_id: Optional[UUID] = None
+    parent_id: UUID | None = None
 
 
 class Section(SectionBase):
@@ -93,7 +91,7 @@ class Section(SectionBase):
 
     id: UUID
     document_id: UUID
-    parent_id: Optional[UUID] = None
+    parent_id: UUID | None = None
     created_at: datetime
 
     class Config:
@@ -108,12 +106,12 @@ class Section(SectionBase):
 class CitationNormalized(BaseModel):
     """Citazione normalizzata."""
 
-    sezione: Optional[str] = None  # "Sez. U", "Sez. 1"
-    numero: Optional[str] = None  # "12345"
-    anno: Optional[int] = None
-    data_decisione: Optional[date] = None
-    rv: Optional[str] = None  # "Rv. 123456-01"
-    relatore: Optional[str] = None
+    sezione: str | None = None  # "Sez. U", "Sez. 1"
+    numero: str | None = None  # "12345"
+    anno: int | None = None
+    data_decisione: date | None = None
+    rv: str | None = None  # "Rv. 123456-01"
+    relatore: str | None = None
 
     @property
     def is_complete(self) -> bool:
@@ -125,12 +123,12 @@ class MassimaBase(BaseModel):
     """Base model per massime atomiche."""
 
     testo: str  # Chunk A: massima pulita
-    testo_con_contesto: Optional[str] = None  # Chunk B: con blocchi attigui
+    testo_con_contesto: str | None = None  # Chunk B: con blocchi attigui
     citation: CitationNormalized = Field(default_factory=CitationNormalized)
-    pagina_inizio: Optional[int] = None
-    pagina_fine: Optional[int] = None
-    tipo: Optional[str] = None  # civile/penale
-    materia: Optional[str] = None
+    pagina_inizio: int | None = None
+    pagina_fine: int | None = None
+    tipo: str | None = None  # civile/penale
+    materia: str | None = None
     keywords: list[str] = Field(default_factory=list)
 
 
@@ -138,7 +136,7 @@ class MassimaCreate(MassimaBase):
     """Model per creazione massima."""
 
     document_id: UUID
-    section_id: Optional[UUID] = None
+    section_id: UUID | None = None
     testo_normalizzato: str
     content_hash: str
 
@@ -148,7 +146,7 @@ class Massima(MassimaBase):
 
     id: UUID
     document_id: UUID
-    section_id: Optional[UUID] = None
+    section_id: UUID | None = None
     testo_normalizzato: str
     content_hash: str
     importance_score: float = 0.5
@@ -205,19 +203,19 @@ class CitationExtracted(BaseModel):
     tipo: str  # 'pronuncia', 'norma', 'regolamento_ue', 'direttiva_ue'
     raw_text: str
     # Pronuncia
-    sezione: Optional[str] = None
-    numero: Optional[str] = None
-    anno: Optional[int] = None
-    data_decisione: Optional[date] = None
-    rv: Optional[str] = None
+    sezione: str | None = None
+    numero: str | None = None
+    anno: int | None = None
+    data_decisione: date | None = None
+    rv: str | None = None
     # Norma
-    articolo: Optional[str] = None
-    comma: Optional[str] = None
-    codice: Optional[str] = None  # "c.c.", "c.p.c."
+    articolo: str | None = None
+    comma: str | None = None
+    codice: str | None = None  # "c.c.", "c.p.c."
     # EU
-    regolamento: Optional[str] = None
-    direttiva: Optional[str] = None
-    celex: Optional[str] = None
+    regolamento: str | None = None
+    direttiva: str | None = None
+    celex: str | None = None
 
 
 class CitationCreate(CitationExtracted):
@@ -245,12 +243,12 @@ class Citation(CitationExtracted):
 class SearchFilters(BaseModel):
     """Filtri per ricerca."""
 
-    anno_min: Optional[int] = None
-    anno_max: Optional[int] = None
-    tipo: Optional[str] = None  # civile/penale
-    sezione: Optional[str] = None
-    materia: Optional[str] = None
-    codice: Optional[str] = None  # Per citazioni norme
+    anno_min: int | None = None
+    anno_max: int | None = None
+    tipo: str | None = None  # civile/penale
+    sezione: str | None = None
+    materia: str | None = None
+    codice: str | None = None  # Per citazioni norme
 
 
 class SearchRequest(BaseModel):
@@ -272,10 +270,10 @@ class SearchResult(BaseModel):
 
     massima: Massima
     score: float
-    rrf_score: Optional[float] = None
-    dense_rank: Optional[int] = None
-    sparse_rank: Optional[int] = None
-    rerank_score: Optional[float] = None
+    rrf_score: float | None = None
+    dense_rank: int | None = None
+    sparse_rank: int | None = None
+    rerank_score: float | None = None
     graph_expanded: bool = False
 
 
@@ -299,12 +297,12 @@ class IngestionJobStatus(BaseModel):
     """Stato job ingestion."""
 
     id: UUID
-    document_id: Optional[UUID] = None
+    document_id: UUID | None = None
     status: str  # pending, processing, completed, failed, retrying
     retry_count: int = 0
-    error_message: Optional[str] = None
-    started_at: Optional[datetime] = None
-    completed_at: Optional[datetime] = None
+    error_message: str | None = None
+    started_at: datetime | None = None
+    completed_at: datetime | None = None
     created_at: datetime
 
 
@@ -343,11 +341,11 @@ class BenchmarkMetrics(BaseModel):
     contradiction_rate: float
     # System
     latency_p95_ms: float
-    cost_per_query: Optional[float] = None
+    cost_per_query: float | None = None
     # OCR
-    ocr_valid_chars_ratio: Optional[float] = None
-    ocr_citation_regex_success: Optional[float] = None
-    citation_pinpoint_accuracy: Optional[float] = None
+    ocr_valid_chars_ratio: float | None = None
+    ocr_citation_regex_success: float | None = None
+    citation_pinpoint_accuracy: float | None = None
 
     @property
     def final_score(self) -> float:
@@ -367,7 +365,9 @@ class BenchmarkMetrics(BaseModel):
         # Citation pinpoint
         citation = self.citation_pinpoint_accuracy or 1.0
 
-        return (retrieval * 0.40 + answer * 0.40 + system * 0.10 + ocr * 0.05 + citation * 0.05) * 100
+        return (
+            retrieval * 0.40 + answer * 0.40 + system * 0.10 + ocr * 0.05 + citation * 0.05
+        ) * 100
 
 
 class BenchmarkRun(BaseModel):

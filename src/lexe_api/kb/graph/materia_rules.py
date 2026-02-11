@@ -20,13 +20,12 @@ NOTE: Database norms are in original format (e.g., "D.Lgs. n. 546/1992").
 """
 
 import re
-from typing import List, Set, Tuple, Optional
 
 # All possible materie
 MATERIE = {"CIVILE", "PENALE", "LAVORO", "TRIBUTARIO", "AMMINISTRATIVO", "CRISI"}
 
 
-def normalize_norm_for_matching(norm: str) -> Tuple[str, Optional[str], Optional[str]]:
+def normalize_norm_for_matching(norm: str) -> tuple[str, str | None, str | None]:
     """
     Normalize norm string to canonical components for matching.
 
@@ -65,57 +64,66 @@ def normalize_norm_for_matching(norm: str) -> Tuple[str, Optional[str], Optional
         return ("RD", match.group(1), match.group(2))
 
     # Pattern: art. XXX c.p.c. (Codice Procedura Civile)
-    if match := re.search(r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?P\.?C\.?", norm):
+    if match := re.search(
+        r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?P\.?C\.?", norm
+    ):
         return ("CPC", match.group(1).replace(" ", ""), None)
 
     # Pattern: art. XXX c.c. (Codice Civile)
-    if match := re.search(r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?C\.?", norm):
+    if match := re.search(
+        r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?C\.?", norm
+    ):
         return ("CC", match.group(1).replace(" ", ""), None)
 
     # Pattern: art. XXX c.p. (Codice Penale) - NOT c.p.c.!
-    if match := re.search(r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?P\.?(?!C)", norm):
+    if match := re.search(
+        r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?P\.?(?!C)", norm
+    ):
         return ("CP", match.group(1).replace(" ", ""), None)
 
     # Pattern: art. XXX c.p.p. (Codice Procedura Penale)
-    if match := re.search(r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?P\.?P\.?", norm):
+    if match := re.search(
+        r"ART\.?\s*(\d+(?:\s*(?:BIS|TER|QUATER|QUINQUIES|SEXIES))?)\s*C\.?P\.?P\.?", norm
+    ):
         return ("CPP", match.group(1).replace(" ", ""), None)
 
     # Fallback: no match
     return ("UNKNOWN", None, None)
 
+
 # Norm signatures that strongly indicate specific materie
 NORM_HINTS = {
     "TRIBUTARIO": {
         "DLGS:546:1992",  # Contenzioso tributario
-        "DPR:602:1973",   # Riscossione
-        "DPR:633:1972",   # IVA
-        "DPR:600:1973",   # Accertamento
+        "DPR:602:1973",  # Riscossione
+        "DPR:633:1972",  # IVA
+        "DPR:600:1973",  # Accertamento
         "DLGS:472:1997",  # Sanzioni tributarie
         "DLGS:471:1997",  # Sanzioni tributarie
         "DLGS:504:1992",  # ICI/IMU
     },
     "AMMINISTRATIVO": {
         "LEGGE:241:1990",  # Procedimento amministrativo
-        "DLGS:165:2001",   # Pubblico impiego
-        "DLGS:104:2010",   # Codice processo amministrativo
-        "DLGS:50:2016",    # Codice appalti (nuovo)
-        "DPR:445:2000",    # Documentazione amministrativa
+        "DLGS:165:2001",  # Pubblico impiego
+        "DLGS:104:2010",  # Codice processo amministrativo
+        "DLGS:50:2016",  # Codice appalti (nuovo)
+        "DPR:445:2000",  # Documentazione amministrativa
         # NOTE: D.Lgs. 25/2008, 150/2011, 163/2006, L.689/1981 are ambiguous
         # They appear in both AMMINISTRATIVO and CIVILE contexts
         # Only add hints that are unambiguous
-        "DPR:327:2001",    # TU Espropriazioni (unambiguous)
+        "DPR:327:2001",  # TU Espropriazioni (unambiguous)
     },
     "CRISI": {
-        "RD:267:1942",     # Legge fallimentare
-        "DLGS:14:2019",    # Codice della crisi
+        "RD:267:1942",  # Legge fallimentare
+        "DLGS:14:2019",  # Codice della crisi
     },
     "LAVORO": {
         "LEGGE:300:1970",  # Statuto lavoratori
-        "DLGS:66:2003",    # Orario di lavoro
-        "DLGS:81:2008",    # Sicurezza lavoro
+        "DLGS:66:2003",  # Orario di lavoro
+        "DLGS:81:2008",  # Sicurezza lavoro
     },
     "PENALE": {
-        "CP",   # Codice penale
+        "CP",  # Codice penale
         "CPP",  # Codice procedura penale
     },
 }
@@ -128,7 +136,7 @@ def _norm_primary(code: str) -> str:
     return code.split(":")[0].upper().strip()
 
 
-def _normalize_norms(norms: List[str]) -> Tuple[Set[str], Set[str]]:
+def _normalize_norms(norms: list[str]) -> tuple[set[str], set[str]]:
     """
     Normalize a list of norms from database format to canonical format.
 
@@ -157,11 +165,11 @@ def _normalize_norms(norms: List[str]) -> Tuple[Set[str], Set[str]]:
 
 
 def compute_materia_candidates(
-    tipo: Optional[str],
-    sezione: Optional[str],
-    norms: List[str],
-    testo_lower: Optional[str] = None,
-) -> Tuple[Set[str], List[str]]:
+    tipo: str | None,
+    sezione: str | None,
+    norms: list[str],
+    testo_lower: str | None = None,
+) -> tuple[set[str], list[str]]:
     """
     Compute the candidate set for materia based on metadata and norms.
 
@@ -174,8 +182,8 @@ def compute_materia_candidates(
     Returns:
         (candidate_set, reasons): Narrowed candidate set and reasons for audit trail
     """
-    reasons: List[str] = []
-    candidates: Set[str] = set(MATERIE)
+    reasons: list[str] = []
+    candidates: set[str] = set(MATERIE)
 
     tipo_norm = (tipo or "").strip().lower()
     sez = (sezione or "").lower()
@@ -232,7 +240,8 @@ def compute_materia_candidates(
     if testo_lower and re.search(
         r"\b(licenziament[oi]|statuto\s+dei\s+lavorator|"
         r"rapporto\s+di\s+lavoro\s+subordinato|contratto\s+di\s+lavoro\s+subordinato|"
-        r"t\.?\s*f\.?\s*r\.?\s*[^\w]|trattamento\s+di\s+fine\s+rapporto)", testo_lower
+        r"t\.?\s*f\.?\s*r\.?\s*[^\w]|trattamento\s+di\s+fine\s+rapporto)",
+        testo_lower,
     ):
         candidates = {"LAVORO", "CIVILE"}
         reasons.append("lavoro_keywords_candidate_set")
@@ -248,7 +257,11 @@ def compute_materia_candidates(
     # In DB, sezione is "1", "2", "3", etc. or "6-1", "6-2", "6-3"
     # Only exclude PENALE (absolute) and LAVORO (if no hints)
     # Keep AMMINISTRATIVO, CRISI, TRIBUTARIO in candidate set for centroid
-    if sez in {"1", "2", "3", "4", "5", "6"} or re.search(r"^6-[123]$", sez) or re.search(r"sez\.\s*[1-6]\b", sez):
+    if (
+        sez in {"1", "2", "3", "4", "5", "6"}
+        or re.search(r"^6-[123]$", sez)
+        or re.search(r"sez\.\s*[1-6]\b", sez)
+    ):
         candidates.discard("PENALE")
         # Exclude LAVORO unless norm hints present
         lavoro_norms = NORM_HINTS.get("LAVORO", set())
@@ -279,11 +292,11 @@ def compute_materia_candidates(
 
 
 def derive_materia_rule_first(
-    tipo: Optional[str],
-    sezione: Optional[str],
-    norms: List[str],
-    testo_lower: Optional[str] = None,
-) -> Tuple[Optional[str], float, str, Set[str], List[str]]:
+    tipo: str | None,
+    sezione: str | None,
+    norms: list[str],
+    testo_lower: str | None = None,
+) -> tuple[str | None, float, str, set[str], list[str]]:
     """
     Attempt rule-based derivation of materia.
 
@@ -317,9 +330,9 @@ def derive_materia_rule_first(
 
 
 def get_materia_prior(
-    tipo: Optional[str],
-    sezione: Optional[str],
-) -> Tuple[Optional[str], float]:
+    tipo: str | None,
+    sezione: str | None,
+) -> tuple[str | None, float]:
     """
     Get a weak prior for materia based only on tipo and sezione.
     Used when no norms are available.

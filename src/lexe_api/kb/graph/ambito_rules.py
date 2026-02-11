@@ -17,7 +17,6 @@ NOTE: Database norms are in original format (e.g., "art. 360 c.p.c.").
 """
 
 import re
-from typing import List, Tuple, Optional, Set
 
 # Import normalization from materia_rules
 from .materia_rules import normalize_norm_for_matching
@@ -25,65 +24,65 @@ from .materia_rules import normalize_norm_for_matching
 # High-precision CPC norms for each Ambito
 AMBITO_NORMS = {
     "MISURE": {
-        "CPC:700",      # Provvedimenti d'urgenza
-        "CPC:669",      # Procedimento cautelare
-        "CPC:669BIS",   # Istanza cautelare
-        "CPC:671",      # Sequestro giudiziario
-        "CPC:672",      # Sequestro conservativo
+        "CPC:700",  # Provvedimenti d'urgenza
+        "CPC:669",  # Procedimento cautelare
+        "CPC:669BIS",  # Istanza cautelare
+        "CPC:671",  # Sequestro giudiziario
+        "CPC:672",  # Sequestro conservativo
     },
     "ESECUZIONE": {
-        "CPC:474",      # Titolo esecutivo
-        "CPC:475",      # Spedizione in forma esecutiva
-        "CPC:479",      # Precetto
-        "CPC:480",      # Forma del precetto
-        "CPC:491",      # Espropriazione mobiliare
-        "CPC:492",      # Forma del pignoramento
-        "CPC:555",      # Espropriazione immobiliare
-        "CPC:615",      # Opposizione all'esecuzione
-        "CPC:617",      # Opposizione agli atti esecutivi
-        "CPC:619",      # Opposizione di terzo
+        "CPC:474",  # Titolo esecutivo
+        "CPC:475",  # Spedizione in forma esecutiva
+        "CPC:479",  # Precetto
+        "CPC:480",  # Forma del precetto
+        "CPC:491",  # Espropriazione mobiliare
+        "CPC:492",  # Forma del pignoramento
+        "CPC:555",  # Espropriazione immobiliare
+        "CPC:615",  # Opposizione all'esecuzione
+        "CPC:617",  # Opposizione agli atti esecutivi
+        "CPC:619",  # Opposizione di terzo
     },
     "IMPUGNAZIONI": {
-        "CPC:323",      # Mezzi di impugnazione
-        "CPC:325",      # Termine breve
-        "CPC:327",      # Termine lungo
-        "CPC:339",      # Appello
-        "CPC:360",      # Sentenze impugnabili e motivi
-        "CPC:366",      # Contenuto del ricorso
-        "CPC:369",      # Deposito del ricorso
-        "CPC:371",      # Ricorso incidentale
-        "CPC:391",      # Rinuncia al ricorso
-        "CPC:395",      # Casi di revocazione
-        "CPC:404",      # Opposizione di terzo
+        "CPC:323",  # Mezzi di impugnazione
+        "CPC:325",  # Termine breve
+        "CPC:327",  # Termine lungo
+        "CPC:339",  # Appello
+        "CPC:360",  # Sentenze impugnabili e motivi
+        "CPC:366",  # Contenuto del ricorso
+        "CPC:369",  # Deposito del ricorso
+        "CPC:371",  # Ricorso incidentale
+        "CPC:391",  # Rinuncia al ricorso
+        "CPC:395",  # Casi di revocazione
+        "CPC:404",  # Opposizione di terzo
     },
     "GIUDIZIO": {
         # Competenza
-        "CPC:7",        # Competenza del giudice di pace
-        "CPC:9",        # Competenza del tribunale
-        "CPC:18",       # Foro generale persone fisiche
-        "CPC:19",       # Foro generale persone giuridiche
-        "CPC:20",       # Foro facoltativo
-        "CPC:28",       # Competenza inderogabile
-        "CPC:38",       # Incompetenza
+        "CPC:7",  # Competenza del giudice di pace
+        "CPC:9",  # Competenza del tribunale
+        "CPC:18",  # Foro generale persone fisiche
+        "CPC:19",  # Foro generale persone giuridiche
+        "CPC:20",  # Foro facoltativo
+        "CPC:28",  # Competenza inderogabile
+        "CPC:38",  # Incompetenza
         # Notifiche
-        "CPC:137",      # Notificazione
-        "CPC:138",      # Notificazione in mani proprie
-        "CPC:139",      # Notificazione nella residenza
-        "CPC:140",      # Irreperibilità
-        "CPC:143",      # Notificazione a persona di residenza sconosciuta
+        "CPC:137",  # Notificazione
+        "CPC:138",  # Notificazione in mani proprie
+        "CPC:139",  # Notificazione nella residenza
+        "CPC:140",  # Irreperibilità
+        "CPC:143",  # Notificazione a persona di residenza sconosciuta
         # Nullità
-        "CPC:156",      # Rilevanza della nullità
-        "CPC:157",      # Nullità formali
-        "CPC:158",      # Regime della nullità
-        "CPC:159",      # Estensione della nullità
-        "CPC:160",      # Rinnovazione
-        "CPC:161",      # Nullità della sentenza
+        "CPC:156",  # Rilevanza della nullità
+        "CPC:157",  # Nullità formali
+        "CPC:158",  # Regime della nullità
+        "CPC:159",  # Estensione della nullità
+        "CPC:160",  # Rinnovazione
+        "CPC:161",  # Nullità della sentenza
         # Prove
-        "CPC:115",      # Disponibilità delle prove
-        "CPC:116",      # Valutazione delle prove
-        "CPC:191",      # CTU
-        "CPC:244",      # Prova testimoniale
-        "CPC:2697",     # Onere della prova (CC ma spesso citato)
+        "CPC:115",  # Disponibilità delle prove
+        "CPC:116",  # Valutazione delle prove
+        "CPC:191",  # CTU
+        "CPC:244",  # Prova testimoniale
+        "CPC:2697",  # Onere della prova (CC ma spesso citato)
     },
 }
 
@@ -124,7 +123,7 @@ def _norm_primary(code: str) -> str:
     return code.split(":")[0].upper().strip()
 
 
-def _extract_cpc_articles(norms: List[str]) -> Set[str]:
+def _extract_cpc_articles(norms: list[str]) -> set[str]:
     """
     Extract normalized CPC article references from norm list.
 
@@ -146,9 +145,9 @@ def _extract_cpc_articles(norms: List[str]) -> Set[str]:
 
 
 def ambito_rules_high_precision(
-    norms: List[str],
+    norms: list[str],
     testo_lower: str,
-) -> Tuple[Optional[str], float, str]:
+) -> tuple[str | None, float, str]:
     """
     High-precision rules for Ambito derivation.
     Only called when natura=PROCESSUALE.
@@ -159,9 +158,7 @@ def ambito_rules_high_precision(
     """
     cpc_refs = _extract_cpc_articles(norms)
     # Check if any norm references CPC (using normalization)
-    has_cpc = bool(cpc_refs) or any(
-        normalize_norm_for_matching(n)[0] == "CPC" for n in norms if n
-    )
+    bool(cpc_refs) or any(normalize_norm_for_matching(n)[0] == "CPC" for n in norms if n)
 
     # Rule 1: MISURE (cautelare) - highest priority
     misure_hits = AMBITO_NORMS["MISURE"] & cpc_refs
@@ -208,9 +205,9 @@ def ambito_rules_high_precision(
 
 
 def compute_ambito_candidates(
-    norms: List[str],
+    norms: list[str],
     testo_lower: str,
-) -> Tuple[Set[str], List[str]]:
+) -> tuple[set[str], list[str]]:
     """
     Compute candidate set for Ambito based on weak signals.
     Used when high-precision rules don't fire.
@@ -218,21 +215,15 @@ def compute_ambito_candidates(
     Returns:
         (candidate_set, reasons)
     """
-    reasons: List[str] = []
-    candidates: Set[str] = {"GIUDIZIO", "IMPUGNAZIONI", "ESECUZIONE", "MISURE"}
+    reasons: list[str] = []
+    candidates: set[str] = {"GIUDIZIO", "IMPUGNAZIONI", "ESECUZIONE", "MISURE"}
 
-    cpc_refs = _extract_cpc_articles(norms)
+    _extract_cpc_articles(norms)
 
     # Check for any weak signals to narrow candidates
-    has_esec_signal = bool(
-        re.search(r"\b(esecuzion|pignor|precett)\b", testo_lower)
-    )
-    has_imp_signal = bool(
-        re.search(r"\b(impugn|ricors|appell|cassaz)\b", testo_lower)
-    )
-    has_misure_signal = bool(
-        re.search(r"\b(cautelar|urgent|sospens)\b", testo_lower)
-    )
+    has_esec_signal = bool(re.search(r"\b(esecuzion|pignor|precett)\b", testo_lower))
+    has_imp_signal = bool(re.search(r"\b(impugn|ricors|appell|cassaz)\b", testo_lower))
+    has_misure_signal = bool(re.search(r"\b(cautelar|urgent|sospens)\b", testo_lower))
 
     signals = []
     if has_esec_signal:
@@ -253,9 +244,9 @@ def compute_ambito_candidates(
 
 
 def derive_ambito_rule_first(
-    norms: List[str],
+    norms: list[str],
     testo_lower: str,
-) -> Tuple[Optional[str], float, str, Set[str], List[str]]:
+) -> tuple[str | None, float, str, set[str], list[str]]:
     """
     Attempt rule-based derivation of Ambito.
     Only call this when natura=PROCESSUALE.

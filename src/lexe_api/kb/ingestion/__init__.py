@@ -12,16 +12,6 @@ Moduli per l'estrazione e processing di PDF massimari:
 - pipeline: Orchestrazione pipeline completa
 """
 
-from .cleaner import (
-    clean_legal_text,
-    clean_ocr_artifacts,
-    compute_content_hash,
-    extract_first_sentence,
-    is_likely_header_or_footer,
-    merge_split_paragraphs,
-    normalize_citation_text,
-    normalize_for_hash,
-)
 from .citation_parser import (
     CitationType,
     ParsedCitation,
@@ -33,9 +23,19 @@ from .citation_parser import (
     get_cited_norms,
     get_cited_pronounce,
 )
+from .cleaner import (
+    clean_legal_text,
+    clean_ocr_artifacts,
+    compute_content_hash,
+    extract_first_sentence,
+    is_likely_header_or_footer,
+    merge_split_paragraphs,
+    normalize_citation_text,
+    normalize_for_hash,
+)
 from .deduplicator import (
-    Deduplicator,
     DeduplicationResult,
+    Deduplicator,
     DuplicateMatch,
     compute_simhash,
     find_near_duplicates_quadratic,
@@ -51,8 +51,8 @@ from .embedder import (
     validate_embedding_dims,
 )
 from .extractor import (
-    ExtractionResult,
     ExtractedElement,
+    ExtractionResult,
     OCRQualityMetrics,
     calculate_ocr_metrics,
     extract_pdf_sync,

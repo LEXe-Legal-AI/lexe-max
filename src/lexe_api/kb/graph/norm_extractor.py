@@ -219,7 +219,7 @@ def extract_norms(testo: str) -> list[NormRef]:
 
     for pattern, code, ptype in PATTERNS:
         for m in pattern.finditer(testo):
-            span = _clean(m.group(0))
+            _clean(m.group(0))
             context = _get_context(testo, m.start(), m.end())
 
             if ptype == "code":

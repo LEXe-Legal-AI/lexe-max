@@ -24,21 +24,24 @@ logger = structlog.get_logger(__name__)
 # ENUMS & TYPES
 # ============================================================
 
+
 class DocumentType(str, Enum):
     """Tipo di documento normativo."""
-    CODICE = "codice"              # Codice Civile, Penale, etc.
-    LEGGE = "legge"                # Legge ordinaria
-    DECRETO_LEGISLATIVO = "dlgs"   # D.Lgs.
-    DECRETO_LEGGE = "dl"           # D.L.
-    DPR = "dpr"                    # D.P.R.
+
+    CODICE = "codice"  # Codice Civile, Penale, etc.
+    LEGGE = "legge"  # Legge ordinaria
+    DECRETO_LEGISLATIVO = "dlgs"  # D.Lgs.
+    DECRETO_LEGGE = "dl"  # D.L.
+    DPR = "dpr"  # D.P.R.
     COSTITUZIONE = "costituzione"
-    TESTO_UNICO = "tu"             # Testo Unico
+    TESTO_UNICO = "tu"  # Testo Unico
     REGOLAMENTO = "regolamento"
     UNKNOWN = "unknown"
 
 
 class HierarchyLevel(int, Enum):
     """Livelli gerarchia normativa."""
+
     LIBRO = 1
     PARTE = 2
     TITOLO = 3
@@ -50,6 +53,7 @@ class HierarchyLevel(int, Enum):
 
 class Position(NamedTuple):
     """Posizione nel testo."""
+
     start: int
     end: int
 
@@ -58,12 +62,14 @@ class Position(NamedTuple):
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class HierarchyNode:
     """Nodo della gerarchia normativa."""
+
     level: HierarchyLevel
-    number: str              # "I", "1", "2-bis"
-    title: str | None        # Rubrica
+    number: str  # "I", "1", "2-bis"
+    title: str | None  # Rubrica
     position: Position | None = None
     children: list["HierarchyNode"] = field(default_factory=list)
 
@@ -86,13 +92,14 @@ class HierarchyNode:
 @dataclass
 class ArticleStructure:
     """Struttura estratta di un articolo."""
+
     # Identificazione
-    articolo: str            # "2043", "360-bis"
-    rubrica: str | None      # "Risarcimento per fatto illecito"
+    articolo: str  # "2043", "360-bis"
+    rubrica: str | None  # "Risarcimento per fatto illecito"
 
     # Contenuto
-    testo: str               # Testo completo articolo
-    commi: list[str]         # Lista commi separati
+    testo: str  # Testo completo articolo
+    commi: list[str]  # Lista commi separati
 
     # Posizione nella gerarchia
     libro: str | None = None
@@ -108,8 +115,9 @@ class ArticleStructure:
 @dataclass
 class DocumentStructure:
     """Struttura completa di un documento normativo."""
+
     doc_type: DocumentType
-    codice: str | None       # "CC", "CP", etc.
+    codice: str | None  # "CC", "CP", etc.
     title: str | None
 
     # Gerarchia
@@ -123,6 +131,7 @@ class DocumentStructure:
 # ============================================================
 # REGEX PATTERNS
 # ============================================================
+
 
 class LegalPatterns:
     """Collezione pattern regex per testi legali italiani."""
@@ -140,96 +149,84 @@ class LegalPatterns:
     ARTICLE_HEADER = re.compile(
         rf"^\s*(?:Art(?:icolo)?\.?)\s*({ARTICLE_NUMBER})"
         rf"(?:\s*[\.\-–—]\s*(.+?))?\s*$",
-        re.IGNORECASE | re.MULTILINE
+        re.IGNORECASE | re.MULTILINE,
     )
 
     # Intestazione articolo alternativa (numero da solo)
-    ARTICLE_HEADER_ALT = re.compile(
-        rf"^\s*({ARTICLE_NUMBER})\.\s*(.+?)\s*$",
-        re.MULTILINE
-    )
+    ARTICLE_HEADER_ALT = re.compile(rf"^\s*({ARTICLE_NUMBER})\.\s*(.+?)\s*$", re.MULTILINE)
 
     # Comma numerato
     COMMA_PATTERN = re.compile(
-        r"^\s*(\d+)[\.\)]\s*(.+?)(?=^\s*\d+[\.\)]|\Z)",
-        re.MULTILINE | re.DOTALL
+        r"^\s*(\d+)[\.\)]\s*(.+?)(?=^\s*\d+[\.\)]|\Z)", re.MULTILINE | re.DOTALL
     )
 
     # Lettera in comma
     LETTERA_PATTERN = re.compile(
-        r"^\s*([a-z])\)\s*(.+?)(?=^\s*[a-z]\)|\Z)",
-        re.MULTILINE | re.DOTALL
+        r"^\s*([a-z])\)\s*(.+?)(?=^\s*[a-z]\)|\Z)", re.MULTILINE | re.DOTALL
     )
 
     # Gerarchia: Libro
     LIBRO_PATTERN = re.compile(
         rf"^\s*LIBRO\s+({ROMAN_NUMERAL}|\d+)"
         rf"(?:\s*[\.\-–—]\s*(.+?))?\s*$",
-        re.IGNORECASE | re.MULTILINE
+        re.IGNORECASE | re.MULTILINE,
     )
 
     # Gerarchia: Parte
     PARTE_PATTERN = re.compile(
         rf"^\s*PARTE\s+({ROMAN_NUMERAL}|\d+)"
         rf"(?:\s*[\.\-–—]\s*(.+?))?\s*$",
-        re.IGNORECASE | re.MULTILINE
+        re.IGNORECASE | re.MULTILINE,
     )
 
     # Gerarchia: Titolo
     TITOLO_PATTERN = re.compile(
         rf"^\s*TITOLO\s+({ROMAN_NUMERAL}|\d+)"
         rf"(?:\s*[\.\-–—]\s*(.+?))?\s*$",
-        re.IGNORECASE | re.MULTILINE
+        re.IGNORECASE | re.MULTILINE,
     )
 
     # Gerarchia: Capo
     CAPO_PATTERN = re.compile(
         rf"^\s*CAPO\s+({ROMAN_NUMERAL}|\d+)"
         rf"(?:\s*[\.\-–—]\s*(.+?))?\s*$",
-        re.IGNORECASE | re.MULTILINE
+        re.IGNORECASE | re.MULTILINE,
     )
 
     # Gerarchia: Sezione
     SEZIONE_PATTERN = re.compile(
         rf"^\s*SEZIONE\s+({ROMAN_NUMERAL}|\d+)"
         rf"(?:\s*[\.\-–—]\s*(.+?))?\s*$",
-        re.IGNORECASE | re.MULTILINE
+        re.IGNORECASE | re.MULTILINE,
     )
 
     # Tipo documento
     DOC_TYPE_PATTERNS = {
         DocumentType.CODICE: re.compile(
             r"codice\s+(?:civile|penale|della?\s+(?:strada|navigazione|privacy|consumo))",
-            re.IGNORECASE
+            re.IGNORECASE,
         ),
         DocumentType.COSTITUZIONE: re.compile(
-            r"costituzione\s+(?:della\s+)?(?:repubblica\s+)?italiana",
-            re.IGNORECASE
+            r"costituzione\s+(?:della\s+)?(?:repubblica\s+)?italiana", re.IGNORECASE
         ),
         DocumentType.DECRETO_LEGISLATIVO: re.compile(
-            r"d(?:ecreto)?\.?\s*l(?:eg)?(?:islativo)?\.?\s*\d+",
-            re.IGNORECASE
+            r"d(?:ecreto)?\.?\s*l(?:eg)?(?:islativo)?\.?\s*\d+", re.IGNORECASE
         ),
-        DocumentType.LEGGE: re.compile(
-            r"legge\s+\d+",
-            re.IGNORECASE
-        ),
-        DocumentType.DPR: re.compile(
-            r"d\.?p\.?r\.?\s*\d+",
-            re.IGNORECASE
-        ),
-        DocumentType.TESTO_UNICO: re.compile(
-            r"testo\s+unico",
-            re.IGNORECASE
-        ),
+        DocumentType.LEGGE: re.compile(r"legge\s+\d+", re.IGNORECASE),
+        DocumentType.DPR: re.compile(r"d\.?p\.?r\.?\s*\d+", re.IGNORECASE),
+        DocumentType.TESTO_UNICO: re.compile(r"testo\s+unico", re.IGNORECASE),
     }
 
     # Codice abbreviato
     CODICE_PATTERNS = {
         "CC": re.compile(r"\b(?:c(?:od)?\.?\s*c(?:iv)?\.?|codice\s+civile)\b", re.I),
         "CP": re.compile(r"\b(?:c(?:od)?\.?\s*p(?:en)?\.?|codice\s+penale)\b", re.I),
-        "CPC": re.compile(r"\b(?:c\.?\s*p\.?\s*c\.?|codice\s+(?:di\s+)?procedura\s+civile)\b", re.I),
-        "CPP": re.compile(r"\b(?:c\.?\s*p\.?\s*p\.?|codice\s+(?:di\s+)?procedura\s+penale)\b", re.I),
+        "CPC": re.compile(
+            r"\b(?:c\.?\s*p\.?\s*c\.?|codice\s+(?:di\s+)?procedura\s+civile)\b", re.I
+        ),
+        "CPP": re.compile(
+            r"\b(?:c\.?\s*p\.?\s*p\.?|codice\s+(?:di\s+)?procedura\s+penale)\b", re.I
+        ),
         "COST": re.compile(r"\b(?:cost\.?|costituzione)\b", re.I),
         "CDS": re.compile(r"\b(?:c\.?\s*d\.?\s*s\.?|codice\s+della\s+strada)\b", re.I),
     }
@@ -238,6 +235,7 @@ class LegalPatterns:
 # ============================================================
 # STRUCTURE EXTRACTOR
 # ============================================================
+
 
 class StructureExtractor:
     """
@@ -301,14 +299,14 @@ class StructureExtractor:
             articolo = match.group(1)
             rubrica = match.group(2)
             # Text after header
-            article_text = text[match.end():].strip()
+            article_text = text[match.end() :].strip()
         else:
             # Try alternative pattern
             match_alt = self.patterns.ARTICLE_HEADER_ALT.search(text)
             if match_alt:
                 articolo = match_alt.group(1)
                 rubrica = match_alt.group(2)
-                article_text = text[match_alt.end():].strip()
+                article_text = text[match_alt.end() :].strip()
             else:
                 # Can't parse, return whole text
                 return None
@@ -393,12 +391,14 @@ class StructureExtractor:
                 number = match.group(1)
                 title = match.group(2) if match.lastindex >= 2 else None
 
-                nodes.append(HierarchyNode(
-                    level=level,
-                    number=number,
-                    title=title.strip() if title else None,
-                    position=Position(match.start(), match.end()),
-                ))
+                nodes.append(
+                    HierarchyNode(
+                        level=level,
+                        number=number,
+                        title=title.strip() if title else None,
+                        position=Position(match.start(), match.end()),
+                    )
+                )
 
         # Sort by position
         nodes.sort(key=lambda n: n.position.start if n.position else 0)
@@ -437,18 +437,20 @@ class StructureExtractor:
             # Extract commi
             commi = self._extract_commi(article_text)
 
-            articles.append(ArticleStructure(
-                articolo=articolo,
-                rubrica=rubrica.strip() if rubrica else None,
-                testo=article_text,
-                commi=commi,
-                libro=libro,
-                parte=parte,
-                titolo=titolo,
-                capo=capo,
-                sezione=sezione,
-                position=Position(match.start(), end),
-            ))
+            articles.append(
+                ArticleStructure(
+                    articolo=articolo,
+                    rubrica=rubrica.strip() if rubrica else None,
+                    testo=article_text,
+                    commi=commi,
+                    libro=libro,
+                    parte=parte,
+                    titolo=titolo,
+                    capo=capo,
+                    sezione=sezione,
+                    position=Position(match.start(), end),
+                )
+            )
 
         return articles
 
@@ -499,6 +501,7 @@ class StructureExtractor:
 # ============================================================
 # CONVENIENCE FUNCTIONS
 # ============================================================
+
 
 def extract_structure(text: str, filename: str | None = None) -> DocumentStructure:
     """

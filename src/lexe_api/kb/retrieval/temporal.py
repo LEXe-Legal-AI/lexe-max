@@ -5,7 +5,7 @@ Ranking temporale con data_decisione per boost recency.
 """
 
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 from typing import Any
 from uuid import UUID
 
@@ -115,8 +115,10 @@ def apply_temporal_boost(
             result.score = new_score
 
     # Riordina per nuovo score
-    score_attr = "final_score" if hasattr(results[0], "final_score") else (
-        "rrf_score" if hasattr(results[0], "rrf_score") else "score"
+    score_attr = (
+        "final_score"
+        if hasattr(results[0], "final_score")
+        else ("rrf_score" if hasattr(results[0], "rrf_score") else "score")
     )
     results.sort(key=lambda x: getattr(x, score_attr), reverse=True)
 
@@ -156,10 +158,7 @@ async def fetch_massima_dates(
     async with db_pool.acquire() as conn:
         rows = await conn.fetch(query, massima_ids)
 
-    return {
-        row["id"]: (row["data_decisione"], row["anno"])
-        for row in rows
-    }
+    return {row["id"]: (row["data_decisione"], row["anno"]) for row in rows}
 
 
 def extract_temporal_from_query(query: str) -> tuple[int | None, date | None]:

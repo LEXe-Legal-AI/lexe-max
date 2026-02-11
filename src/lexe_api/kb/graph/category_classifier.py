@@ -8,10 +8,8 @@ Keyword-based classification with confidence scoring.
 
 import re
 from dataclasses import dataclass
-from typing import Optional
 
 from .categories import (
-    ALL_CATEGORIES,
     CategoryDef,
     get_l1_categories,
     get_l2_by_parent,
@@ -21,9 +19,10 @@ from .categories import (
 @dataclass
 class CategoryMatch:
     """Result of category matching."""
+
     category_id: str
     level: int
-    parent_id: Optional[str]
+    parent_id: str | None
     confidence: float
     evidence_terms: list[str]
     method: str = "keyword"
@@ -134,14 +133,16 @@ def classify_massima(text: str, min_l2_confidence: float = 0.50) -> list[Categor
     best_l1, best_count, best_terms = l1_matches[0]
     l1_confidence = _calculate_confidence(best_count, len(best_l1.keywords), 1)
 
-    results.append(CategoryMatch(
-        category_id=best_l1.id,
-        level=1,
-        parent_id=None,
-        confidence=l1_confidence,
-        evidence_terms=best_terms[:10],  # Top 10 terms
-        method="keyword",
-    ))
+    results.append(
+        CategoryMatch(
+            category_id=best_l1.id,
+            level=1,
+            parent_id=None,
+            confidence=l1_confidence,
+            evidence_terms=best_terms[:10],  # Top 10 terms
+            method="keyword",
+        )
+    )
 
     # Match L2 subcategories under best L1
     l2_candidates = get_l2_by_parent(best_l1.id)
@@ -154,14 +155,16 @@ def classify_massima(text: str, min_l2_confidence: float = 0.50) -> list[Categor
         confidence = _calculate_confidence(match_count, len(cat.keywords), 2)
 
         if confidence >= min_l2_confidence:
-            results.append(CategoryMatch(
-                category_id=cat.id,
-                level=2,
-                parent_id=best_l1.id,
-                confidence=confidence,
-                evidence_terms=matched_terms[:10],
-                method="keyword",
-            ))
+            results.append(
+                CategoryMatch(
+                    category_id=cat.id,
+                    level=2,
+                    parent_id=best_l1.id,
+                    confidence=confidence,
+                    evidence_terms=matched_terms[:10],
+                    method="keyword",
+                )
+            )
 
     # Sort by level, then confidence descending
     results.sort(key=lambda x: (x.level, -x.confidence))
@@ -204,15 +207,17 @@ def classify_massima_multi_l1(text: str, max_l1: int = 2) -> list[CategoryMatch]
             selected_l1.append((cat, count, terms, conf))
 
     # Add L1 results
-    for cat, count, terms, confidence in selected_l1:
-        results.append(CategoryMatch(
-            category_id=cat.id,
-            level=1,
-            parent_id=None,
-            confidence=confidence,
-            evidence_terms=terms[:10],
-            method="keyword",
-        ))
+    for cat, _count, terms, confidence in selected_l1:
+        results.append(
+            CategoryMatch(
+                category_id=cat.id,
+                level=1,
+                parent_id=None,
+                confidence=confidence,
+                evidence_terms=terms[:10],
+                method="keyword",
+            )
+        )
 
     # Add L2 for primary L1 only
     primary_l1 = selected_l1[0][0]
@@ -224,14 +229,16 @@ def classify_massima_multi_l1(text: str, max_l1: int = 2) -> list[CategoryMatch]
         confidence = _calculate_confidence(match_count, len(cat.keywords), 2)
 
         if confidence >= 0.70:
-            results.append(CategoryMatch(
-                category_id=cat.id,
-                level=2,
-                parent_id=primary_l1.id,
-                confidence=confidence,
-                evidence_terms=matched_terms[:10],
-                method="keyword",
-            ))
+            results.append(
+                CategoryMatch(
+                    category_id=cat.id,
+                    level=2,
+                    parent_id=primary_l1.id,
+                    confidence=confidence,
+                    evidence_terms=matched_terms[:10],
+                    method="keyword",
+                )
+            )
 
     results.sort(key=lambda x: (x.level, -x.confidence))
     return results

@@ -276,14 +276,12 @@ def jaccard_similarity(text1: str, text2: str, shingle_size: int = 3) -> float:
     Returns:
         Similarita' 0-1
     """
+
     def get_shingles(text: str) -> set[str]:
         words = text.lower().split()
         if len(words) < shingle_size:
             return set(words)
-        return {
-            " ".join(words[i : i + shingle_size])
-            for i in range(len(words) - shingle_size + 1)
-        }
+        return {" ".join(words[i : i + shingle_size]) for i in range(len(words) - shingle_size + 1)}
 
     shingles1 = get_shingles(text1)
     shingles2 = get_shingles(text2)

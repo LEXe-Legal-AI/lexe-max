@@ -4,15 +4,15 @@ LEXE Knowledge Base - Hybrid Search
 RRF (Reciprocal Rank Fusion) per combinare Dense + BM25 + trgm.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
 
 import structlog
 
 from ..config import EmbeddingChannel, EmbeddingModel, HybridSearchConfig
-from .dense import DenseSearchConfig, DenseSearchResult, dense_search
-from .sparse import SparseSearchResult, bm25_search, trgm_search
+from .dense import DenseSearchConfig, dense_search
+from .sparse import bm25_search, trgm_search
 
 logger = structlog.get_logger(__name__)
 
@@ -77,10 +77,7 @@ def reciprocal_rank_fusion(
     # Sort by RRF score
     sorted_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
-    return [
-        (doc_id, score, ranks.get(doc_id, {}))
-        for doc_id, score in sorted_results
-    ]
+    return [(doc_id, score, ranks.get(doc_id, {})) for doc_id, score in sorted_results]
 
 
 async def hybrid_search(
@@ -210,10 +207,7 @@ async def hybrid_search_multi_model(
         results = await hybrid_search(query, embedding, model_config, db_pool, filters)
         return model, results
 
-    tasks = [
-        search_with_model(model, emb)
-        for model, emb in query_embeddings.items()
-    ]
+    tasks = [search_with_model(model, emb) for model, emb in query_embeddings.items()]
 
     results = await asyncio.gather(*tasks)
     return dict(results)

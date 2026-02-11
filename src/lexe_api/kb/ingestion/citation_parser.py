@@ -4,8 +4,9 @@ LEXE Knowledge Base - Citation Parser
 Estrazione citazioni, norme e riferimenti da massime.
 """
 
+import contextlib
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date
 from typing import Literal
 
@@ -19,11 +20,11 @@ logger = structlog.get_logger(__name__)
 # ============================================================
 
 CitationType = Literal[
-    "pronuncia",      # Altra sentenza/ordinanza
-    "norma",          # Articolo di legge/codice
-    "regolamento_ue", # Regolamento UE
-    "direttiva_ue",   # Direttiva UE
-    "trattato",       # Trattato internazionale
+    "pronuncia",  # Altra sentenza/ordinanza
+    "norma",  # Articolo di legge/codice
+    "regolamento_ue",  # Regolamento UE
+    "direttiva_ue",  # Direttiva UE
+    "trattato",  # Trattato internazionale
 ]
 
 
@@ -47,12 +48,12 @@ class ParsedCitation:
     comma: str | None = None
     lettera: str | None = None
     codice: str | None = None  # "c.c.", "c.p.c.", "c.p.", etc.
-    legge: str | None = None   # "l. 241/1990", "d.lgs. 196/2003"
+    legge: str | None = None  # "l. 241/1990", "d.lgs. 196/2003"
 
     # Per EU
     regolamento: str | None = None  # "2016/679"
-    direttiva: str | None = None    # "2006/123"
-    celex: str | None = None        # Identificativo EUR-Lex
+    direttiva: str | None = None  # "2006/123"
+    celex: str | None = None  # Identificativo EUR-Lex
 
     # Metadati
     confidence: float = 1.0
@@ -65,9 +66,21 @@ class ParsedCitation:
         }
         # Aggiungi solo campi non-None
         for field_name in [
-            "sezione", "numero", "anno", "data_decisione", "rv", "autorita",
-            "articolo", "comma", "lettera", "codice", "legge",
-            "regolamento", "direttiva", "celex", "confidence"
+            "sezione",
+            "numero",
+            "anno",
+            "data_decisione",
+            "rv",
+            "autorita",
+            "articolo",
+            "comma",
+            "lettera",
+            "codice",
+            "legge",
+            "regolamento",
+            "direttiva",
+            "celex",
+            "confidence",
         ]:
             value = getattr(self, field_name)
             if value is not None:
@@ -309,10 +322,8 @@ def extract_pronuncia_citations(text: str) -> list[ParsedCitation]:
 
         data_decisione = None
         if day and month and year:
-            try:
+            with contextlib.suppress(ValueError):
                 data_decisione = date(int(year), int(month), int(day))
-            except ValueError:
-                pass
 
         anno = int(year) if year else None
 
@@ -337,10 +348,8 @@ def extract_pronuncia_citations(text: str) -> list[ParsedCitation]:
 
         data_decisione = None
         if day and month and year:
-            try:
+            with contextlib.suppress(ValueError):
                 data_decisione = date(int(year), int(month), int(day))
-            except ValueError:
-                pass
 
         if numero or year:
             citation = ParsedCitation(
@@ -363,10 +372,8 @@ def extract_pronuncia_citations(text: str) -> list[ParsedCitation]:
 
         data_decisione = None
         if day and month and year:
-            try:
+            with contextlib.suppress(ValueError):
                 data_decisione = date(int(year), int(month), int(day))
-            except ValueError:
-                pass
 
         if numero or year:
             citation = ParsedCitation(
@@ -389,10 +396,8 @@ def extract_pronuncia_citations(text: str) -> list[ParsedCitation]:
 
         data_decisione = None
         if day and month and year:
-            try:
+            with contextlib.suppress(ValueError):
                 data_decisione = date(int(year), int(month), int(day))
-            except ValueError:
-                pass
 
         if causa or year:
             citation = ParsedCitation(

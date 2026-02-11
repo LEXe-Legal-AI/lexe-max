@@ -24,7 +24,6 @@ Costo: $0 (puro Python, lookup table + pattern)
 
 import re
 from dataclasses import dataclass
-from datetime import date
 from typing import NamedTuple
 
 import structlog
@@ -36,15 +35,17 @@ logger = structlog.get_logger(__name__)
 # URN:NIR KNOWLEDGE BASE
 # ============================================================
 
+
 class CodeReference(NamedTuple):
     """Riferimento a un codice italiano."""
-    short_code: str              # CC, CP, CPC, etc.
-    full_name: str               # Codice Civile
-    authority: str               # stato
-    act_type: str                # regio.decreto, legge, etc.
-    promulgation_date: str       # YYYY-MM-DD
-    act_number: str              # numero atto
-    urn_base: str                # URN completo senza articolo
+
+    short_code: str  # CC, CP, CPC, etc.
+    full_name: str  # Codice Civile
+    authority: str  # stato
+    act_type: str  # regio.decreto, legge, etc.
+    promulgation_date: str  # YYYY-MM-DD
+    act_number: str  # numero atto
+    urn_base: str  # URN completo senza articolo
 
 
 # Mapping codici italiani -> URN:NIR base
@@ -211,16 +212,18 @@ ACT_TYPES_URN = {
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class ParsedURN:
     """URN parsato in componenti."""
-    authority: str           # "stato", "regione:lombardia", etc.
-    act_type: str            # "legge", "decreto.legislativo", etc.
-    date: str                # "1990-08-07"
-    number: str              # "241"
-    article: str | None = None        # "1", "2043", "360bis"
-    comma: str | None = None          # "1", "2"
-    component: str | None = None      # "allegato1", etc.
+
+    authority: str  # "stato", "regione:lombardia", etc.
+    act_type: str  # "legge", "decreto.legislativo", etc.
+    date: str  # "1990-08-07"
+    number: str  # "241"
+    article: str | None = None  # "1", "2043", "360bis"
+    comma: str | None = None  # "1", "2"
+    component: str | None = None  # "allegato1", etc.
 
     @property
     def urn(self) -> str:
@@ -243,6 +246,7 @@ class ParsedURN:
 # URN GENERATOR
 # ============================================================
 
+
 class URNGenerator:
     """
     Generatore URN:NIR per documenti normativi italiani.
@@ -256,7 +260,7 @@ class URNGenerator:
     # Pattern per normalizzare numero articolo
     ARTICLE_SUFFIX_PATTERN = re.compile(
         r"^(\d+)[\-\s]*(bis|ter|quater|quinquies|sexies|septies|octies|novies|decies)$",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     def __init__(self):
@@ -352,13 +356,13 @@ class URNGenerator:
         # Pattern: urn:nir:{authority}:{type}:{date};{number}[:art{art}][~{component}]
         pattern = re.compile(
             r"^urn:nir:"
-            r"([^:]+):"              # authority
-            r"([^:]+):"              # type
+            r"([^:]+):"  # authority
+            r"([^:]+):"  # type
             r"(\d{4}-\d{2}-\d{2});"  # date
-            r"(\d+)"                 # number
-            r"(?::art(\w+))?"        # article (optional)
-            r"(?:~com(\w+))?"        # comma (optional)
-            r"(?:~(\w+))?$"          # component (optional)
+            r"(\d+)"  # number
+            r"(?::art(\w+))?"  # article (optional)
+            r"(?:~com(\w+))?"  # comma (optional)
+            r"(?:~(\w+))?$"  # component (optional)
         )
 
         match = pattern.match(urn.lower())
@@ -422,6 +426,7 @@ class URNGenerator:
 # ============================================================
 # CANONICAL ID GENERATOR (For Number-Anchored Graph)
 # ============================================================
+
 
 class CanonicalIdGenerator:
     """
@@ -510,7 +515,7 @@ class CanonicalIdGenerator:
         if len(parts) < 2:
             return None
 
-        result = {"type": parts[0]}
+        {"type": parts[0]}
 
         # Articolo di codice: CC:2043
         if parts[0] in CODICI_ITALIANI and len(parts) == 2:

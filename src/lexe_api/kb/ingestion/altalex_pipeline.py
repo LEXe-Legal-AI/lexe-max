@@ -21,20 +21,17 @@ Usage:
 """
 
 import asyncio
-import hashlib
 import json
-import os
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Any
-from uuid import UUID, uuid4
+from uuid import UUID
 
 import structlog
 
-from .altalex_store import AltalexStore, StoreResult
+from .altalex_store import AltalexStore
 from .marker_chunker import ExtractedArticle, MarkerChunker
 from .openrouter_embedder import (
     BatchEmbeddingResult,
@@ -47,6 +44,7 @@ logger = structlog.get_logger(__name__)
 
 class PipelineStage(str, Enum):
     """Stadi della pipeline."""
+
     INIT = "init"
     CHUNK = "chunk"
     VALIDATE = "validate"
@@ -58,6 +56,7 @@ class PipelineStage(str, Enum):
 
 class ArticleStatus(str, Enum):
     """Stati articolo nella pipeline."""
+
     PENDING = "pending"
     VALID = "valid"
     INVALID = "invalid"
@@ -69,6 +68,7 @@ class ArticleStatus(str, Enum):
 @dataclass
 class PipelineConfig:
     """Configurazione pipeline."""
+
     # Embedding
     embed_batch_size: int = 50  # Batch size per OpenRouter
     embed_channel: str = "testo"  # Channel embedding
@@ -92,6 +92,7 @@ class PipelineConfig:
 @dataclass
 class ArticleRecord:
     """Record articolo per pipeline."""
+
     article: ExtractedArticle
     status: ArticleStatus = ArticleStatus.PENDING
     embedding: list[float] | None = None
@@ -104,6 +105,7 @@ class ArticleRecord:
 @dataclass
 class PipelineStats:
     """Statistiche pipeline."""
+
     total_articles: int = 0
     valid_articles: int = 0
     invalid_articles: int = 0
@@ -145,6 +147,7 @@ class PipelineStats:
 @dataclass
 class PipelineResult:
     """Risultato pipeline."""
+
     source_file: str
     codice: str
     stage: PipelineStage
@@ -166,7 +169,7 @@ class PipelineResult:
                 "invalid": self.stats.invalid_articles,
                 "embedded": self.stats.embedded_articles,
                 "stored": self.stats.stored_articles,
-            }
+            },
         }
 
 
@@ -428,8 +431,7 @@ class AltalexPipeline:
 
         # Prepare articles with embeddings for batch store
         articles_with_embeddings = [
-            (record.article, record.embedding)
-            for record in records_to_store
+            (record.article, record.embedding) for record in records_to_store
         ]
 
         # Batch UPSERT
@@ -478,8 +480,7 @@ class AltalexPipeline:
             Records aggiornati
         """
         quarantine_records = [
-            r for r in records
-            if r.status in (ArticleStatus.INVALID, ArticleStatus.QUARANTINE)
+            r for r in records if r.status in (ArticleStatus.INVALID, ArticleStatus.QUARANTINE)
         ]
 
         if not quarantine_records:
@@ -606,12 +607,12 @@ class AltalexPipeline:
                 store_start = time.time()
 
                 records, document_id = await self._store_stage(
-                    records, codice, str(json_path),
+                    records,
+                    codice,
+                    str(json_path),
                     include_valid=skip_embed,  # Store VALID articles if embed was skipped
                 )
-                stats.stored_articles = sum(
-                    1 for r in records if r.status == ArticleStatus.STORED
-                )
+                stats.stored_articles = sum(1 for r in records if r.status == ArticleStatus.STORED)
                 stats.store_time_ms = (time.time() - store_start) * 1000
 
             # ============================================================
@@ -749,21 +750,15 @@ def main():
     """CLI entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Altalex Normativa Ingestion Pipeline"
-    )
+    parser = argparse.ArgumentParser(description="Altalex Normativa Ingestion Pipeline")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Single file
     single_parser = subparsers.add_parser("single", help="Process single JSON file")
     single_parser.add_argument("json_path", help="Path to marker JSON file")
     single_parser.add_argument("codice", help="Document code (CC, CP, GDPR, etc.)")
-    single_parser.add_argument(
-        "--skip-embed", action="store_true", help="Skip embedding stage"
-    )
-    single_parser.add_argument(
-        "--skip-store", action="store_true", help="Skip storage stage"
-    )
+    single_parser.add_argument("--skip-embed", action="store_true", help="Skip embedding stage")
+    single_parser.add_argument("--skip-store", action="store_true", help="Skip storage stage")
 
     # Validate only
     validate_parser = subparsers.add_parser("validate", help="Validate only (no embed/store)")
@@ -773,26 +768,28 @@ def main():
     # Batch
     batch_parser = subparsers.add_parser("batch", help="Process directory of JSON files")
     batch_parser.add_argument("json_dir", help="Directory with marker JSON files")
-    batch_parser.add_argument(
-        "--commit", action="store_true", help="Commit to database"
-    )
+    batch_parser.add_argument("--commit", action="store_true", help="Commit to database")
 
     args = parser.parse_args()
 
     if args.command == "single":
-        result = asyncio.run(run_single(
-            json_path=args.json_path,
-            codice=args.codice,
-            skip_embed=args.skip_embed,
-            skip_store=args.skip_store,
-        ))
+        result = asyncio.run(
+            run_single(
+                json_path=args.json_path,
+                codice=args.codice,
+                skip_embed=args.skip_embed,
+                skip_store=args.skip_store,
+            )
+        )
         print(json.dumps(result.to_dict(), indent=2))
 
     elif args.command == "validate":
-        result = asyncio.run(validate_only(
-            json_path=args.json_path,
-            codice=args.codice,
-        ))
+        result = asyncio.run(
+            validate_only(
+                json_path=args.json_path,
+                codice=args.codice,
+            )
+        )
         print(json.dumps(result.to_dict(), indent=2))
 
     elif args.command == "batch":

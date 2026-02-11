@@ -19,8 +19,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from bs4 import BeautifulSoup, Comment, NavigableString, Tag
 import structlog
+from bs4 import BeautifulSoup, Comment, NavigableString, Tag
 
 logger = structlog.get_logger(__name__)
 
@@ -152,6 +152,7 @@ MAIN_CONTENT_SELECTORS = [
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class CleanedContent:
     """Risultato della pulizia HTML."""
@@ -184,6 +185,7 @@ class CleanedContent:
 # ============================================================
 # DETERMINISTIC CLEANER
 # ============================================================
+
 
 class DeterministicCleaner:
     """
@@ -327,18 +329,26 @@ class DeterministicCleaner:
 
         # Remove by class
         for class_name in REMOVE_CLASSES:
-            for tag in soup.find_all(class_=lambda c: c and class_name in c.lower() if c else False):
+            for tag in soup.find_all(
+                class_=lambda c, cn=class_name: c and cn in c.lower() if c else False
+            ):
                 tag.decompose()
 
         # Remove by ID
         for id_name in REMOVE_IDS:
-            for tag in soup.find_all(id=lambda i: i and id_name in i.lower() if i else False):
+            for tag in soup.find_all(
+                id=lambda i, idn=id_name: i and idn in i.lower() if i else False
+            ):
                 tag.decompose()
 
         # Remove hidden elements
-        for tag in soup.find_all(style=lambda s: s and "display:none" in s.replace(" ", "") if s else False):
+        for tag in soup.find_all(
+            style=lambda s: s and "display:none" in s.replace(" ", "") if s else False
+        ):
             tag.decompose()
-        for tag in soup.find_all(style=lambda s: s and "visibility:hidden" in s.replace(" ", "") if s else False):
+        for tag in soup.find_all(
+            style=lambda s: s and "visibility:hidden" in s.replace(" ", "") if s else False
+        ):
             tag.decompose()
 
         # Remove empty divs
@@ -447,6 +457,7 @@ class DeterministicCleaner:
 # STUDIOCATALDI-SPECIFIC CLEANER
 # ============================================================
 
+
 class StudioCataldiCleaner(DeterministicCleaner):
     """
     Cleaner ottimizzato per mirror StudioCataldi.
@@ -469,7 +480,7 @@ class StudioCataldiCleaner(DeterministicCleaner):
     ARTICLE_HEADER_PATTERN = re.compile(
         r"^(?:Art(?:icolo)?\.?\s*)?(\d+[\-bis\-ter\-quater\-quinquies\-sexies\-septies\-octies\-novies\-decies]*)"
         r"(?:\s*[\.\-\–]\s*(.+))?$",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     def __init__(self):
@@ -550,6 +561,7 @@ class StudioCataldiCleaner(DeterministicCleaner):
 # BATCH PROCESSING
 # ============================================================
 
+
 def clean_directory(
     input_dir: str | Path,
     output_dir: str | Path | None = None,
@@ -601,9 +613,7 @@ def clean_directory(
             stats["files_failed"] += 1
 
     # Calculate token savings
-    stats["tokens_saved"] = (
-        stats["total_original_size"] - stats["total_cleaned_size"]
-    ) // 4
+    stats["tokens_saved"] = (stats["total_original_size"] - stats["total_cleaned_size"]) // 4
 
     stats["reduction_ratio"] = (
         1 - (stats["total_cleaned_size"] / stats["total_original_size"])

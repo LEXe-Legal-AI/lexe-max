@@ -14,9 +14,10 @@ Costo: $0 (puro regex, nessun LLM)
 """
 
 import re
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Iterator, NamedTuple
+from typing import NamedTuple
 
 import structlog
 
@@ -29,21 +30,24 @@ logger = structlog.get_logger(__name__)
 # ENUMS & TYPES
 # ============================================================
 
+
 class LegalNumberType(str, Enum):
     """Tipi di numeri legali."""
-    ARTICLE = "article"          # art. 2043 c.c.
-    LAW = "law"                  # L. 241/1990
+
+    ARTICLE = "article"  # art. 2043 c.c.
+    LAW = "law"  # L. 241/1990
     LEGISLATIVE_DECREE = "dlgs"  # D.Lgs. 165/2001
-    LAW_DECREE = "dl"            # D.L. 18/2020
-    DPR = "dpr"                  # D.P.R. 380/2001
-    SENTENCE = "sentence"        # Cass. 12345/2020
-    EU_REGULATION = "reg_eu"     # Reg. UE 679/2016
-    EU_DIRECTIVE = "dir_eu"      # Dir. 2016/680/UE
-    CONSTITUTIONAL = "cost"      # art. 3 Cost.
+    LAW_DECREE = "dl"  # D.L. 18/2020
+    DPR = "dpr"  # D.P.R. 380/2001
+    SENTENCE = "sentence"  # Cass. 12345/2020
+    EU_REGULATION = "reg_eu"  # Reg. UE 679/2016
+    EU_DIRECTIVE = "dir_eu"  # Dir. 2016/680/UE
+    CONSTITUTIONAL = "cost"  # art. 3 Cost.
 
 
 class Position(NamedTuple):
     """Posizione nel testo."""
+
     start: int
     end: int
 
@@ -52,6 +56,7 @@ class Position(NamedTuple):
 # DATA CLASSES
 # ============================================================
 
+
 @dataclass
 class LegalNumber:
     """
@@ -59,22 +64,23 @@ class LegalNumber:
 
     Ogni LegalNumber diventa un nodo nel Number-Anchored Knowledge Graph.
     """
+
     # Raw extraction
-    raw_text: str                    # "art. 2043 c.c."
-    position: Position               # Posizione nel testo
+    raw_text: str  # "art. 2043 c.c."
+    position: Position  # Posizione nel testo
 
     # Parsed components
     number_type: LegalNumberType
-    codice: str | None = None        # CC, CP, L, DLGS, CASS
-    numero: str | None = None        # 2043, 241, 12345
-    anno: int | None = None          # 1990, 2020
-    articolo: str | None = None      # Per leggi: articolo citato
+    codice: str | None = None  # CC, CP, L, DLGS, CASS
+    numero: str | None = None  # 2043, 241, 12345
+    anno: int | None = None  # 1990, 2020
+    articolo: str | None = None  # Per leggi: articolo citato
     comma: str | None = None
-    sezione: str | None = None       # Per sentenze: Sez. Un., Sez. 1
+    sezione: str | None = None  # Per sentenze: Sez. Un., Sez. 1
 
     # Generated IDs
-    canonical_id: str = ""           # CC:2043, L:241:1990
-    urn_nir: str | None = None       # urn:nir:stato:...
+    canonical_id: str = ""  # CC:2043, L:241:1990
+    urn_nir: str | None = None  # urn:nir:stato:...
 
     # Context
     context_span: str | None = None  # Frase contenente la citazione
@@ -111,6 +117,7 @@ class LegalNumber:
 @dataclass
 class ExtractionResult:
     """Risultato estrazione numeri legali."""
+
     numbers: list[LegalNumber] = field(default_factory=list)
     text_length: int = 0
 
@@ -130,6 +137,7 @@ class ExtractionResult:
 # REGEX PATTERNS
 # ============================================================
 
+
 class LegalPatterns:
     """Collezione pattern regex per numeri legali italiani."""
 
@@ -140,16 +148,16 @@ class LegalPatterns:
 
     # Pattern: "art. 2043 c.c." / "artt. 1 e 2 c.c." / "articolo 575 c.p."
     ARTICLE_CODICE = re.compile(
-        rf"\b(?:art(?:t)?(?:icol[oi])?\.?)\s*"       # art./artt./articolo/articoli
-        rf"(\d+{SUFFIX})"                            # numero articolo
-        rf"(?:\s*(?:e|,)\s*(\d+{SUFFIX}))?"          # secondo articolo opzionale
-        rf"\s+"                                       # spazio
+        rf"\b(?:art(?:t)?(?:icol[oi])?\.?)\s*"  # art./artt./articolo/articoli
+        rf"(\d+{SUFFIX})"  # numero articolo
+        rf"(?:\s*(?:e|,)\s*(\d+{SUFFIX}))?"  # secondo articolo opzionale
+        rf"\s+"  # spazio
         rf"(c\.?\s*c\.?|c\.?\s*p\.?|c\.?\s*p\.?\s*c\.?|c\.?\s*p\.?\s*p\.?|cost\.?|c\.?\s*d\.?\s*s\.?|"
         rf"cod(?:ice)?\s+civ(?:ile)?|cod(?:ice)?\s+pen(?:ale)?|"
         rf"cod(?:ice)?\s+(?:di\s+)?proc(?:edura)?\s+civ(?:ile)?|"
         rf"cod(?:ice)?\s+(?:di\s+)?proc(?:edura)?\s+pen(?:ale)?|"
         rf"costituzione)",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     # Pattern per "dell'art. 2043" (senza codice esplicito, per contesto)
@@ -157,7 +165,7 @@ class LegalPatterns:
         rf"\b(?:dell[''']?\s*)?(?:art(?:icol[oi])?\.?)\s*"
         rf"(\d+{SUFFIX})"
         rf"(?:\s*,?\s*comm[ao]\.?\s*(\d+))?",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     # ═══ LEGGI E DECRETI ═══
@@ -166,20 +174,20 @@ class LegalPatterns:
     LEGGE = re.compile(
         r"\b(?:L(?:egge)?\.?)\s*"
         r"(?:(\d{1,2})\s+(\w+)\s+)??"  # data opzionale
-        r"(\d{4})?"                     # anno se prima di /
-        r"[,\s]*n\.?\s*(\d+)"           # numero
-        r"(?:\s*/\s*(\d{4}))?",         # /anno
-        re.IGNORECASE
+        r"(\d{4})?"  # anno se prima di /
+        r"[,\s]*n\.?\s*(\d+)"  # numero
+        r"(?:\s*/\s*(\d{4}))?",  # /anno
+        re.IGNORECASE,
     )
 
     # Pattern: "D.Lgs. 165/2001" / "decreto legislativo 30 marzo 2001, n. 165"
     DLGS = re.compile(
         r"\b(?:D\.?\s*Lgs\.?|decreto\s+legislativo)\s*"
         r"(?:(\d{1,2})\s+(\w+)\s+)??"  # data opzionale
-        r"(\d{4})?"                     # anno se prima di /
-        r"[,\s]*n\.?\s*(\d+)"           # numero
-        r"(?:\s*/\s*(\d{4}))?",         # /anno
-        re.IGNORECASE
+        r"(\d{4})?"  # anno se prima di /
+        r"[,\s]*n\.?\s*(\d+)"  # numero
+        r"(?:\s*/\s*(\d{4}))?",  # /anno
+        re.IGNORECASE,
     )
 
     # Pattern: "D.L. 18/2020" / "decreto legge"
@@ -189,7 +197,7 @@ class LegalPatterns:
         r"(\d{4})?"
         r"[,\s]*n\.?\s*(\d+)"
         r"(?:\s*/\s*(\d{4}))?",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     # Pattern: "D.P.R. 380/2001"
@@ -199,7 +207,7 @@ class LegalPatterns:
         r"(\d{4})?"
         r"[,\s]*n\.?\s*(\d+)"
         r"(?:\s*/\s*(\d{4}))?",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     # ═══ SENTENZE CASSAZIONE ═══
@@ -209,16 +217,13 @@ class LegalPatterns:
         r"\b(?:Cass(?:azione)?\.?)\s*"
         r"(?:(Sez\.?\s*(?:Un\.?|I{1,3}|IV|V|VI(?:\-\d)?|\d))\s*)??"  # sezione
         r"(?:,?\s*(?:n\.?|sent\.?)\s*)?"
-        r"(\d+)"                         # numero
-        r"(?:\s*/\s*(\d{4}))?",          # /anno
-        re.IGNORECASE
+        r"(\d+)"  # numero
+        r"(?:\s*/\s*(\d{4}))?",  # /anno
+        re.IGNORECASE,
     )
 
     # Pattern Rv: "Rv. 639966-01"
-    RV = re.compile(
-        r"\bRv\.?\s*(\d+)(?:[\-/](\d+))?",
-        re.IGNORECASE
-    )
+    RV = re.compile(r"\bRv\.?\s*(\d+)(?:[\-/](\d+))?", re.IGNORECASE)
 
     # ═══ NORME UE ═══
 
@@ -226,10 +231,10 @@ class LegalPatterns:
     REG_UE = re.compile(
         r"\b(?:Reg(?:olamento)?\.?)\s*"
         r"(?:\(?\s*(?:UE|CE)\s*\)?)\s*"
-        r"(?:(\d{4})\s*/\s*)??"          # anno/ (formato nuovo)
-        r"(\d+)"                          # numero
-        r"(?:\s*/\s*(\d{4}))?",           # /anno (formato vecchio)
-        re.IGNORECASE
+        r"(?:(\d{4})\s*/\s*)??"  # anno/ (formato nuovo)
+        r"(\d+)"  # numero
+        r"(?:\s*/\s*(\d{4}))?",  # /anno (formato vecchio)
+        re.IGNORECASE,
     )
 
     # Pattern: "Dir. 2016/680/UE" / "Direttiva (UE) 2016/680"
@@ -240,7 +245,7 @@ class LegalPatterns:
         r"(\d+)"
         r"(?:\s*/\s*(\d{4}))?"
         r"(?:\s*/\s*(?:UE|CE))?",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     # ═══ COSTITUZIONE ═══
@@ -249,7 +254,7 @@ class LegalPatterns:
         rf"\b(?:art(?:icol[oi])?\.?)\s*"
         rf"(\d+{SUFFIX})"
         rf"\s+(?:Cost\.?|Costituzione)",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
 
@@ -265,7 +270,6 @@ CODICE_MAPPING = {
     "codice civile": "CC",
     "cod. civ.": "CC",
     "cod civ": "CC",
-
     # Codice Penale
     "c.p.": "CP",
     "cp": "CP",
@@ -273,26 +277,22 @@ CODICE_MAPPING = {
     "codice penale": "CP",
     "cod. pen.": "CP",
     "cod pen": "CP",
-
     # Codice Procedura Civile
     "c.p.c.": "CPC",
     "cpc": "CPC",
     "c. p. c.": "CPC",
     "codice procedura civile": "CPC",
     "codice di procedura civile": "CPC",
-
     # Codice Procedura Penale
     "c.p.p.": "CPP",
     "cpp": "CPP",
     "c. p. p.": "CPP",
     "codice procedura penale": "CPP",
     "codice di procedura penale": "CPP",
-
     # Costituzione
     "cost.": "COST",
     "cost": "COST",
     "costituzione": "COST",
-
     # Codice della Strada
     "c.d.s.": "CDS",
     "cds": "CDS",
@@ -303,6 +303,7 @@ CODICE_MAPPING = {
 # ============================================================
 # LEGAL NUMBERS EXTRACTOR
 # ============================================================
+
 
 class LegalNumbersExtractor:
     """
@@ -390,27 +391,33 @@ class LegalNumbersExtractor:
 
             # First article
             canonical_id = self.canonical_gen.generate_for_article(codice, articolo1)
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.ARTICLE,
-                codice=codice,
-                numero=articolo1,
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
-
-            # Second article if present
-            if articolo2:
-                canonical_id2 = self.canonical_gen.generate_for_article(codice, articolo2)
-                numbers.append(LegalNumber(
+            numbers.append(
+                LegalNumber(
                     raw_text=match.group(0),
                     position=Position(match.start(), match.end()),
                     number_type=LegalNumberType.ARTICLE,
                     codice=codice,
-                    numero=articolo2,
-                    canonical_id=canonical_id2,
-                ))
+                    numero=articolo1,
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
+
+            # Second article if present
+            if articolo2:
+                canonical_id2 = self.canonical_gen.generate_for_article(codice, articolo2)
+                numbers.append(
+                    LegalNumber(
+                        raw_text=match.group(0),
+                        position=Position(match.start(), match.end()),
+                        number_type=LegalNumberType.ARTICLE,
+                        codice=codice,
+                        numero=articolo2,
+                        canonical_id=canonical_id2,
+                    )
+                )
 
         return numbers
 
@@ -431,16 +438,20 @@ class LegalNumbersExtractor:
                 continue
 
             canonical_id = self.canonical_gen.generate_for_law("L", numero, int(anno))
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.LAW,
-                codice="L",
-                numero=numero,
-                anno=int(anno),
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.LAW,
+                    codice="L",
+                    numero=numero,
+                    anno=int(anno),
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         # D.Lgs.
         for match in self.patterns.DLGS.finditer(text):
@@ -451,16 +462,20 @@ class LegalNumbersExtractor:
                 continue
 
             canonical_id = self.canonical_gen.generate_for_law("DLGS", numero, int(anno))
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.LEGISLATIVE_DECREE,
-                codice="DLGS",
-                numero=numero,
-                anno=int(anno),
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.LEGISLATIVE_DECREE,
+                    codice="DLGS",
+                    numero=numero,
+                    anno=int(anno),
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         # D.L.
         for match in self.patterns.DL.finditer(text):
@@ -471,16 +486,20 @@ class LegalNumbersExtractor:
                 continue
 
             canonical_id = self.canonical_gen.generate_for_law("DL", numero, int(anno))
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.LAW_DECREE,
-                codice="DL",
-                numero=numero,
-                anno=int(anno),
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.LAW_DECREE,
+                    codice="DL",
+                    numero=numero,
+                    anno=int(anno),
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         # D.P.R.
         for match in self.patterns.DPR.finditer(text):
@@ -491,16 +510,20 @@ class LegalNumbersExtractor:
                 continue
 
             canonical_id = self.canonical_gen.generate_for_law("DPR", numero, int(anno))
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.DPR,
-                codice="DPR",
-                numero=numero,
-                anno=int(anno),
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.DPR,
+                    codice="DPR",
+                    numero=numero,
+                    anno=int(anno),
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         return numbers
 
@@ -524,17 +547,21 @@ class LegalNumbersExtractor:
             canonical_id = self.canonical_gen.generate_for_sentence(
                 "CASS", numero, int(anno), sezione
             )
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.SENTENCE,
-                codice="CASS",
-                numero=numero,
-                anno=int(anno),
-                sezione=sezione,
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.SENTENCE,
+                    codice="CASS",
+                    numero=numero,
+                    anno=int(anno),
+                    sezione=sezione,
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         return numbers
 
@@ -557,16 +584,20 @@ class LegalNumbersExtractor:
                 continue
 
             canonical_id = f"REG_UE:{numero}:{anno}"
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.EU_REGULATION,
-                codice="REG_UE",
-                numero=numero,
-                anno=int(anno),
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.EU_REGULATION,
+                    codice="REG_UE",
+                    numero=numero,
+                    anno=int(anno),
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         # Direttive
         for match in self.patterns.DIR_UE.finditer(text):
@@ -579,16 +610,20 @@ class LegalNumbersExtractor:
                 continue
 
             canonical_id = f"DIR_UE:{numero}:{anno}"
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.EU_DIRECTIVE,
-                codice="DIR_UE",
-                numero=numero,
-                anno=int(anno),
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.EU_DIRECTIVE,
+                    codice="DIR_UE",
+                    numero=numero,
+                    anno=int(anno),
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         return numbers
 
@@ -604,15 +639,19 @@ class LegalNumbersExtractor:
             articolo = match.group(1)
 
             canonical_id = self.canonical_gen.generate_for_article("COST", articolo)
-            numbers.append(LegalNumber(
-                raw_text=match.group(0),
-                position=Position(match.start(), match.end()),
-                number_type=LegalNumberType.CONSTITUTIONAL,
-                codice="COST",
-                numero=articolo,
-                canonical_id=canonical_id,
-                context_span=self._get_context(text, match.start(), match.end()) if include_context else None,
-            ))
+            numbers.append(
+                LegalNumber(
+                    raw_text=match.group(0),
+                    position=Position(match.start(), match.end()),
+                    number_type=LegalNumberType.CONSTITUTIONAL,
+                    codice="COST",
+                    numero=articolo,
+                    canonical_id=canonical_id,
+                    context_span=self._get_context(text, match.start(), match.end())
+                    if include_context
+                    else None,
+                )
+            )
 
         return numbers
 

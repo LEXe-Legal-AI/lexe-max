@@ -4,7 +4,6 @@ LEXE Knowledge Base - Configuration
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings
@@ -122,9 +121,7 @@ class GraphExpansionConfig:
     expansion_depth: int = 2
     top_n_per_seed: int = 5
     min_weight: float = 0.3
-    edge_types: list[str] = field(
-        default_factory=lambda: ["SAME_PRINCIPLE", "CITES", "APPLIES"]
-    )
+    edge_types: list[str] = field(default_factory=lambda: ["SAME_PRINCIPLE", "CITES", "APPLIES"])
 
 
 @dataclass

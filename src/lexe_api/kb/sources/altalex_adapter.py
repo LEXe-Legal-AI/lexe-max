@@ -17,10 +17,9 @@ from __future__ import annotations
 
 import hashlib
 import re
-from dataclasses import dataclass, field
-from datetime import datetime
+from collections.abc import Iterator
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
 
 import structlog
 
@@ -31,11 +30,11 @@ logger = structlog.get_logger(__name__)
 class AltalexArticle:
     """Parsed article from Altalex MD file."""
 
-    codice: str                 # 'CC', 'CP'
-    articolo: str               # '2043', '1', '2043-bis'
-    rubrica: str | None         # 'Risarcimento per fatto illecito'
-    testo: str                  # Full article text
-    content_hash: str           # SHA256 of normalized text
+    codice: str  # 'CC', 'CP'
+    articolo: str  # '2043', '1', '2043-bis'
+    rubrica: str | None  # 'Risarcimento per fatto illecito'
+    testo: str  # Full article text
+    content_hash: str  # SHA256 of normalized text
 
     # Hierarchy
     libro: str | None = None
@@ -78,26 +77,26 @@ def normalize_text(text: str) -> str:
     text = text.lower()
 
     # Remove Brocardi-style article references like [ 2058 ], [1], [ 2044, 2045 ]
-    text = re.sub(r'\[\s*[\d,\s]+\s*\]', '', text)
+    text = re.sub(r"\[\s*[\d,\s]+\s*\]", "", text)
 
     # Remove footnote markers like (1), (^1), (¹)
-    text = re.sub(r'\(\^?\d+\s*\)', '', text)
-    text = re.sub(r'[¹²³⁴⁵⁶⁷⁸⁹⁰]+', '', text)
+    text = re.sub(r"\(\^?\d+\s*\)", "", text)
+    text = re.sub(r"[¹²³⁴⁵⁶⁷⁸⁹⁰]+", "", text)
 
     # Normalize whitespace around punctuation (Brocardi adds spaces)
-    text = re.sub(r'\s+([,.:;!?])', r'\1', text)  # Remove space before punct
-    text = re.sub(r'([,.:;!?])\s+', r'\1 ', text)  # Single space after punct
+    text = re.sub(r"\s+([,.:;!?])", r"\1", text)  # Remove space before punct
+    text = re.sub(r"([,.:;!?])\s+", r"\1 ", text)  # Single space after punct
 
     # Normalize whitespace
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"\s+", " ", text)
 
     # Normalize quotes
     text = text.replace('"', '"').replace('"', '"').replace("'", "'").replace("'", "'")
-    text = text.replace('«', '"').replace('»', '"')
-    text = text.replace('\ufffd', '"')  # Fix corrupted quotes
+    text = text.replace("«", '"').replace("»", '"')
+    text = text.replace("\ufffd", '"')  # Fix corrupted quotes
 
     # Normalize dashes
-    text = text.replace('–', '-').replace('—', '-')
+    text = text.replace("–", "-").replace("—", "-")
 
     # Strip
     return text.strip()
@@ -105,21 +104,20 @@ def normalize_text(text: str) -> str:
 
 def compute_hash(text: str) -> str:
     """SHA256 of normalized text."""
-    return hashlib.sha256(normalize_text(text).encode('utf-8')).hexdigest()
+    return hashlib.sha256(normalize_text(text).encode("utf-8")).hexdigest()
 
 
 def fix_encoding(text: str) -> str:
     """Fix common encoding issues from PDF->MD conversion."""
     replacements = {
-        '\ufffd': '"',      # Replacement character -> quote
-        '�': '"',           # Same as above
-        '\u2019': "'",      # Right single quote
-        '\u2018': "'",      # Left single quote
-        '\u201c': '"',      # Left double quote
-        '\u201d': '"',      # Right double quote
-        '\u2013': '-',      # En dash
-        '\u2014': '-',      # Em dash
-        '\xa0': ' ',        # Non-breaking space
+        "\ufffd": '"',  # Same as above
+        "\u2019": "'",  # Right single quote
+        "\u2018": "'",  # Left single quote
+        "\u201c": '"',  # Left double quote
+        "\u201d": '"',  # Right double quote
+        "\u2013": "-",  # En dash
+        "\u2014": "-",  # Em dash
+        "\xa0": " ",  # Non-breaking space
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
@@ -144,55 +142,40 @@ class AltalexAdapter:
 
     # Regex patterns for article detection
     # Pattern 1: **Art. 2043. Rubrica.**
-    PATTERN_BOLD = re.compile(
-        r'^\*\*Art\.\s*(\d+(?:-\w+)?)\.\s*(.+?)\*\*',
-        re.IGNORECASE
-    )
+    PATTERN_BOLD = re.compile(r"^\*\*Art\.\s*(\d+(?:-\w+)?)\.\s*(.+?)\*\*", re.IGNORECASE)
 
     # Pattern 2: Art. 2043. Rubrica.
-    PATTERN_PLAIN = re.compile(
-        r'^Art\.\s*(\d+(?:-\w+)?)\.\s*(.+?)$',
-        re.IGNORECASE
-    )
+    PATTERN_PLAIN = re.compile(r"^Art\.\s*(\d+(?:-\w+)?)\.\s*(.+?)$", re.IGNORECASE)
 
     # Pattern 3: Art. 2043. (no rubrica, abrogated)
     PATTERN_NO_RUBRICA = re.compile(
-        r'^(?:\*\*)?Art\.\s*(\d+(?:-\w+)?)\.\s*(?:\*\*)?$',
-        re.IGNORECASE
+        r"^(?:\*\*)?Art\.\s*(\d+(?:-\w+)?)\.\s*(?:\*\*)?$", re.IGNORECASE
     )
 
     # Section delimiters that should end an article
     SECTION_DELIMITERS = [
-        re.compile(r'^#{1,6}\s*Libro\s+[IVX]+', re.IGNORECASE),  # ### Libro V
-        re.compile(r'^Libro\s+[IVX]+\s*[-–]', re.IGNORECASE),    # Libro V - Del lavoro
-        re.compile(r'^#{1,6}\s*TITOLO\s+[IVX]+', re.IGNORECASE), # ### TITOLO IX
-        re.compile(r'^TITOLO\s+[IVX]+\s*[-–]', re.IGNORECASE),   # TITOLO IX – DEI FATTI
-        re.compile(r'^#{1,6}\s*CAPO\s+[IVX]+', re.IGNORECASE),   # ### CAPO I
-        re.compile(r'^CAPO\s+[IVX]+\s*[-–]', re.IGNORECASE),     # CAPO I - DELLE FONTI
-        re.compile(r'^Sommario\s*$', re.IGNORECASE),              # Sommario
-        re.compile(r'^#{1,6}\s*Sommario', re.IGNORECASE),         # ### Sommario
-        re.compile(r'^DISPOSIZIONI\s+', re.IGNORECASE),           # DISPOSIZIONI SULLA LEGGE
-        re.compile(r'^#{1,6}\s*CODICE\s+CIVILE', re.IGNORECASE),  # ### CODICE CIVILE
-        re.compile(r'^CODICE\s+CIVILE\s*$', re.IGNORECASE),       # CODICE CIVILE
-        re.compile(r'^Altalex\s+eBook', re.IGNORECASE),           # Footer
+        re.compile(r"^#{1,6}\s*Libro\s+[IVX]+", re.IGNORECASE),  # ### Libro V
+        re.compile(r"^Libro\s+[IVX]+\s*[-–]", re.IGNORECASE),  # Libro V - Del lavoro
+        re.compile(r"^#{1,6}\s*TITOLO\s+[IVX]+", re.IGNORECASE),  # ### TITOLO IX
+        re.compile(r"^TITOLO\s+[IVX]+\s*[-–]", re.IGNORECASE),  # TITOLO IX – DEI FATTI
+        re.compile(r"^#{1,6}\s*CAPO\s+[IVX]+", re.IGNORECASE),  # ### CAPO I
+        re.compile(r"^CAPO\s+[IVX]+\s*[-–]", re.IGNORECASE),  # CAPO I - DELLE FONTI
+        re.compile(r"^Sommario\s*$", re.IGNORECASE),  # Sommario
+        re.compile(r"^#{1,6}\s*Sommario", re.IGNORECASE),  # ### Sommario
+        re.compile(r"^DISPOSIZIONI\s+", re.IGNORECASE),  # DISPOSIZIONI SULLA LEGGE
+        re.compile(r"^#{1,6}\s*CODICE\s+CIVILE", re.IGNORECASE),  # ### CODICE CIVILE
+        re.compile(r"^CODICE\s+CIVILE\s*$", re.IGNORECASE),  # CODICE CIVILE
+        re.compile(r"^Altalex\s+eBook", re.IGNORECASE),  # Footer
     ]
 
     # Hierarchy patterns
-    LIBRO_PATTERN = re.compile(
-        r'^(?:#{1,6}\s*)?Libro\s+([IVX]+)\s*[-–]\s*(.+?)$',
-        re.IGNORECASE
-    )
+    LIBRO_PATTERN = re.compile(r"^(?:#{1,6}\s*)?Libro\s+([IVX]+)\s*[-–]\s*(.+?)$", re.IGNORECASE)
     TITOLO_PATTERN = re.compile(
-        r'^(?:#{1,6}\s*)?TITOLO\s+([IVX]+(?:-\w+)?)\s*[-–]\s*(.+?)$',
-        re.IGNORECASE
+        r"^(?:#{1,6}\s*)?TITOLO\s+([IVX]+(?:-\w+)?)\s*[-–]\s*(.+?)$", re.IGNORECASE
     )
-    CAPO_PATTERN = re.compile(
-        r'^(?:#{1,6}\s*)?CAPO\s+([IVX]+)\s*[-–]\s*(.+?)$',
-        re.IGNORECASE
-    )
+    CAPO_PATTERN = re.compile(r"^(?:#{1,6}\s*)?CAPO\s+([IVX]+)\s*[-–]\s*(.+?)$", re.IGNORECASE)
     SEZIONE_PATTERN = re.compile(
-        r'^(?:#{1,6}\s*)?SEZIONE\s+([IVX]+)\s*[-–]\s*(.+?)$',
-        re.IGNORECASE
+        r"^(?:#{1,6}\s*)?SEZIONE\s+([IVX]+)\s*[-–]\s*(.+?)$", re.IGNORECASE
     )
 
     # Preleggi detection (before Libro I)
@@ -200,14 +183,12 @@ class AltalexAdapter:
 
     # Preleggi section detection (at start of file)
     PRELEGGI_PATTERN = re.compile(
-        r'^(?:#{1,6}\s*)?DISPOSIZIONI\s+SULLA\s+LEGGE\s+IN\s+GENERALE\s*$',
-        re.IGNORECASE
+        r"^(?:#{1,6}\s*)?DISPOSIZIONI\s+SULLA\s+LEGGE\s+IN\s+GENERALE\s*$", re.IGNORECASE
     )
 
     # Attuazione/Transitorie detection (after Libro VI)
     ATTUAZIONE_PATTERN = re.compile(
-        r'^(?:#{1,6}\s*)?DISPOSIZIONI\s+PER\s+L.ATTUAZIONE',
-        re.IGNORECASE
+        r"^(?:#{1,6}\s*)?DISPOSIZIONI\s+PER\s+L.ATTUAZIONE", re.IGNORECASE
     )
 
     def __init__(self):
@@ -233,7 +214,7 @@ class AltalexAdapter:
 
         logger.info("Parsing Altalex MD", file=str(filepath), codice=codice)
 
-        with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
+        with open(filepath, encoding="utf-8", errors="replace") as f:
             lines = f.readlines()
 
         # Current hierarchy context
@@ -257,7 +238,11 @@ class AltalexAdapter:
                 continue
 
             # Check for PRELEGGI section (at start of file, before Libro I)
-            if self.PRELEGGI_PATTERN.match(line_stripped) and not found_first_libro and not in_attuazione:
+            if (
+                self.PRELEGGI_PATTERN.match(line_stripped)
+                and not found_first_libro
+                and not in_attuazione
+            ):
                 in_preleggi = True
                 logger.debug("Entered PRELEGGI section", line=i)
 
@@ -273,16 +258,15 @@ class AltalexAdapter:
 
             # Update hierarchy context
             libro_match = self.LIBRO_PATTERN.match(line_stripped)
-            if libro_match:
+            if libro_match and found_first_libro:
                 # Only set libro if we've found at least one article
                 # This skips the sommario Libro entries which appear before any articles
-                if found_first_libro:
-                    current_libro = f"Libro {libro_match.group(1)} - {libro_match.group(2)}"
-                    current_titolo = None
-                    current_capo = None
-                    current_sezione = None
-                    in_preleggi = False  # After Libro, no longer preleggi
-                    logger.debug("Found Libro", libro=current_libro, line=i)
+                current_libro = f"Libro {libro_match.group(1)} - {libro_match.group(2)}"
+                current_titolo = None
+                current_capo = None
+                current_sezione = None
+                in_preleggi = False  # After Libro, no longer preleggi
+                logger.debug("Found Libro", libro=current_libro, line=i)
 
             titolo_match = self.TITOLO_PATTERN.match(line_stripped)
             if titolo_match:
@@ -301,8 +285,7 @@ class AltalexAdapter:
 
             # Check if this line is a section delimiter (ends current article)
             is_section_delimiter = any(
-                delim.match(line_stripped)
-                for delim in self.SECTION_DELIMITERS
+                delim.match(line_stripped) for delim in self.SECTION_DELIMITERS
             )
 
             # Try to match article header
@@ -330,29 +313,29 @@ class AltalexAdapter:
             if match or is_section_delimiter:
                 # Yield previous article if exists
                 if current_article is not None:
-                    text = self._clean_text('\n'.join(current_text_lines))
+                    text = self._clean_text("\n".join(current_text_lines))
                     if text:  # Only yield if has content
                         yield AltalexArticle(
                             codice=codice,
-                            articolo=current_article['articolo'],
-                            rubrica=current_article['rubrica'],
+                            articolo=current_article["articolo"],
+                            rubrica=current_article["rubrica"],
                             testo=text,
                             content_hash=compute_hash(text),
-                            libro=current_article.get('libro'),
-                            titolo=current_article.get('titolo'),
-                            capo=current_article.get('capo'),
-                            sezione=current_article.get('sezione'),
-                            is_preleggi=current_article.get('is_preleggi', False),
-                            is_attuazione=current_article.get('is_attuazione', False),
+                            libro=current_article.get("libro"),
+                            titolo=current_article.get("titolo"),
+                            capo=current_article.get("capo"),
+                            sezione=current_article.get("sezione"),
+                            is_preleggi=current_article.get("is_preleggi", False),
+                            is_attuazione=current_article.get("is_attuazione", False),
                             source_file=str(filepath),
-                            line_start=current_article['line_start'],
+                            line_start=current_article["line_start"],
                             line_end=i - 1,
                         )
 
                 if match:
                     # Determine if this is a preleggi article
                     try:
-                        art_num_int = int(re.match(r'\d+', art_num).group())
+                        art_num_int = int(re.match(r"\d+", art_num).group())
                         is_preleggi_art = in_preleggi and art_num_int <= self.PRELEGGI_END_ARTICLE
                     except (ValueError, AttributeError):
                         is_preleggi_art = False
@@ -363,15 +346,15 @@ class AltalexAdapter:
 
                     # Start new article
                     current_article = {
-                        'articolo': art_num,
-                        'rubrica': rubrica,
-                        'line_start': i,
-                        'libro': current_libro,
-                        'titolo': current_titolo,
-                        'capo': current_capo,
-                        'sezione': current_sezione,
-                        'is_preleggi': is_preleggi_art,
-                        'is_attuazione': in_attuazione,
+                        "articolo": art_num,
+                        "rubrica": rubrica,
+                        "line_start": i,
+                        "libro": current_libro,
+                        "titolo": current_titolo,
+                        "capo": current_capo,
+                        "sezione": current_sezione,
+                        "is_preleggi": is_preleggi_art,
+                        "is_attuazione": in_attuazione,
                     }
                     current_text_lines = []
                 else:
@@ -382,27 +365,27 @@ class AltalexAdapter:
             elif current_article is not None:
                 # Accumulate text for current article
                 # Skip code blocks markers
-                if line_stripped != '```':
+                if line_stripped != "```":
                     current_text_lines.append(line)
 
         # Yield last article
         if current_article is not None:
-            text = self._clean_text('\n'.join(current_text_lines))
+            text = self._clean_text("\n".join(current_text_lines))
             if text:
                 yield AltalexArticle(
                     codice=codice,
-                    articolo=current_article['articolo'],
-                    rubrica=current_article['rubrica'],
+                    articolo=current_article["articolo"],
+                    rubrica=current_article["rubrica"],
                     testo=text,
                     content_hash=compute_hash(text),
-                    libro=current_article.get('libro'),
-                    titolo=current_article.get('titolo'),
-                    capo=current_article.get('capo'),
-                    sezione=current_article.get('sezione'),
-                    is_preleggi=current_article.get('is_preleggi', False),
-                    is_attuazione=current_article.get('is_attuazione', False),
+                    libro=current_article.get("libro"),
+                    titolo=current_article.get("titolo"),
+                    capo=current_article.get("capo"),
+                    sezione=current_article.get("sezione"),
+                    is_preleggi=current_article.get("is_preleggi", False),
+                    is_attuazione=current_article.get("is_attuazione", False),
                     source_file=str(filepath),
-                    line_start=current_article['line_start'],
+                    line_start=current_article["line_start"],
                     line_end=len(lines),
                 )
 
@@ -412,17 +395,17 @@ class AltalexAdapter:
             return None
 
         # Strip trailing period
-        rubrica = rubrica.rstrip('.')
+        rubrica = rubrica.rstrip(".")
 
         # Remove footnote markers like (^1), (^1 ), (1), (
-        rubrica = re.sub(r'\s*\(\^?\d*\s*\)?\s*', '', rubrica)
+        rubrica = re.sub(r"\s*\(\^?\d*\s*\)?\s*", "", rubrica)
 
         # Fix encoding
         rubrica = fix_encoding(rubrica)
 
         # Strip and check if empty or invalid
         rubrica = rubrica.strip()
-        if not rubrica or rubrica in ('...', '(', ')'):
+        if not rubrica or rubrica in ("...", "(", ")"):
             return None
 
         return rubrica
@@ -433,27 +416,27 @@ class AltalexAdapter:
         text = fix_encoding(text)
 
         # Remove markdown code blocks
-        text = re.sub(r'```\n?', '', text)
+        text = re.sub(r"```\n?", "", text)
 
         # Remove page headers/footers
-        text = re.sub(r'Altalex eBook \| Collana Codici Altalex \d+', '', text)
-        text = re.sub(r'CODICE CIVILE\n', '', text)
-        text = re.sub(r'CODICE PENALE\n', '', text)
-        text = re.sub(r'Disposizioni sulla legge in generale\n', '', text)
+        text = re.sub(r"Altalex eBook \| Collana Codici Altalex \d+", "", text)
+        text = re.sub(r"CODICE CIVILE\n", "", text)
+        text = re.sub(r"CODICE PENALE\n", "", text)
+        text = re.sub(r"Disposizioni sulla legge in generale\n", "", text)
 
         # Remove footnote content (lines starting with (1), (2), etc.)
         # But keep inline footnote markers for context
-        lines = text.split('\n')
+        lines = text.split("\n")
         cleaned_lines = []
         for line in lines:
             # Skip standalone footnote lines
             if re.match(r'^\s*\(\d+\)\s*[""\']', line):
                 continue
             cleaned_lines.append(line)
-        text = '\n'.join(cleaned_lines)
+        text = "\n".join(cleaned_lines)
 
         # Normalize whitespace
-        text = re.sub(r'\n{3,}', '\n\n', text)
+        text = re.sub(r"\n{3,}", "\n\n", text)
         text = text.strip()
 
         return text
@@ -515,27 +498,27 @@ class AltalexAdapter:
 
         # Classify difference
         if hash_match:
-            diff_type = 'exact'
-            status = 'verified'
+            diff_type = "exact"
+            status = "verified"
         elif similarity > 0.95:
-            diff_type = 'format_diff'
-            status = 'verified'
+            diff_type = "format_diff"
+            status = "verified"
         elif similarity > 0.80:
-            diff_type = 'minor'
-            status = 'format_diff'
+            diff_type = "minor"
+            status = "format_diff"
         else:
-            diff_type = 'substantive'
-            status = 'content_diff'
+            diff_type = "substantive"
+            status = "content_diff"
 
         return {
-            'hash_match': hash_match,
-            'altalex_hash': altalex_hash,
-            'brocardi_hash': brocardi_hash,
-            'similarity': similarity,
-            'diff_type': diff_type,
-            'status': status,
-            'altalex_len': len(altalex_article.testo),
-            'brocardi_len': len(brocardi_text),
+            "hash_match": hash_match,
+            "altalex_hash": altalex_hash,
+            "brocardi_hash": brocardi_hash,
+            "similarity": similarity,
+            "diff_type": diff_type,
+            "status": status,
+            "altalex_len": len(altalex_article.testo),
+            "brocardi_len": len(brocardi_text),
         }
 
 
@@ -592,4 +575,5 @@ async def test_parse():
 
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(test_parse())

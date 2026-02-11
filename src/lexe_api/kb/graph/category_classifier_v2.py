@@ -16,51 +16,38 @@ Uses embeddings for centroid classification and OpenRouter for LLM resolver.
 """
 
 import json
-import os
-import re
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional, Set, Tuple
 from uuid import UUID
 
 import httpx
 import numpy as np
 
-from .materia_rules import (
-    MATERIE,
-    derive_materia_rule_first,
-    compute_materia_candidates,
-)
 from .ambito_rules import (
     derive_ambito_rule_first,
-    AMBITO_NORMS,
 )
-from .categories_v2 import (
-    MATERIA_ORDER,
-    NATURA_ORDER,
-    AMBITO_ORDER,
-    get_all_materia_keywords,
-    get_all_natura_keywords,
-    get_all_ambito_keywords,
-)
-from .config import DEFAULT_THRESHOLDS, ClassificationThresholds
 from .calibration import get_calibrator
-from .llm_resolver import call_llm_resolver_ensemble, LLMResolverInput
 from .classification_logger import ClassificationLog
+from .config import DEFAULT_THRESHOLDS, ClassificationThresholds
+from .llm_resolver import LLMResolverInput, call_llm_resolver_ensemble
+from .materia_rules import (
+    derive_materia_rule_first,
+)
 
 
 @dataclass
 class ClassificationResult:
     """Result of classifying a single massima."""
+
     massima_id: UUID
 
     # Axis A: Materia
     materia_l1: str
     materia_confidence: float
     materia_rule: str
-    materia_candidate_set: List[str]
-    materia_reasons: List[str]
+    materia_candidate_set: list[str]
+    materia_reasons: list[str]
 
     # Axis B: Natura
     natura_l1: str
@@ -68,15 +55,15 @@ class ClassificationResult:
     natura_rule: str
 
     # Axis C: Ambito (only if PROCESSUALE)
-    ambito_l1: Optional[str] = None
-    ambito_confidence: Optional[float] = None
-    ambito_rule: Optional[str] = None
+    ambito_l1: str | None = None
+    ambito_confidence: float | None = None
+    ambito_rule: str | None = None
 
     # Topic L2
-    topic_l2: Optional[str] = None
-    topic_l2_confidence: Optional[float] = None
-    topic_l2_flag: Optional[str] = None
-    abstain_reason: Optional[str] = None
+    topic_l2: str | None = None
+    topic_l2_confidence: float | None = None
+    topic_l2_flag: str | None = None
+    abstain_reason: str | None = None
 
     # Composite
     composite_confidence: float = 0.0
@@ -86,9 +73,10 @@ class ClassificationResult:
 @dataclass
 class CentroidCache:
     """Cache for centroid embeddings."""
-    materia_centroids: Dict[str, np.ndarray] = field(default_factory=dict)
-    natura_centroids: Dict[str, np.ndarray] = field(default_factory=dict)
-    ambito_centroids: Dict[str, np.ndarray] = field(default_factory=dict)
+
+    materia_centroids: dict[str, np.ndarray] = field(default_factory=dict)
+    natura_centroids: dict[str, np.ndarray] = field(default_factory=dict)
+    ambito_centroids: dict[str, np.ndarray] = field(default_factory=dict)
     is_loaded: bool = False
 
 
@@ -139,12 +127,12 @@ async def call_llm_resolver(
     client: httpx.AsyncClient,
     api_key: str,
     testo: str,
-    sezione: Optional[str],
-    tipo: Optional[str],
-    norme: List[str],
+    sezione: str | None,
+    tipo: str | None,
+    norme: list[str],
     task_name: str,
-    options: List[str],
-) -> Tuple[Optional[str], float]:
+    options: list[str],
+) -> tuple[str | None, float]:
     """
     Call LLM resolver for uncertain classifications.
     Returns: (choice, confidence)
@@ -209,9 +197,9 @@ async def call_llm_resolver(
 
 def classify_with_centroids(
     embedding: np.ndarray,
-    centroids: Dict[str, np.ndarray],
-    candidate_set: Optional[Set[str]] = None,
-) -> Tuple[str, float, float]:
+    centroids: dict[str, np.ndarray],
+    candidate_set: set[str] | None = None,
+) -> tuple[str, float, float]:
     """
     Classify using centroid similarity.
     Returns: (best_category, score, delta_to_second)
@@ -233,7 +221,7 @@ def classify_with_centroids(
     return best[0], best[1], delta
 
 
-def keyword_score(text_lower: str, keywords: Set[str]) -> float:
+def keyword_score(text_lower: str, keywords: set[str]) -> float:
     """Compute keyword match score."""
     if not keywords:
         return 0.0
@@ -243,13 +231,13 @@ def keyword_score(text_lower: str, keywords: Set[str]) -> float:
 
 async def classify_materia(
     embedding: np.ndarray,
-    tipo: Optional[str],
-    sezione: Optional[str],
-    norms: List[str],
+    tipo: str | None,
+    sezione: str | None,
+    norms: list[str],
     testo_lower: str,
-    client: Optional[httpx.AsyncClient] = None,
-    api_key: Optional[str] = None,
-) -> Tuple[str, float, str, List[str], List[str]]:
+    client: httpx.AsyncClient | None = None,
+    api_key: str | None = None,
+) -> tuple[str, float, str, list[str], list[str]]:
     """
     Classify materia using rules -> centroids -> LLM resolver.
     Returns: (materia, confidence, rule, candidate_set, reasons)
@@ -282,7 +270,12 @@ async def classify_materia(
     # Step 3: LLM resolver for uncertain cases
     if client and api_key and len(candidates) <= 4:
         choice, llm_conf = await call_llm_resolver(
-            client, api_key, testo_lower[:1500], sezione, tipo, norms,
+            client,
+            api_key,
+            testo_lower[:1500],
+            sezione,
+            tipo,
+            norms,
             "Scegli la MATERIA (area giuridica)",
             list(candidates),
         )
@@ -302,22 +295,41 @@ async def classify_materia(
 async def classify_natura(
     embedding: np.ndarray,
     testo_lower: str,
-    client: Optional[httpx.AsyncClient] = None,
-    api_key: Optional[str] = None,
-) -> Tuple[str, float, str]:
+    client: httpx.AsyncClient | None = None,
+    api_key: str | None = None,
+) -> tuple[str, float, str]:
     """
     Classify natura using centroids -> LLM resolver.
     Returns: (natura, confidence, rule)
     """
     # Keyword hints
     processuale_keywords = {
-        "competenza", "ammissibilità", "termine", "decadenza", "notifica",
-        "impugnazione", "ricorso", "appello", "cassazione", "preclusione",
-        "procedimento", "nullità", "inammissibile", "improcedibile",
+        "competenza",
+        "ammissibilità",
+        "termine",
+        "decadenza",
+        "notifica",
+        "impugnazione",
+        "ricorso",
+        "appello",
+        "cassazione",
+        "preclusione",
+        "procedimento",
+        "nullità",
+        "inammissibile",
+        "improcedibile",
     }
     sostanziale_keywords = {
-        "responsabilità", "danno", "risarcimento", "inadempimento",
-        "contratto", "proprietà", "diritto", "obbligo", "colpa", "dolo",
+        "responsabilità",
+        "danno",
+        "risarcimento",
+        "inadempimento",
+        "contratto",
+        "proprietà",
+        "diritto",
+        "obbligo",
+        "colpa",
+        "dolo",
     }
 
     proc_score = keyword_score(testo_lower, processuale_keywords)
@@ -342,7 +354,12 @@ async def classify_natura(
     # LLM resolver for uncertain
     if client and api_key:
         choice, llm_conf = await call_llm_resolver(
-            client, api_key, testo_lower[:1500], None, None, [],
+            client,
+            api_key,
+            testo_lower[:1500],
+            None,
+            None,
+            [],
             "Scegli la NATURA (sostanziale o processuale)",
             ["SOSTANZIALE", "PROCESSUALE"],
         )
@@ -358,11 +375,11 @@ async def classify_natura(
 
 async def classify_ambito(
     embedding: np.ndarray,
-    norms: List[str],
+    norms: list[str],
     testo_lower: str,
-    client: Optional[httpx.AsyncClient] = None,
-    api_key: Optional[str] = None,
-) -> Tuple[Optional[str], Optional[float], Optional[str]]:
+    client: httpx.AsyncClient | None = None,
+    api_key: str | None = None,
+) -> tuple[str | None, float | None, str | None]:
     """
     Classify ambito using rules -> centroids.
     Only called when natura=PROCESSUALE.
@@ -378,8 +395,7 @@ async def classify_ambito(
     if _centroid_cache.is_loaded and _centroid_cache.ambito_centroids:
         # Exclude UNKNOWN from centroids
         valid_centroids = {
-            k: v for k, v in _centroid_cache.ambito_centroids.items()
-            if k != "UNKNOWN"
+            k: v for k, v in _centroid_cache.ambito_centroids.items() if k != "UNKNOWN"
         }
         best, score, delta = classify_with_centroids(
             embedding,
@@ -396,7 +412,12 @@ async def classify_ambito(
     # Step 3: LLM resolver if very uncertain
     if client and api_key and len(candidates) <= 4:
         choice, llm_conf = await call_llm_resolver(
-            client, api_key, testo_lower[:1500], None, None, norms,
+            client,
+            api_key,
+            testo_lower[:1500],
+            None,
+            None,
+            norms,
             "Scegli l'AMBITO processuale",
             [c for c in candidates if c != "UNKNOWN"],
         )
@@ -410,10 +431,10 @@ async def classify_ambito(
 def compute_composite_confidence(
     materia_conf: float,
     natura_conf: float,
-    ambito_conf: Optional[float],
+    ambito_conf: float | None,
     materia_rule: str,
     norms_count: int,
-    sezione: Optional[str],
+    sezione: str | None,
 ) -> float:
     """
     Compute composite confidence for inference.
@@ -442,13 +463,13 @@ def compute_composite_confidence(
 async def classify_massima(
     massima_id: UUID,
     embedding: np.ndarray,
-    tipo: Optional[str],
-    sezione: Optional[str],
-    norms: List[str],
+    tipo: str | None,
+    sezione: str | None,
+    norms: list[str],
     testo: str,
     norms_count: int,
-    client: Optional[httpx.AsyncClient] = None,
-    api_key: Optional[str] = None,
+    client: httpx.AsyncClient | None = None,
+    api_key: str | None = None,
 ) -> ClassificationResult:
     """
     Full classification pipeline for a single massima.
@@ -477,8 +498,7 @@ async def classify_massima(
 
     # Compute composite confidence
     composite = compute_composite_confidence(
-        materia_conf, natura_conf, ambito_conf,
-        materia_rule, norms_count, sezione
+        materia_conf, natura_conf, ambito_conf, materia_rule, norms_count, sezione
     )
 
     return ClassificationResult(
@@ -515,9 +535,9 @@ async def load_centroids_from_db(conn) -> bool:
 
 
 def set_centroids(
-    materia: Dict[str, np.ndarray],
-    natura: Dict[str, np.ndarray],
-    ambito: Dict[str, np.ndarray],
+    materia: dict[str, np.ndarray],
+    natura: dict[str, np.ndarray],
+    ambito: dict[str, np.ndarray],
 ):
     """Set centroid embeddings directly (for testing or batch processing)."""
     global _centroid_cache
@@ -535,15 +555,15 @@ def set_centroids(
 async def classify_massima_v25(
     massima_id: UUID,
     embedding: np.ndarray,
-    tipo: Optional[str],
-    sezione: Optional[str],
-    norms: List[str],
+    tipo: str | None,
+    sezione: str | None,
+    norms: list[str],
     testo: str,
     norms_count: int,
-    client: Optional[httpx.AsyncClient] = None,
-    api_key: Optional[str] = None,
+    client: httpx.AsyncClient | None = None,
+    api_key: str | None = None,
     thresholds: ClassificationThresholds = DEFAULT_THRESHOLDS,
-) -> Tuple[ClassificationResult, ClassificationLog]:
+) -> tuple[ClassificationResult, ClassificationLog]:
     """
     Pipeline v2.5 with calibration + ensemble LLM resolver.
 
@@ -633,7 +653,7 @@ async def classify_massima_v25(
 
     if not scores:
         # Fallback: uniform scores
-        scores = {m: 0.5 for m in candidates}
+        scores = dict.fromkeys(candidates, 0.5)
 
     # Sort by score
     sorted_materie = sorted(scores.items(), key=lambda x: -x[1])
@@ -723,8 +743,7 @@ async def classify_massima_v25(
 
     # Compute composite confidence
     composite = compute_composite_confidence(
-        final_conf, natura_conf, ambito_conf,
-        f"centroid_{routing.lower()}", norms_count, sezione
+        final_conf, natura_conf, ambito_conf, f"centroid_{routing.lower()}", norms_count, sezione
     )
 
     return ClassificationResult(

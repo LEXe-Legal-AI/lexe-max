@@ -24,6 +24,7 @@ from lexe_api.kb.graph.norm_extractor import (
     norm_to_canonical_id,
     parse_norm_query,
 )
+
 from .hybrid import HybridSearchResult
 
 logger = structlog.get_logger(__name__)
@@ -32,6 +33,7 @@ logger = structlog.get_logger(__name__)
 @dataclass
 class NormBoostConfig:
     """Configuration for norm boosting."""
+
     boost_factor: float = 0.10  # Additive boost (conservative)
     citation_count_weight: float = 0.02  # Boost per 100 citations
     max_boost: float = 0.20  # Cap on total boost

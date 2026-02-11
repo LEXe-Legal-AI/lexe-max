@@ -19,20 +19,20 @@ Throttling: 1 req/sec per rispettare ToS
 
 import asyncio
 import re
+from collections.abc import AsyncIterator
 from datetime import datetime
-from typing import AsyncIterator
 from urllib.parse import urljoin
 
 import httpx
-from bs4 import BeautifulSoup
 import structlog
+from bs4 import BeautifulSoup
 
+from lexe_api.kb.ingestion.legal_numbers_extractor import extract_canonical_ids
+from lexe_api.kb.ingestion.urn_generator import URNGenerator
 from lexe_api.kb.sources.base_adapter import (
     BaseLegalSourceAdapter,
     FetchError,
-    ParseError,
     ProgressCallback,
-    RateLimitError,
     TrustLevel,
 )
 from lexe_api.kb.sources.models import (
@@ -40,8 +40,6 @@ from lexe_api.kb.sources.models import (
     BrocardiExtract,
     DizionarioExtract,
 )
-from lexe_api.kb.ingestion.urn_generator import URNGenerator
-from lexe_api.kb.ingestion.legal_numbers_extractor import extract_canonical_ids
 
 logger = structlog.get_logger(__name__)
 
@@ -64,12 +62,15 @@ CODICE_URLS = {
 }
 
 # Pattern per estrarre numero articolo da URL
-ARTICLE_URL_PATTERN = re.compile(r"/art(\d+(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies)?)", re.I)
+ARTICLE_URL_PATTERN = re.compile(
+    r"/art(\d+(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies)?)", re.I
+)
 
 
 # ============================================================
 # BROCARDI ADAPTER
 # ============================================================
+
 
 class BrocardiAdapter(BaseLegalSourceAdapter):
     """
@@ -402,9 +403,11 @@ class BrocardiAdapter(BaseLegalSourceAdapter):
                     continue
 
                 # Check if it's a hierarchy link (libro/titolo/capo)
-                if any(x in href.lower() for x in ["/libro", "/titolo", "/capo", "/sezione"]):
-                    if full_url not in visited:
-                        await crawl_page(full_url, depth + 1)
+                if (
+                    any(x in href.lower() for x in ["/libro", "/titolo", "/capo", "/sezione"])
+                    and full_url not in visited
+                ):
+                    await crawl_page(full_url, depth + 1)
 
         # Start crawling from base URL
         logger.info("Crawling hierarchy", base_url=base_url)
@@ -571,6 +574,7 @@ class BrocardiAdapter(BaseLegalSourceAdapter):
 # ============================================================
 # FACTORY & CONVENIENCE
 # ============================================================
+
 
 def create_brocardi_adapter(
     requests_per_second: float = 1.0,

@@ -3,6 +3,7 @@ Category Graph v2.5 Configuration
 
 Soglie operative, modelli LLM e feature flags per il sistema di classificazione.
 """
+
 from dataclasses import dataclass
 
 

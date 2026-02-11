@@ -7,7 +7,6 @@ Pulizia e normalizzazione testo giuridico per massimari.
 import hashlib
 import re
 import unicodedata
-from typing import Optional
 
 
 def clean_legal_text(text: str) -> str:
@@ -213,11 +212,7 @@ def is_likely_header_or_footer(text: str) -> bool:
         r"^vol(ume)?\.?\s*\d+",  # Volume
     ]
 
-    for pattern in patterns:
-        if re.match(pattern, text_lower):
-            return True
-
-    return False
+    return any(re.match(pattern, text_lower) for pattern in patterns)
 
 
 def merge_split_paragraphs(texts: list[str]) -> list[str]:
@@ -246,18 +241,13 @@ def merge_split_paragraphs(texts: list[str]) -> list[str]:
         ends_incomplete = (
             current.endswith("-")  # Parola spezzata
             or (
-                not current.endswith((".", "!", "?", ":", ";", ")"))
-                and len(current) > 10
+                not current.endswith((".", "!", "?", ":", ";", ")")) and len(current) > 10
             )  # No punteggiatura finale
         )
 
         if ends_incomplete:
             # Unisci
-            if current.endswith("-"):
-                # Rimuovi trattino e unisci
-                current = current[:-1] + text
-            else:
-                current = current + " " + text
+            current = current[:-1] + text if current.endswith("-") else current + " " + text
         else:
             # Salva current e inizia nuovo
             merged.append(current)

@@ -204,7 +204,7 @@ class CrossEncoderReranker:
         score_range = max_score - min_score if max_score > min_score else 1.0
 
         reranked = []
-        for original_result, rerank_score in zip(valid_results, scores):
+        for original_result, rerank_score in zip(valid_results, scores, strict=False):
             # Normalizza rerank score a 0-1
             norm_rerank = (rerank_score - min_score) / score_range
 
@@ -348,7 +348,7 @@ class BGEReranker:
 
         # Combina score
         reranked = []
-        for original_result, rerank_score in zip(valid_results, scores):
+        for original_result, rerank_score in zip(valid_results, scores, strict=False):
             # Normalizza rerank score a 0-1 (sigmoid gia' applicato dal modello)
             rerank_score = float(rerank_score)
 
@@ -561,7 +561,7 @@ async def rerank_normativa_chunks(
     score_range = max_score - min_score if max_score > min_score else 1.0
 
     reranked = []
-    for chunk, rerank_score in zip(chunks, scores):
+    for chunk, rerank_score in zip(chunks, scores, strict=False):
         rrf_score = chunk.get("rrf_score", 0)
         rrf_norm = rrf_score / max_rrf if max_rrf > 0 else 0
         norm_rerank = (rerank_score - min_score) / score_range

@@ -20,16 +20,19 @@ from .config import (
     SystemConfig,
 )
 
+
 # Lazy imports per submodules (evita import circolari)
 def get_ingestion_module():
     """Get ingestion submodule."""
     from . import ingestion
+
     return ingestion
 
 
 def get_retrieval_module():
     """Get retrieval submodule."""
     from . import retrieval
+
     return retrieval
 
 

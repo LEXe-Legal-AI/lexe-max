@@ -13,15 +13,14 @@ All functions operate on testo_norm, not raw text.
 import hashlib
 import re
 import unicodedata
-from typing import Tuple
-
 
 # ============================================================================
 # Spaced Letters Detection
 # ============================================================================
 
+
 def compute_spaced_letters_score(text: str) -> float:
-    """
+    r"""
     Rileva se il testo ha spaziatura carattere-per-carattere.
 
     Segnali:
@@ -39,21 +38,21 @@ def compute_spaced_letters_score(text: str) -> float:
         return 0.0
 
     # Count spaced letter pairs: "a b", "c d", etc.
-    spaced_pairs = len(re.findall(r'[a-zàèéìòùA-ZÀÈÉÌÒÙ]\s[a-zàèéìòùA-ZÀÈÉÌÒÙ]', text))
+    spaced_pairs = len(re.findall(r"[a-zàèéìòùA-ZÀÈÉÌÒÙ]\s[a-zàèéìòùA-ZÀÈÉÌÒÙ]", text))
 
     # Count total letters
-    total_letters = len(re.findall(r'[a-zàèéìòùA-ZÀÈÉÌÒÙ]', text))
+    total_letters = len(re.findall(r"[a-zàèéìòùA-ZÀÈÉÌÒÙ]", text))
     if total_letters == 0:
         return 0.0
 
     spaced_pair_ratio = spaced_pairs / total_letters
 
     # Calculate average token length
-    tokens = re.findall(r'[a-zàèéìòùA-ZÀÈÉÌÒÙ]+', text)
+    tokens = re.findall(r"[a-zàèéìòùA-ZÀÈÉÌÒÙ]+", text)
     avg_token_len = sum(len(t) for t in tokens) / len(tokens) if tokens else 0
 
     # Calculate space ratio
-    space_count = text.count(' ')
+    space_count = text.count(" ")
     space_ratio = space_count / len(text) if text else 0
 
     # Combined score (weighted)
@@ -79,6 +78,7 @@ def compute_spaced_letters_score(text: str) -> float:
 # Safe Despacing
 # ============================================================================
 
+
 def safe_despace(text: str) -> str:
     """
     Rimuove spazi tra caratteri singoli SOLO in sequenze che rispettano TUTTE:
@@ -101,7 +101,7 @@ def safe_despace(text: str) -> str:
         return text
 
     # Split into segments by double spaces or paragraph breaks
-    segments = re.split(r'(\n\n|\s{3,})', text)
+    segments = re.split(r"(\n\n|\s{3,})", text)
     result = []
 
     for segment in segments:
@@ -115,11 +115,7 @@ def safe_despace(text: str) -> str:
         if score >= 0.12:
             # Apply despacing only to letter sequences
             # Pattern: single letter + space + single letter (both alphabetic)
-            despaced = re.sub(
-                r'(?<=[a-zàèéìòùA-ZÀÈÉÌÒÙ])\s+(?=[a-zàèéìòùA-ZÀÈÉÌÒÙ])',
-                '',
-                segment
-            )
+            despaced = re.sub(r"(?<=[a-zàèéìòùA-ZÀÈÉÌÒÙ])\s+(?=[a-zàèéìòùA-ZÀÈÉÌÒÙ])", "", segment)
 
             # But preserve word boundaries - if we created a very long word, split it back
             # This handles cases where real words got joined
@@ -130,18 +126,19 @@ def safe_despace(text: str) -> str:
                 # Leave as-is for now, the original spacing will be applied
                 fixed_tokens.append(token)
 
-            result.append(' '.join(fixed_tokens))
+            result.append(" ".join(fixed_tokens))
         else:
             result.append(segment)
 
-    return ''.join(result)
+    return "".join(result)
 
 
 # ============================================================================
 # Normalization v2
 # ============================================================================
 
-def normalize_v2(text: str, apply_despacing: bool = None) -> Tuple[str, float]:
+
+def normalize_v2(text: str, apply_despacing: bool = None) -> tuple[str, float]:
     """
     Normalizzazione robusta con despacing condizionale.
 
@@ -161,21 +158,21 @@ def normalize_v2(text: str, apply_despacing: bool = None) -> Tuple[str, float]:
     Returns: (normalized_text, spaced_letters_score)
     """
     if not text:
-        return ('', 0.0)
+        return ("", 0.0)
 
     # Step 1: Unicode normalize
-    text = unicodedata.normalize('NFKC', text)
+    text = unicodedata.normalize("NFKC", text)
 
     # Remove zero-width characters
-    text = re.sub(r'[\u200b\u200c\u200d\ufeff\u00ad]', '', text)
+    text = re.sub(r"[\u200b\u200c\u200d\ufeff\u00ad]", "", text)
 
     # Step 2: Normalize apostrophes and quotes
-    text = re.sub(r'[`´''‛]', "'", text)
+    text = re.sub(r"[`´" "‛]", "'", text)
     text = re.sub(r'[""„‟]', '"', text)
 
     # Step 3: Collapse multiple whitespace (but preserve newlines initially)
-    text = re.sub(r'[^\S\n]+', ' ', text)
-    text = re.sub(r'\n+', '\n', text)
+    text = re.sub(r"[^\S\n]+", " ", text)
+    text = re.sub(r"\n+", "\n", text)
 
     # Compute spaced letters score before despacing
     spaced_score = compute_spaced_letters_score(text)
@@ -186,7 +183,7 @@ def normalize_v2(text: str, apply_despacing: bool = None) -> Tuple[str, float]:
 
     # Step 5: Final cleanup
     text = text.lower()
-    text = re.sub(r'\s+', ' ', text)  # Collapse all whitespace to single space
+    text = re.sub(r"\s+", " ", text)  # Collapse all whitespace to single space
     text = text.strip()
 
     return (text, spaced_score)
@@ -200,17 +197,18 @@ def normalize_simple(text: str) -> str:
     Used for backward compatibility.
     """
     if not text:
-        return ''
+        return ""
 
     text = text.lower()
-    text = re.sub(r'\s+', ' ', text)
-    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"[^\w\s]", "", text)
     return text.strip()
 
 
 # ============================================================================
 # Content Hash
 # ============================================================================
+
 
 def compute_content_hash(text_norm: str) -> str:
     """
@@ -219,13 +217,14 @@ def compute_content_hash(text_norm: str) -> str:
     Returns: first 40 chars of sha256 hex digest
     """
     if not text_norm:
-        return ''
-    return hashlib.sha256(text_norm.encode('utf-8')).hexdigest()[:40]
+        return ""
+    return hashlib.sha256(text_norm.encode("utf-8")).hexdigest()[:40]
 
 
 # ============================================================================
 # SimHash 64-bit
 # ============================================================================
+
 
 def compute_simhash64(text_norm: str, ngram_size: int = 3) -> int:
     """
@@ -251,14 +250,14 @@ def compute_simhash64(text_norm: str, ngram_size: int = 3) -> int:
         return 0
 
     # Extract n-grams
-    ngrams = [text_norm[i:i+ngram_size] for i in range(len(text_norm) - ngram_size + 1)]
+    ngrams = [text_norm[i : i + ngram_size] for i in range(len(text_norm) - ngram_size + 1)]
 
     # Initialize 64 counters
     v = [0] * 64
 
     for ngram in ngrams:
         # Hash n-gram to 64-bit value using MD5 (fast, deterministic)
-        h = int(hashlib.md5(ngram.encode('utf-8')).hexdigest()[:16], 16)
+        h = int(hashlib.md5(ngram.encode("utf-8")).hexdigest()[:16], 16)
 
         # Update counters
         for i in range(64):
@@ -271,11 +270,11 @@ def compute_simhash64(text_norm: str, ngram_size: int = 3) -> int:
     fingerprint = 0
     for i in range(64):
         if v[i] > 0:
-            fingerprint |= (1 << i)
+            fingerprint |= 1 << i
 
     # Convert to signed 64-bit (PostgreSQL BIGINT is signed)
     if fingerprint >= (1 << 63):
-        fingerprint -= (1 << 64)
+        fingerprint -= 1 << 64
 
     return fingerprint
 
@@ -290,12 +289,13 @@ def hamming_distance(hash1: int, hash2: int) -> int:
         return 64  # Max distance if either is None
 
     xor = hash1 ^ hash2
-    return bin(xor).count('1')
+    return bin(xor).count("1")
 
 
 # ============================================================================
 # Jaccard Similarity (character-based, for matching)
 # ============================================================================
+
 
 def jaccard_tokens(text1: str, text2: str) -> float:
     """
@@ -331,7 +331,7 @@ def ngram_similarity(text1: str, text2: str, n: int = 3) -> float:
 
     def get_ngrams(text: str, n: int) -> set:
         text = text.lower()
-        return {text[i:i+n] for i in range(len(text) - n + 1)}
+        return {text[i : i + n] for i in range(len(text) - n + 1)}
 
     ngrams1 = get_ngrams(text1, n)
     ngrams2 = get_ngrams(text2, n)

@@ -46,10 +46,26 @@ HIERARCHY_PATTERNS = {
 
 # Pattern per numeri romani
 ROMAN_NUMERALS = {
-    "I": 1, "II": 2, "III": 3, "IV": 4, "V": 5,
-    "VI": 6, "VII": 7, "VIII": 8, "IX": 9, "X": 10,
-    "XI": 11, "XII": 12, "XIII": 13, "XIV": 14, "XV": 15,
-    "XVI": 16, "XVII": 17, "XVIII": 18, "XIX": 19, "XX": 20,
+    "I": 1,
+    "II": 2,
+    "III": 3,
+    "IV": 4,
+    "V": 5,
+    "VI": 6,
+    "VII": 7,
+    "VIII": 8,
+    "IX": 9,
+    "X": 10,
+    "XI": 11,
+    "XII": 12,
+    "XIII": 13,
+    "XIV": 14,
+    "XV": 15,
+    "XVI": 16,
+    "XVII": 17,
+    "XVIII": 18,
+    "XIX": 19,
+    "XX": 20,
 }
 
 
@@ -176,10 +192,7 @@ def is_likely_section_header(element: ExtractedElement) -> bool:
         return True
 
     # Se matcha un pattern gerarchico
-    if detect_section_type(text):
-        return True
-
-    return False
+    return bool(detect_section_type(text))
 
 
 def parse_document_structure(
@@ -242,14 +255,18 @@ def parse_document_structure(
             # Aggiorna contesto
             current_context[level] = new_section
             # Rimuovi contesti di livello inferiore
-            for l in list(current_context.keys()):
-                if l > level:
-                    del current_context[l]
+            for lvl in list(current_context.keys()):
+                if lvl > level:
+                    del current_context[lvl]
 
             # Chiudi pagina sezione precedente allo stesso livello
-            if current_section and current_section.level == level:
-                if element.page_number and current_section.page_start:
-                    current_section.page_end = element.page_number - 1
+            if (
+                current_section
+                and current_section.level == level
+                and element.page_number
+                and current_section.page_start
+            ):
+                current_section.page_end = element.page_number - 1
 
             current_section = new_section
             all_sections.append(new_section)
@@ -277,9 +294,7 @@ def parse_document_structure(
     # Propaga page_end ai parent
     for section in reversed(all_sections):
         if section.children:
-            max_child_page = max(
-                (c.page_end or c.page_start or 0) for c in section.children
-            )
+            max_child_page = max((c.page_end or c.page_start or 0) for c in section.children)
             if max_child_page and (not section.page_end or max_child_page > section.page_end):
                 section.page_end = max_child_page
 
@@ -370,9 +385,7 @@ def extract_toc_from_first_pages(
     toc_entries: list[tuple[str, int]] = []
 
     # Pattern per entry TOC: "Titolo ..... 123" o "Titolo - 123"
-    toc_pattern = re.compile(
-        r"^(.+?)[\s.…]+(\d{1,4})\s*$"
-    )
+    toc_pattern = re.compile(r"^(.+?)[\s.…]+(\d{1,4})\s*$")
 
     for elem in elements:
         if elem.page_number and elem.page_number > max_pages:

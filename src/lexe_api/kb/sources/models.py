@@ -7,34 +7,37 @@ Every adapter (Normattiva, StudioCataldi, Brocardi, etc.) MUST produce
 these standardized outputs for consistent ingestion and comparison.
 """
 
+import hashlib
+import re
+import unicodedata
 from datetime import date, datetime
 from enum import Enum
 from typing import Literal
 
 from pydantic import BaseModel, Field, computed_field
-import hashlib
-import re
-import unicodedata
 
 
 class TrustLevel(str, Enum):
     """Source trust level for cross-validation hierarchy."""
-    CANONICAL = "canonical"    # Normattiva, Gazzetta - fonte di verità
-    EDITORIAL = "editorial"    # Brocardi - arricchimento strutturato
-    MIRROR = "mirror"          # StudioCataldi - mirror locale
+
+    CANONICAL = "canonical"  # Normattiva, Gazzetta - fonte di verità
+    EDITORIAL = "editorial"  # Brocardi - arricchimento strutturato
+    MIRROR = "mirror"  # StudioCataldi - mirror locale
 
 
 class DiffType(str, Enum):
     """Types of differences found during cross-validation."""
-    EXACT = "exact"            # Hash identici
+
+    EXACT = "exact"  # Hash identici
     FORMATTING = "formatting"  # Solo formattazione (spazi, newline)
-    MINOR = "minor"            # Punteggiatura, typo minori
+    MINOR = "minor"  # Punteggiatura, typo minori
     SUBSTANTIVE = "substantive"  # Differenze di contenuto
-    VERSION = "version"        # Versione diversa (multivigenza)
+    VERSION = "version"  # Versione diversa (multivigenza)
 
 
 class ValidationAction(str, Enum):
     """Actions after cross-validation."""
+
     USE_CANONICAL = "use_canonical"
     FLAG_FOR_REVIEW = "flag_for_review"
 
@@ -42,6 +45,7 @@ class ValidationAction(str, Enum):
 # ============================================================
 # NORMALIZATION HELPERS
 # ============================================================
+
 
 def normalize_text(text: str) -> str:
     """
@@ -87,6 +91,7 @@ def compute_content_hash(text: str) -> str:
 # ARTICLE EXTRACT (Normativa)
 # ============================================================
 
+
 class ArticleExtract(BaseModel):
     """
     Contract che ogni adapter deve produrre per articoli di codice.
@@ -101,10 +106,7 @@ class ArticleExtract(BaseModel):
     comma: str | None = Field(None, description="1, 2, bis, ter")
 
     # URN:NIR (standard italiano per identificativi normativi)
-    urn_nir: str | None = Field(
-        None,
-        description="urn:nir:stato:legge:1942-03-16;262:art2043"
-    )
+    urn_nir: str | None = Field(None, description="urn:nir:stato:legge:1942-03-16;262:art2043")
 
     # ═══ CONTENUTO ═══
     rubrica: str | None = Field(None, description="Risarcimento per fatto illecito")
@@ -129,10 +131,7 @@ class ArticleExtract(BaseModel):
     retrieved_at: datetime
 
     # ═══ CITAZIONI (estratte dopo) ═══
-    citations_raw: list[str] | None = Field(
-        None,
-        description="['art. 2044 c.c.', 'L. 123/2020']"
-    )
+    citations_raw: list[str] | None = Field(None, description="['art. 2044 c.c.', 'L. 123/2020']")
 
     @computed_field
     @property
@@ -149,16 +148,13 @@ class ArticleExtract(BaseModel):
     def model_post_init(self, __context) -> None:
         """Compute normalized text if not provided."""
         if self.testo_normalizzato is None:
-            object.__setattr__(
-                self,
-                "testo_normalizzato",
-                normalize_text(self.testo)
-            )
+            object.__setattr__(self, "testo_normalizzato", normalize_text(self.testo))
 
 
 # ============================================================
 # VALIDATION RESULT (Cross-Check)
 # ============================================================
+
 
 class ValidationResult(BaseModel):
     """
@@ -179,10 +175,7 @@ class ValidationResult(BaseModel):
 
     # Risultato
     hash_match: bool = Field(..., description="True se hash identici")
-    diff_type: DiffType | None = Field(
-        None,
-        description="Tipo di differenza se hash diversi"
-    )
+    diff_type: DiffType | None = Field(None, description="Tipo di differenza se hash diversi")
     diff_summary: str | None = Field(None, description="Breve descrizione diff")
 
     # LLM analysis (solo se hash_match=False)
@@ -198,14 +191,15 @@ class ValidationResult(BaseModel):
     def needs_review(self) -> bool:
         """True se richiede review manuale."""
         return (
-            self.diff_type == DiffType.SUBSTANTIVE or
-            self.action == ValidationAction.FLAG_FOR_REVIEW
+            self.diff_type == DiffType.SUBSTANTIVE
+            or self.action == ValidationAction.FLAG_FOR_REVIEW
         )
 
 
 # ============================================================
 # BROCARDI EXTRACT
 # ============================================================
+
 
 class BrocardiExtract(BaseModel):
     """
@@ -222,11 +216,12 @@ class BrocardiExtract(BaseModel):
 
     # ═══ CLASSIFICAZIONE ═══
     tags: list[str] | None = Field(
-        None,
-        description="['contratti', 'obbligazioni', 'impossibilità']"
+        None, description="['contratti', 'obbligazioni', 'impossibilità']"
     )
     categoria: Literal["principio", "massima", "locuzione", "adagio", "brocardo"] | None = None
-    area_diritto: Literal["civile", "penale", "processuale", "amministrativo", "generale"] | None = None
+    area_diritto: (
+        Literal["civile", "penale", "processuale", "amministrativo", "generale"] | None
+    ) = None
 
     # ═══ SOURCE ═══
     source: str
@@ -246,6 +241,7 @@ class BrocardiExtract(BaseModel):
 # DIZIONARIO EXTRACT
 # ============================================================
 
+
 class DizionarioExtract(BaseModel):
     """
     Contract per voci dizionario giuridico.
@@ -263,8 +259,7 @@ class DizionarioExtract(BaseModel):
     sinonimi: list[str] | None = Field(None, description="['capacità di diritto']")
     contrari: list[str] | None = None
     vedi_anche: list[str] | None = Field(
-        None,
-        description="['Capacità di agire', 'Persona giuridica']"
+        None, description="['Capacità di agire', 'Persona giuridica']"
     )
 
     # ═══ CLASSIFICAZIONE ═══
@@ -281,11 +276,7 @@ class DizionarioExtract(BaseModel):
     def model_post_init(self, __context) -> None:
         """Compute normalized voce if not provided."""
         if self.voce_normalizzata is None:
-            object.__setattr__(
-                self,
-                "voce_normalizzata",
-                normalize_text(self.voce)
-            )
+            object.__setattr__(self, "voce_normalizzata", normalize_text(self.voce))
 
     @computed_field
     @property
@@ -297,6 +288,7 @@ class DizionarioExtract(BaseModel):
 # ============================================================
 # MIRROR SOURCE (Per tracking cross-validation)
 # ============================================================
+
 
 class MirrorSource(BaseModel):
     """
@@ -320,12 +312,14 @@ class MirrorSource(BaseModel):
 # LEGAL NUMBER (Per Number-Anchored Graph)
 # ============================================================
 
+
 class LegalNumberType(str, Enum):
     """Tipi di numeri legali per il grafo."""
-    ARTICLE = "article"      # art. 2043 c.c.
-    LAW = "law"              # L. 241/1990
-    DECREE = "decree"        # D.Lgs. 165/2001, D.P.R. 380/2001
-    SENTENCE = "sentence"    # Cass. 12345/2020
+
+    ARTICLE = "article"  # art. 2043 c.c.
+    LAW = "law"  # L. 241/1990
+    DECREE = "decree"  # D.Lgs. 165/2001, D.P.R. 380/2001
+    SENTENCE = "sentence"  # Cass. 12345/2020
     REGULATION = "regulation"  # Reg. UE 679/2016
 
 
@@ -348,16 +342,10 @@ class LegalNumberExtract(BaseModel):
     articolo: str | None = None  # Per leggi: articolo citato
 
     # ═══ CANONICAL ═══
-    canonical_id: str = Field(
-        ...,
-        description="CC:2043, L:241:1990, CASS:12345:2020"
-    )
+    canonical_id: str = Field(..., description="CC:2043, L:241:1990, CASS:12345:2020")
 
     # ═══ CONTEXT ═══
-    context_span: str | None = Field(
-        None,
-        description="Frase che contiene la citazione"
-    )
+    context_span: str | None = Field(None, description="Frase che contiene la citazione")
     position_start: int | None = None
     position_end: int | None = None
 

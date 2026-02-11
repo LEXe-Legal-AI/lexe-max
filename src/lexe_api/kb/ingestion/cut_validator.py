@@ -20,7 +20,6 @@ import json
 import re
 import time
 from dataclasses import dataclass, field
-from typing import Optional
 
 import httpx
 import structlog
@@ -45,12 +44,13 @@ SUSP_END_PATTERNS = re.compile(
     r"(?:sez|rv|art|artt|n|sent|ord|cass|co|c\.p\.c|c\.p\.p|c\.c|l)\.$",
     re.IGNORECASE,
 )
-SUSP_PUNCT = set([",", ":", ";", "(", "–", "—"])
+SUSP_PUNCT = {",", ":", ";", "(", "–", "—"}
 
 
 @dataclass
 class CutCandidate:
     """Candidato punto di taglio."""
+
     offset: int
     kind: str  # "sentence_boundary" | "near_soft_cap" | "near_hard_cap" | "forced"
     reason: str
@@ -61,14 +61,15 @@ class CutCandidate:
 @dataclass
 class CutDecision:
     """Decisione finale di taglio."""
+
     offset: int
     method: str  # "deterministic" | "llm_validated" | "llm_skipped_low_conf"
-    trigger_type: Optional[str] = None  # "forced_cut" | "suspicious_end" | "ambiguous_candidates"
+    trigger_type: str | None = None  # "forced_cut" | "suspicious_end" | "ambiguous_candidates"
     forced_cut: bool = False
     candidate_index: int = 0
     candidates: list[CutCandidate] = field(default_factory=list)
-    llm_confidence: Optional[float] = None
-    llm_response: Optional[dict] = None
+    llm_confidence: float | None = None
+    llm_response: dict | None = None
     latency_ms: int = 0
 
 
@@ -78,10 +79,33 @@ class CutDecision:
 
 # Abbreviazioni che NON terminano frase
 ABBREVIATIONS = {
-    "sez", "cass", "sent", "ord", "rv", "art", "artt",
-    "pag", "pagg", "cfr", "nn", "vol", "ss", "segg",
-    "cit", "op", "loc", "es", "ecc", "dott", "prof",
-    "avv", "ing", "sig", "sigg", "co", "comma",
+    "sez",
+    "cass",
+    "sent",
+    "ord",
+    "rv",
+    "art",
+    "artt",
+    "pag",
+    "pagg",
+    "cfr",
+    "nn",
+    "vol",
+    "ss",
+    "segg",
+    "cit",
+    "op",
+    "loc",
+    "es",
+    "ecc",
+    "dott",
+    "prof",
+    "avv",
+    "ing",
+    "sig",
+    "sigg",
+    "co",
+    "comma",
 }
 
 
@@ -100,18 +124,18 @@ def find_sentence_boundaries(text: str, start: int, end: int) -> list[int]:
     window = text[start:end]
 
     # Pattern: punto + spazio + maiuscola (o fine)
-    for match in re.finditer(r'\.(?:\s+[A-Z]|\s*$)', window):
+    for match in re.finditer(r"\.(?:\s+[A-Z]|\s*$)", window):
         abs_pos = start + match.start() + 1  # posizione dopo il punto
 
         # Estrai parola prima del punto
         rel_pos = match.start()
         word_before = ""
         i = rel_pos - 1
-        while i >= 0 and (window[i].isalpha() or window[i] == '.'):
+        while i >= 0 and (window[i].isalpha() or window[i] == "."):
             word_before = window[i] + word_before
             i -= 1
 
-        word_clean = word_before.lower().rstrip('.')
+        word_clean = word_before.lower().rstrip(".")
 
         # Skip se abbreviazione
         if word_clean in ABBREVIATIONS:
@@ -122,7 +146,7 @@ def find_sentence_boundaries(text: str, start: int, end: int) -> list[int]:
     return boundaries
 
 
-def find_last_sentence_boundary(text: str, start: int, end: int) -> Optional[int]:
+def find_last_sentence_boundary(text: str, start: int, end: int) -> int | None:
     """Trova l'ultimo confine di frase valido in una finestra."""
     boundaries = find_sentence_boundaries(text, start, end)
     return boundaries[-1] if boundaries else None
@@ -131,6 +155,7 @@ def find_last_sentence_boundary(text: str, start: int, end: int) -> Optional[int
 # ============================================================
 # Cut Candidates Proposal
 # ============================================================
+
 
 def propose_cut_candidates(
     text: str,
@@ -148,12 +173,14 @@ def propose_cut_candidates(
     text_len = len(text)
     if text_len <= hard_cap:
         # Non serve taglio
-        return [CutCandidate(
-            offset=text_len,
-            kind="no_cut_needed",
-            reason="text_under_hard_cap",
-            score=1.0,
-        )]
+        return [
+            CutCandidate(
+                offset=text_len,
+                kind="no_cut_needed",
+                reason="text_under_hard_cap",
+                score=1.0,
+            )
+        ]
 
     candidates = []
 
@@ -162,52 +189,62 @@ def propose_cut_candidates(
     w1_end = min(text_len, hard_cap + 50)
     boundary_hard = find_last_sentence_boundary(text, w1_start, w1_end)
     if boundary_hard and MIN_CHAR < boundary_hard <= hard_cap:
-        candidates.append(CutCandidate(
-            offset=boundary_hard,
-            kind="near_hard_cap",
-            reason="sentence_boundary_near_hard_cap",
-            preview=text[max(0, boundary_hard-20):boundary_hard+20],
-            score=0.8,
-        ))
+        candidates.append(
+            CutCandidate(
+                offset=boundary_hard,
+                kind="near_hard_cap",
+                reason="sentence_boundary_near_hard_cap",
+                preview=text[max(0, boundary_hard - 20) : boundary_hard + 20],
+                score=0.8,
+            )
+        )
 
     # Window 2: vicino a soft_cap
     w2_start = max(0, soft_cap - 250)
     w2_end = min(text_len, soft_cap + 200)
     boundary_soft = find_last_sentence_boundary(text, w2_start, w2_end)
-    if boundary_soft and MIN_CHAR < boundary_soft <= hard_cap:
-        # Evita duplicati
-        if not candidates or abs(boundary_soft - candidates[0].offset) > 50:
-            candidates.append(CutCandidate(
+    if (
+        boundary_soft
+        and MIN_CHAR < boundary_soft <= hard_cap
+        and (not candidates or abs(boundary_soft - candidates[0].offset) > 50)
+    ):
+        candidates.append(
+            CutCandidate(
                 offset=boundary_soft,
                 kind="near_soft_cap",
                 reason="sentence_boundary_near_soft_cap",
-                preview=text[max(0, boundary_soft-20):boundary_soft+20],
+                preview=text[max(0, boundary_soft - 20) : boundary_soft + 20],
                 score=0.9,  # Preferisci soft_cap
-            ))
+            )
+        )
 
     # Window 3: più ampia se non abbiamo trovato nulla
     if not candidates:
         w3_start = max(0, soft_cap - 400)
         w3_end = min(text_len, hard_cap)
         boundary_wide = find_last_sentence_boundary(text, w3_start, w3_end)
-        if boundary_wide and MIN_CHAR < boundary_wide:
-            candidates.append(CutCandidate(
-                offset=boundary_wide,
-                kind="wide_search",
-                reason="sentence_boundary_wide_search",
-                preview=text[max(0, boundary_wide-20):boundary_wide+20],
-                score=0.7,
-            ))
+        if boundary_wide and boundary_wide > MIN_CHAR:
+            candidates.append(
+                CutCandidate(
+                    offset=boundary_wide,
+                    kind="wide_search",
+                    reason="sentence_boundary_wide_search",
+                    preview=text[max(0, boundary_wide - 20) : boundary_wide + 20],
+                    score=0.7,
+                )
+            )
 
     # Fallback: forced cut a hard_cap
     if not candidates:
-        candidates.append(CutCandidate(
-            offset=min(text_len, hard_cap),
-            kind="forced",
-            reason="no_sentence_boundary_found",
-            preview=text[max(0, hard_cap-20):hard_cap+20],
-            score=0.1,
-        ))
+        candidates.append(
+            CutCandidate(
+                offset=min(text_len, hard_cap),
+                kind="forced",
+                reason="no_sentence_boundary_found",
+                preview=text[max(0, hard_cap - 20) : hard_cap + 20],
+                score=0.1,
+            )
+        )
 
     # Ordina per score (migliore prima)
     candidates.sort(key=lambda c: -c.score)
@@ -219,6 +256,7 @@ def propose_cut_candidates(
 # ============================================================
 # Suspicious End Detection
 # ============================================================
+
 
 def is_suspicious_end(text: str, cut_offset: int) -> bool:
     """
@@ -246,10 +284,7 @@ def is_suspicious_end(text: str, cut_offset: int) -> bool:
         return True
 
     # Check citazione iniziata (Rv. o Sez. senza numero completo)
-    if re.search(r"(?:rv|sez)\.\s*\d{0,3}$", tail, re.IGNORECASE):
-        return True
-
-    return False
+    return bool(re.search(r"(?:rv|sez)\.\s*\d{0,3}$", tail, re.IGNORECASE))
 
 
 # ============================================================
@@ -287,7 +322,7 @@ async def llm_validate_cut(
     api_key: str,
     model: str = "google/gemini-2.0-flash-lite-001",
     api_url: str = "https://openrouter.ai/api/v1/chat/completions",
-) -> Optional[dict]:
+) -> dict | None:
     """
     Chiama LLM per validare/scegliere tra candidati di taglio.
 
@@ -308,14 +343,14 @@ async def llm_validate_cut(
     # Prepara snippet
     # Usa il primo candidato come riferimento per lo snippet
     ref_offset = candidates[0].offset
-    snippet_before = text[max(0, ref_offset - 450):ref_offset]
-    snippet_after = text[ref_offset:ref_offset + 300]
+    snippet_before = text[max(0, ref_offset - 450) : ref_offset]
+    snippet_after = text[ref_offset : ref_offset + 300]
 
     # Formatta candidati
     candidates_text = ""
     for i, c in enumerate(candidates):
-        preview = text[max(0, c.offset - 30):c.offset + 30].replace("\n", " ")
-        candidates_text += f"{i}. offset={c.offset}, kind={c.kind}, preview=\"...{preview}...\"\n"
+        preview = text[max(0, c.offset - 30) : c.offset + 30].replace("\n", " ")
+        candidates_text += f'{i}. offset={c.offset}, kind={c.kind}, preview="...{preview}..."\n'
 
     prompt = LLM_PROMPT_TEMPLATE.format(
         snippet_before=snippet_before,
@@ -353,7 +388,7 @@ async def llm_validate_cut(
     try:
         content = data["choices"][0]["message"]["content"]
         # Estrai JSON (potrebbe essere wrapped in ```json)
-        json_match = re.search(r'\{[^}]+\}', content)
+        json_match = re.search(r"\{[^}]+\}", content)
         if not json_match:
             logger.warning("llm_validate_cut: no JSON in response", content=content[:200])
             return None
@@ -371,7 +406,7 @@ async def llm_validate_cut(
         # Stima costo (approssimativa)
         tokens_in = len(prompt) // 4
         tokens_out = len(content) // 4
-        cost_usd = (tokens_in * 0.00001 + tokens_out * 0.00004)  # ~Gemini Flash rates
+        cost_usd = tokens_in * 0.00001 + tokens_out * 0.00004  # ~Gemini Flash rates
 
         return {
             "best_candidate_index": idx,
@@ -390,6 +425,7 @@ async def llm_validate_cut(
 # ============================================================
 # Main Cut Decision Logic
 # ============================================================
+
 
 def candidates_are_ambiguous(candidates: list[CutCandidate]) -> bool:
     """Check se ci sono 2+ candidati con score simile."""
@@ -423,7 +459,7 @@ async def choose_cut(
     """
     candidates = propose_cut_candidates(text, soft_cap, hard_cap)
     chosen = candidates[0]
-    forced = (chosen.kind == "forced")
+    forced = chosen.kind == "forced"
 
     decision = CutDecision(
         offset=chosen.offset,
@@ -489,7 +525,7 @@ def choose_cut_sync(
     """
     candidates = propose_cut_candidates(text, soft_cap, hard_cap)
     chosen = candidates[0]
-    forced = (chosen.kind == "forced")
+    forced = chosen.kind == "forced"
 
     trigger = None
     if forced:

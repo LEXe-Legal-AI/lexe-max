@@ -12,8 +12,8 @@ Trust Hierarchy:
 """
 
 from abc import ABC, abstractmethod
-from datetime import datetime
-from typing import AsyncIterator, Callable, TypeVar
+from collections.abc import AsyncIterator, Callable
+from typing import TypeVar
 
 import structlog
 
@@ -34,6 +34,7 @@ T = TypeVar("T")
 # EXCEPTIONS
 # ============================================================
 
+
 class AdapterError(Exception):
     """Base exception for adapter errors."""
 
@@ -45,11 +46,13 @@ class AdapterError(Exception):
 
 class FetchError(AdapterError):
     """Error fetching content from source."""
+
     pass
 
 
 class ParseError(AdapterError):
     """Error parsing content from source."""
+
     pass
 
 
@@ -125,6 +128,7 @@ Args:
 # ============================================================
 # BASE ADAPTER INTERFACE
 # ============================================================
+
 
 class BaseLegalSourceAdapter(ABC):
     """
@@ -359,14 +363,15 @@ class BaseLegalSourceAdapter(ABC):
         """Setup resources (es. HTTP client)."""
         return self
 
+    @abstractmethod
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
         """Cleanup resources."""
-        pass
 
 
 # ============================================================
 # CROSS-VALIDATION HELPER
 # ============================================================
+
 
 class CrossValidator:
     """
