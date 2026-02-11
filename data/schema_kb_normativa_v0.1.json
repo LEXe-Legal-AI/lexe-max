@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KB Normativa Document Schema v0.1",
+  "description": "Schema normalizzato per documenti della Knowledge Base Normativa LEXE",
+  "type": "object",
+  "required": ["sigla", "nome", "atto_riferimento", "fonte_primaria", "articoli_ingestiti", "status"],
+  "properties": {
+    "sigla": {
+      "type": "string",
+      "description": "Codice breve del documento (es. CC, CPC, TUB)",
+      "pattern": "^[A-Z0-9]{2,10}$"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome esteso del documento"
+    },
+    "atto_riferimento": {
+      "type": "object",
+      "description": "Riferimento normativo ufficiale",
+      "properties": {
+        "tipo": {
+          "type": "string",
+          "enum": ["REGIO_DECRETO", "LEGGE", "DLGS", "DPR", "DL", "REGOLAMENTO_UE", "DIRETTIVA_UE", "COSTITUZIONE", "ALTRO"]
+        },
+        "numero": { "type": ["integer", "null"] },
+        "anno": { "type": ["integer", "null"] },
+        "data": { "type": ["string", "null"], "format": "date" },
+        "gazzetta_ufficiale": { "type": ["string", "null"] }
+      }
+    },
+    "fonte_primaria": {
+      "type": "string",
+      "enum": ["PDF_ALTALEX", "BROCARDI", "STUDIO_CATALDI", "NORMATTIVA", "EUR_LEX", "ALTRO"],
+      "description": "Fonte da cui è stato estratto il documento"
+    },
+    "fonti_mirror": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Fonti secondarie usate per confronto/validazione"
+    },
+    "data_aggiornamento_fonte": {
+      "type": "string",
+      "format": "date",
+      "description": "Data di aggiornamento dichiarata dalla fonte primaria"
+    },
+    "data_ingestione": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp dell'ultima ingestione"
+    },
+    "articoli_attesi": {
+      "type": ["integer", "null"],
+      "description": "Numero articoli attesi secondo fonte ufficiale (null se sconosciuto)"
+    },
+    "articoli_ingestiti": {
+      "type": "integer",
+      "description": "Numero totale articoli estratti"
+    },
+    "articoli_validati": {
+      "type": "integer",
+      "description": "Articoli con status READY"
+    },
+    "articoli_in_review": {
+      "type": "integer",
+      "description": "Articoli con status NEEDS_REVIEW"
+    },
+    "articoli_skipped": {
+      "type": "integer",
+      "description": "Articoli scartati (INVALID, duplicati)"
+    },
+    "delta_vs_riferimento": {
+      "type": ["integer", "null"],
+      "description": "articoli_attesi - articoli_validati (null se attesi sconosciuto)"
+    },
+    "delta_vs_mirror": {
+      "type": "object",
+      "description": "Match con fonti mirror",
+      "properties": {
+        "cataldi_found": { "type": "integer" },
+        "cataldi_confirmed": { "type": "integer" },
+        "brocardi_found": { "type": "integer" },
+        "brocardi_confirmed": { "type": "integer" }
+      }
+    },
+    "range_articoli": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "integer" },
+        "max": { "type": "integer" },
+        "con_suffix": { "type": "integer", "description": "Articoli bis/ter/quater" },
+        "gaps": { "type": "integer", "description": "Buchi nella numerazione" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "READY",
+        "NEEDS_REVIEW",
+        "PARTIAL_EXTRACT",
+        "PENDING_VALIDATION",
+        "EXCLUDED",
+        "DEPRECATED"
+      ],
+      "description": "Status complessivo del documento"
+    },
+    "status_reason": {
+      "type": ["string", "null"],
+      "description": "Motivazione per status non-READY"
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "HAS_REVIEW_ARTICLES",
+          "HAS_PARSING_ERRORS",
+          "MISSING_SOURCE_VERIFICATION",
+          "DUPLICATE_CANDIDATE",
+          "PARTIAL_EXTRACTION",
+          "MAX_NUM_ANOMALY"
+        ]
+      }
+    },
+    "parent_document": {
+      "type": ["string", "null"],
+      "description": "Sigla del documento padre (per varianti/edizioni)"
+    },
+    "variant_type": {
+      "type": ["string", "null"],
+      "enum": [null, "EXTRACT", "EDITION", "CONSOLIDATO", "STORICO"]
+    },
+    "note": {
+      "type": ["string", "null"]
+    },
+    "url_fonte": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "url_normattiva": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Link Normattiva per vigenza ufficiale"
+    }
+  }
+}

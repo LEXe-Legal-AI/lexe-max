@@ -32,9 +32,18 @@ logs/
 # Data (large files)
 data/pdfs/
 data/embeddings/
+data/ingested/
 *.pdf
 scripts/graph/*.csv
 scripts/qa/retrieval_logs/
+
+# Root data dumps (generated, large)
+/*.csv
+/*.sql
+*.dump
+
+# Temp folders
+docs/New folder/
 
 # Environment
 .env

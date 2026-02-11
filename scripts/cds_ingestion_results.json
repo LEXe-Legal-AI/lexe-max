@@ -1,0 +1,3567 @@
+{
+  "timestamp": "2026-02-04T02:27:15.260205",
+  "stats": {
+    "articles": 412,
+    "errors": 0,
+    "elapsed_seconds": 27.643763,
+    "unique_citations": 257
+  },
+  "citations": [
+    "CASS:12431:2010",
+    "CASS:21606:2011",
+    "CASS:3658:2007",
+    "CASS:4453:2012",
+    "CASS:Sez. 1:3536:2006",
+    "CC:1176",
+    "CC:1226",
+    "CC:146",
+    "CC:2043",
+    "CC:2051",
+    "CC:2054",
+    "CC:2700",
+    "CC:2727",
+    "CC:3",
+    "CDS:103",
+    "CDS:124",
+    "CDS:126",
+    "CDS:126bis",
+    "CDS:128",
+    "CDS:135",
+    "CDS:136",
+    "CDS:138",
+    "CDS:141",
+    "CDS:142",
+    "CDS:143",
+    "CDS:144",
+    "CDS:145",
+    "CDS:15",
+    "CDS:154",
+    "CDS:159",
+    "CDS:173",
+    "CDS:179",
+    "CDS:180",
+    "CDS:186",
+    "CDS:194",
+    "CDS:200",
+    "CDS:203",
+    "CDS:204bis",
+    "CDS:206",
+    "CDS:213",
+    "CDS:215",
+    "CDS:22",
+    "CDS:221",
+    "CDS:34",
+    "CDS:50",
+    "CDS:54",
+    "CDS:57",
+    "CDS:60",
+    "CDS:67",
+    "CDS:75",
+    "CDS:77",
+    "CDS:80",
+    "CDS:98",
+    "COST:117",
+    "COST:118",
+    "COST:3",
+    "CP:331",
+    "CP:360",
+    "CP:393bis",
+    "CP:444",
+    "CP:445",
+    "CP:476",
+    "CP:477",
+    "CP:482",
+    "CP:489",
+    "CP:493bis",
+    "CP:633",
+    "CP:635",
+    "CP:639bis",
+    "CP:640",
+    "CP:650",
+    "CP:81",
+    "DL:1090:1966",
+    "DL:115:2005",
+    "DL:117:2007",
+    "DL:121:2002",
+    "DL:151:2003",
+    "DL:16:1987",
+    "DL:1:2012",
+    "DL:238:1989",
+    "DL:262:2006",
+    "DL:2771:1935",
+    "DL:312:1985",
+    "DL:331:1993",
+    "DL:367:1975",
+    "DL:5:2012",
+    "DL:741:1973",
+    "DL:82:1993",
+    "DL:98:2011",
+    "DLGS:143:1994",
+    "DLGS:150:2011",
+    "DLGS:152:2006",
+    "DLGS:159:2011",
+    "DLGS:209:2005",
+    "DLGS:22:1997",
+    "DLGS:274:2000",
+    "DLGS:281:1997",
+    "DLGS:285:1992",
+    "DLGS:395:2000",
+    "DLGS:507:1993",
+    "DLGS:59:2011",
+    "DLGS:81:2008",
+    "DPR:104:2000",
+    "DPR:133:2006",
+    "DPR:1409:1963",
+    "DPR:151:2012",
+    "DPR:156:1973",
+    "DPR:156:1986",
+    "DPR:1704:1965",
+    "DPR:189:2001",
+    "DPR:212:1981",
+    "DPR:309:1990",
+    "DPR:320:1954",
+    "DPR:323:1971",
+    "DPR:355:1998",
+    "DPR:358:2000",
+    "DPR:381:1974",
+    "DPR:393:1959",
+    "DPR:420:1959",
+    "DPR:43:1973",
+    "DPR:474:2001",
+    "DPR:495:1992",
+    "DPR:503:1996",
+    "DPR:558:1999",
+    "DPR:571:1982",
+    "DPR:602:1973",
+    "DPR:610:1996",
+    "DPR:616:1977",
+    "DPR:748:1972",
+    "DPR:76:1980",
+    "DPR:89:2008",
+    "DPR:915:1982",
+    "L:104:1992",
+    "L:106:1965",
+    "L:1090:1966",
+    "L:111:1988",
+    "L:111:2011",
+    "L:112:1976",
+    "L:112:1988",
+    "L:112:1991",
+    "L:115:2005",
+    "L:117:2007",
+    "L:11:1994",
+    "L:120:2010",
+    "L:121:2002",
+    "L:122:1989",
+    "L:122:1992",
+    "L:122:2010",
+    "L:125:1976",
+    "L:126:1958",
+    "L:127:1997",
+    "L:132:1987",
+    "L:1423:1956",
+    "L:142:1963",
+    "L:142:1990",
+    "L:143:1989",
+    "L:144:1999",
+    "L:14:1967",
+    "L:14:1968",
+    "L:151:2003",
+    "L:1583:1951",
+    "L:15:1968",
+    "L:160:2007",
+    "L:162:1993",
+    "L:168:2002",
+    "L:168:2005",
+    "L:16:1987",
+    "L:1702:1962",
+    "L:181:1962",
+    "L:1839:1962",
+    "L:183:1987",
+    "L:1860:1962",
+    "L:187:1990",
+    "L:190:1991",
+    "L:1:2012",
+    "L:201:1971",
+    "L:214:2003",
+    "L:21:1992",
+    "L:229:1990",
+    "L:238:1989",
+    "L:241:1990",
+    "L:262:2006",
+    "L:263:1966",
+    "L:264:1991",
+    "L:2771:1935",
+    "L:27:1978",
+    "L:27:2012",
+    "L:284:1989",
+    "L:284:1991",
+    "L:286:2006",
+    "L:298:1974",
+    "L:312:1985",
+    "L:313:1976",
+    "L:319:1976",
+    "L:327:1988",
+    "L:331:1993",
+    "L:336:1991",
+    "L:349:1986",
+    "L:366:1998",
+    "L:367:1975",
+    "L:374:1991",
+    "L:376:1991",
+    "L:37:1987",
+    "L:38:1974",
+    "L:38:1982",
+    "L:394:1974",
+    "L:394:1991",
+    "L:399:1990",
+    "L:3:1986",
+    "L:400:1988",
+    "L:416:1966",
+    "L:431:1985",
+    "L:434:1964",
+    "L:437:1971",
+    "L:449:1997",
+    "L:463:1955",
+    "L:472:1999",
+    "L:486:1975",
+    "L:498:1992",
+    "L:556:1988",
+    "L:572:1967",
+    "L:572:1977",
+    "L:575:1965",
+    "L:576:1965",
+    "L:579:1970",
+    "L:599:1966",
+    "L:59:1961",
+    "L:59:1973",
+    "L:59:1987",
+    "L:5:2012",
+    "L:613:1969",
+    "L:615:1966",
+    "L:625:1978",
+    "L:62:1974",
+    "L:631:1977",
+    "L:67:1990",
+    "L:689:1981",
+    "L:707:1975",
+    "L:719:1984",
+    "L:727:1978",
+    "L:729:1961",
+    "L:741:1973",
+    "L:74:1963",
+    "L:82:1993",
+    "L:833:1978",
+    "L:842:1973",
+    "L:84:1994",
+    "L:85:1980",
+    "L:85:2001",
+    "L:86:1989",
+    "L:870:1986",
+    "L:890:1982",
+    "L:922:1980",
+    "L:942:1973",
+    "L:94:2009",
+    "L:98:2011",
+    "L:990:1969"
+  ],
+  "articles": [
+    {
+      "articolo": "198",
+      "rubrica": "198",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art198",
+      "text_length": 5438,
+      "citations_count": 2,
+      "file": "appendice-i-art-198-caratteristiche-costruttive-e-modalita-di-controllo-dei-ciclomotori.html"
+    },
+    {
+      "articolo": "312",
+      "rubrica": "312",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art312",
+      "text_length": 10935,
+      "citations_count": 3,
+      "file": "appendice-i-art-312-programma-desame-per-il-conseguimento-dei-certificati-di-abilitazione-professionale.html"
+    },
+    {
+      "articolo": "9",
+      "rubrica": "9",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art9",
+      "text_length": 18172,
+      "citations_count": 2,
+      "file": "appendice-i-art-9-caratteristiche-costruttive-e-funzionali-dei-veicoli-e-dei-trasporti-eccezionali-per-massa.html"
+    },
+    {
+      "articolo": "199",
+      "rubrica": "199",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art199",
+      "text_length": 6056,
+      "citations_count": 2,
+      "file": "appendice-ii-art-199-caratteristiche-costruttive-dei-quadricicli-a-motore.html"
+    },
+    {
+      "articolo": "320",
+      "rubrica": "320",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art320",
+      "text_length": 3469,
+      "citations_count": 2,
+      "file": "appendice-ii-art-320-malattie-invalidanti.html"
+    },
+    {
+      "articolo": "9",
+      "rubrica": "9",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art9",
+      "text_length": 5327,
+      "citations_count": 2,
+      "file": "appendice-ii-art-9-caratteristiche-costruttive-e-funzionali-dei-veicoli-e-dei-trasporti-eccezionali-per-sole-dimensioni.html"
+    },
+    {
+      "articolo": "10",
+      "rubrica": "10",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art10",
+      "text_length": 12402,
+      "citations_count": 2,
+      "file": "appendice-iii-art-10-caratteristiche-costruttive-e-funzionali-dei-veicoli-mezzi-dopera.html"
+    },
+    {
+      "articolo": "219",
+      "rubrica": "219",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art219",
+      "text_length": 9328,
+      "citations_count": 2,
+      "file": "appendice-iii-art-219-valore-massimo-della-massa-rimorchiabile-e-sua-determinazione-procedure-per-lagganciamento-dei-veicoli.html"
+    },
+    {
+      "articolo": "12",
+      "rubrica": "12",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art12",
+      "text_length": 11322,
+      "citations_count": 2,
+      "file": "appendice-iv-art-12-caratteristiche-costruttive-e-funzionali-degli-autoveicoli-ad-uso-speciale-per-il-soccorso-stradale.html"
+    },
+    {
+      "articolo": "225",
+      "rubrica": "225",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art225",
+      "text_length": 1065,
+      "citations_count": 2,
+      "file": "appendice-iv-art-225-dispositivi-di-segnalazione-visiva-dei-velocipedi.html"
+    },
+    {
+      "articolo": "238",
+      "rubrica": "238",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art238",
+      "text_length": 11463,
+      "citations_count": 2,
+      "file": "appendice-ix-art-238-elementi-su-cui-devono-essere-effettuati-i-controlli-tecnici.html"
+    },
+    {
+      "articolo": "227",
+      "rubrica": "227",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art227",
+      "text_length": 8417,
+      "citations_count": 2,
+      "file": "appendice-v-art-227-caratteristiche-costruttive-e-funzionali-dei-veicoli-a-motore-e-loro-rimorchi.html"
+    },
+    {
+      "articolo": "231",
+      "rubrica": "231",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art231",
+      "text_length": 4008,
+      "citations_count": 2,
+      "file": "appendice-vi-art-231-particolari-costruttivi-del-segnale-mobile-plurifunzionale-di-soccorso.html"
+    },
+    {
+      "articolo": "233",
+      "rubrica": "233",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art233",
+      "text_length": 4327,
+      "citations_count": 2,
+      "file": "appendice-vii-art-233-punzonatura-dufficio-del-numero-di-telaio.html"
+    },
+    {
+      "articolo": "237",
+      "rubrica": "237",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art237",
+      "text_length": 9613,
+      "citations_count": 2,
+      "file": "appendice-viii-art-237-efficienza-dei-veicoli-a-motore-e-loro-rimorchi-in-circolazione.html"
+    },
+    {
+      "articolo": "241",
+      "rubrica": "241",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art241",
+      "text_length": 21491,
+      "citations_count": 2,
+      "file": "appendice-x-art-241-attrezzature-delle-imprese-e-dei-consorzi-abilitati-alla-revisione-dei-veicoli.html"
+    },
+    {
+      "articolo": "255",
+      "rubrica": "1",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art255",
+      "text_length": 7414,
+      "citations_count": 5,
+      "file": "appendice-xi-artt-255-e-256-sigle-di-individuazione-degli-uffici-provinciali-della-mctc-e-sigle-di-individuazione-delle-province.html"
+    },
+    {
+      "articolo": "257",
+      "rubrica": "257",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art257",
+      "text_length": 13120,
+      "citations_count": 3,
+      "file": "appendice-xii-art-257-criteri-per-la-formazione-dei-dati-delle-targhe-dei-veicoli-a-motore-e-dei-rimorchi.html"
+    },
+    {
+      "articolo": "1",
+      "rubrica": "1",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art1",
+      "text_length": 4143,
+      "citations_count": 0,
+      "file": "art-1-principi-generali.html"
+    },
+    {
+      "articolo": "10",
+      "rubrica": "10",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art10",
+      "text_length": 41495,
+      "citations_count": 2,
+      "file": "art-10-veicoli-eccezionali-e-trasporti-in-condizioni-di-eccezionalita.html"
+    },
+    {
+      "articolo": "100",
+      "rubrica": "100",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art100",
+      "text_length": 9290,
+      "citations_count": 0,
+      "file": "art-100-targhe-di-immatricolazione-degli-autoveicoli-dei-motoveicoli-e-dei-rimorchi.html"
+    },
+    {
+      "articolo": "101",
+      "rubrica": "101",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art101",
+      "text_length": 7704,
+      "citations_count": 1,
+      "file": "art-101-produzione-distribuzione-restituzione-e-ritiro-delle-targhe.html"
+    },
+    {
+      "articolo": "102",
+      "rubrica": "102",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art102",
+      "text_length": 6974,
+      "citations_count": 0,
+      "file": "art-102-smarrimento-sottrazione-deterioramento-e-distruzione-di-targa.html"
+    },
+    {
+      "articolo": "103",
+      "rubrica": "103",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art103",
+      "text_length": 17358,
+      "citations_count": 5,
+      "file": "art-103-obblighi-conseguenti-alla-cessazione-della-circolazione-dei-veicoli-a-motore-e-dei-rimorchi.html"
+    },
+    {
+      "articolo": "104",
+      "rubrica": "104",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art104",
+      "text_length": 11794,
+      "citations_count": 1,
+      "file": "art-104-sagome-e-masse-limite-delle-macchine-agricole.html"
+    },
+    {
+      "articolo": "105",
+      "rubrica": "105",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art105",
+      "text_length": 2797,
+      "citations_count": 0,
+      "file": "art-105-traino-di-macchine-agricole.html"
+    },
+    {
+      "articolo": "106",
+      "rubrica": "106",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art106",
+      "text_length": 10830,
+      "citations_count": 1,
+      "file": "art-106-norme-costruttive-e-dispositivi-di-equipaggiamento-delle-macchine-agricole.html"
+    },
+    {
+      "articolo": "107",
+      "rubrica": "107",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art107",
+      "text_length": 4987,
+      "citations_count": 1,
+      "file": "art-107-accertamento-dei-requisiti-di-idoneita-delle-macchine-agricole.html"
+    },
+    {
+      "articolo": "108",
+      "rubrica": "108",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art108",
+      "text_length": 7564,
+      "citations_count": 0,
+      "file": "art-108-rilascio-del-certificato-di-idoneita-tecnica-alla-circolazione-e-della-carta-di-circolazione-delle-macchine.html"
+    },
+    {
+      "articolo": "109",
+      "rubrica": "109",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art109",
+      "text_length": 4733,
+      "citations_count": 1,
+      "file": "art-109-controlli-di-conformita-al-tipo-omologato-delle-macchine-agricole.html"
+    },
+    {
+      "articolo": "11",
+      "rubrica": "11",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art11",
+      "text_length": 3533,
+      "citations_count": 0,
+      "file": "art-11-servizi-di-polizia-stradale.html"
+    },
+    {
+      "articolo": "110",
+      "rubrica": "110",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art110",
+      "text_length": 10792,
+      "citations_count": 0,
+      "file": "art-110-immatricolazione-carta-di-circolazione-e-certificato-di-idoneita-tecnica-alla-circolazione-delle-macchine-agricole.html"
+    },
+    {
+      "articolo": "111",
+      "rubrica": "111",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art111",
+      "text_length": 6578,
+      "citations_count": 1,
+      "file": "art-111-revisione-delle-macchine-agricole-in-circolazione.html"
+    },
+    {
+      "articolo": "112",
+      "rubrica": "112",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art112",
+      "text_length": 4732,
+      "citations_count": 0,
+      "file": "art-112-modifiche-dei-requisiti-di-idoneita-delle-macchine-agricole-in-circolazione-e-aggiornamento-del-documento-di-circolazione.html"
+    },
+    {
+      "articolo": "113",
+      "rubrica": "113",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art113",
+      "text_length": 3716,
+      "citations_count": 0,
+      "file": "art-113-targhe-delle-macchine-agricole.html"
+    },
+    {
+      "articolo": "114",
+      "rubrica": "114",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art114",
+      "text_length": 7740,
+      "citations_count": 1,
+      "file": "art-114-circolazione-su-strada-delle-macchine-operatrici.html"
+    },
+    {
+      "articolo": "115",
+      "rubrica": "115",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art115",
+      "text_length": 15761,
+      "citations_count": 0,
+      "file": "art-115-requisiti-per-la-guida-dei-veicoli-e-la-conduzione-di-animali.html"
+    },
+    {
+      "articolo": "116",
+      "rubrica": null,
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art116",
+      "text_length": 1540,
+      "citations_count": 0,
+      "file": "art-116-patente-e-abilitazione-professionale-per-la-guida-di-veicoli-a-motore.html"
+    },
+    {
+      "articolo": "117",
+      "rubrica": null,
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art117",
+      "text_length": 1532,
+      "citations_count": 0,
+      "file": "art-117-limitazioni-nella-guida.html"
+    },
+    {
+      "articolo": "118",
+      "rubrica": "118",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art118",
+      "text_length": 4976,
+      "citations_count": 0,
+      "file": "art-118-bis-requisito-della-residenza-normale-per-il-rilascio-della-patente-di-guida-o-delle-abilitazioni-professionali.html"
+    },
+    {
+      "articolo": "118",
+      "rubrica": "118",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art118",
+      "text_length": 11638,
+      "citations_count": 0,
+      "file": "art-118-patente-e-certificato-di-idoneita-per-la-guida-di-filoveicoli.html"
+    },
+    {
+      "articolo": "119",
+      "rubrica": "119",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art119",
+      "text_length": 21630,
+      "citations_count": 4,
+      "file": "art-119-requisiti-fisici-e-psichici-per-il-conseguimento-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "12",
+      "rubrica": "12",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art12",
+      "text_length": 8532,
+      "citations_count": 0,
+      "file": "art-12-espletamento-dei-servizi-di-polizia-stradale.html"
+    },
+    {
+      "articolo": "120",
+      "rubrica": "120",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art120",
+      "text_length": 10698,
+      "citations_count": 6,
+      "file": "art-120-requisiti-morali-per-ottenere-il-rilascio-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "121",
+      "rubrica": "4",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art121",
+      "text_length": 9523,
+      "citations_count": 0,
+      "file": "art-121-esame-di-idoneita.html"
+    },
+    {
+      "articolo": "122",
+      "rubrica": "122",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art122",
+      "text_length": 8806,
+      "citations_count": 2,
+      "file": "art-122-esercitazioni-di-guida.html"
+    },
+    {
+      "articolo": "123",
+      "rubrica": "123",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art123",
+      "text_length": 22816,
+      "citations_count": 3,
+      "file": "art-123-autoscuole.html"
+    },
+    {
+      "articolo": "124",
+      "rubrica": "124",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art124",
+      "text_length": 4871,
+      "citations_count": 0,
+      "file": "art-124-guida-delle-macchine-agricole-e-delle-macchine-operatrici.html"
+    },
+    {
+      "articolo": "125",
+      "rubrica": "125",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art125",
+      "text_length": 11155,
+      "citations_count": 1,
+      "file": "art-125-gradualita-ed-equivalenza-patente-di-guida.html"
+    },
+    {
+      "articolo": "126",
+      "rubrica": "126",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art126",
+      "text_length": 18390,
+      "citations_count": 1,
+      "file": "art-126-bis-patente-a-punti.html"
+    },
+    {
+      "articolo": "126",
+      "rubrica": "126",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art126",
+      "text_length": 14864,
+      "citations_count": 3,
+      "file": "art-126-durata-e-conferma-della-validita-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "127",
+      "rubrica": "127",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art127",
+      "text_length": 7094,
+      "citations_count": 1,
+      "file": "art-127-permesso-provvisorio-di-guida.html"
+    },
+    {
+      "articolo": "128",
+      "rubrica": "128",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art128",
+      "text_length": 10267,
+      "citations_count": 1,
+      "file": "art-128-revisione-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "129",
+      "rubrica": "129",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art129",
+      "text_length": 5198,
+      "citations_count": 1,
+      "file": "art-129-sospensione-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "13",
+      "rubrica": "13",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art13",
+      "text_length": 9239,
+      "citations_count": 0,
+      "file": "art-13-norme-per-la-costruzione-e-la-gestione-delle-strade.html"
+    },
+    {
+      "articolo": "130",
+      "rubrica": "130",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art130",
+      "text_length": 2019,
+      "citations_count": 1,
+      "file": "art-130-bis-revoca-della-patente-di-guida-in-caso-di-violazioni-che-provochino-la-morte-di-altre-persone.html"
+    },
+    {
+      "articolo": "130",
+      "rubrica": "130",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art130",
+      "text_length": 5425,
+      "citations_count": 3,
+      "file": "art-130-revoca-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "131",
+      "rubrica": "131",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art131",
+      "text_length": 5262,
+      "citations_count": 0,
+      "file": "art-131-agenti-diplomatici-esteri.html"
+    },
+    {
+      "articolo": "132",
+      "rubrica": "132",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art132",
+      "text_length": 3555,
+      "citations_count": 2,
+      "file": "art-132-circolazione-dei-veicoli-immatricolati-negli-stati-esteri.html"
+    },
+    {
+      "articolo": "133",
+      "rubrica": "133",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art133",
+      "text_length": 2626,
+      "citations_count": 0,
+      "file": "art-133-sigla-distintiva-dello-stato-di-immatricolazione.html"
+    },
+    {
+      "articolo": "134",
+      "rubrica": "134",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art134",
+      "text_length": 5608,
+      "citations_count": 5,
+      "file": "art-134-circolazione-di-autoveicoli-e-motoveicoli-appartenenti-a-cittadini-italiani-residenti-allestero-o-a-stranieri.html"
+    },
+    {
+      "articolo": "135",
+      "rubrica": "135",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art135",
+      "text_length": 18223,
+      "citations_count": 0,
+      "file": "art-135-circolazione-con-patenti-di-guida-rilasciate-da-stati-esteri.html"
+    },
+    {
+      "articolo": "136",
+      "rubrica": "1",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art136",
+      "text_length": 7070,
+      "citations_count": 1,
+      "file": "art-136-conversioni-di-patenti-di-guida-rilasciate-da-stati-esteri-e-da-stati-della-comunita-europea.html"
+    },
+    {
+      "articolo": "137",
+      "rubrica": "137",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art137",
+      "text_length": 3689,
+      "citations_count": 0,
+      "file": "art-137-certificati-internazionali-per-autoveicoli-motoveicoli-rimorchi-e-permessi-internazionali-di-guida.html"
+    },
+    {
+      "articolo": "138",
+      "rubrica": "138",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art138",
+      "text_length": 11294,
+      "citations_count": 2,
+      "file": "art-138-veicoli-e-conducenti-delle-forze-armate.html"
+    },
+    {
+      "articolo": "139",
+      "rubrica": "139",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art139",
+      "text_length": 3779,
+      "citations_count": 0,
+      "file": "art-139-patente-di-servizio-per-il-personale-abilitato-allo-svolgimento-di-compiti-di-polizia-stradale.html"
+    },
+    {
+      "articolo": "14",
+      "rubrica": "14",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art14",
+      "text_length": 4988,
+      "citations_count": 1,
+      "file": "art-14-poteri-e-compiti-degli-enti-proprietari-delle-strade.html"
+    },
+    {
+      "articolo": "140",
+      "rubrica": "140",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art140",
+      "text_length": 3648,
+      "citations_count": 0,
+      "file": "art-140-principio-informatore-della-circolazione.html"
+    },
+    {
+      "articolo": "141",
+      "rubrica": "141",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art141",
+      "text_length": 8044,
+      "citations_count": 4,
+      "file": "art-141-velocita.html"
+    },
+    {
+      "articolo": "142",
+      "rubrica": "142",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art142",
+      "text_length": 24425,
+      "citations_count": 6,
+      "file": "art-142-limiti-di-velocita.html"
+    },
+    {
+      "articolo": "143",
+      "rubrica": "143",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art143",
+      "text_length": 8980,
+      "citations_count": 2,
+      "file": "art-143-posizione-dei-veicoli-sulla-carreggiata.html"
+    },
+    {
+      "articolo": "144",
+      "rubrica": "144",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art144",
+      "text_length": 7106,
+      "citations_count": 2,
+      "file": "art-144-circolazione-dei-veicoli-per-file-parallele.html"
+    },
+    {
+      "articolo": "145",
+      "rubrica": "145",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art145",
+      "text_length": 6348,
+      "citations_count": 1,
+      "file": "art-145-precedenza.html"
+    },
+    {
+      "articolo": "146",
+      "rubrica": "146",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art146",
+      "text_length": 4318,
+      "citations_count": 0,
+      "file": "art-146-violazione-della-segnaletica-stradale.html"
+    },
+    {
+      "articolo": "147",
+      "rubrica": "147",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art147",
+      "text_length": 6240,
+      "citations_count": 0,
+      "file": "art-147-comportamento-ai-passaggi-a-livello.html"
+    },
+    {
+      "articolo": "148",
+      "rubrica": "148",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art148",
+      "text_length": 14615,
+      "citations_count": 0,
+      "file": "art-148-sorpasso.html"
+    },
+    {
+      "articolo": "149",
+      "rubrica": "149",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art149",
+      "text_length": 5407,
+      "citations_count": 0,
+      "file": "art-149-distanza-di-sicurezza-tra-veicoli.html"
+    },
+    {
+      "articolo": "15",
+      "rubrica": "15",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art15",
+      "text_length": 7777,
+      "citations_count": 1,
+      "file": "art-15-atti-vietati.html"
+    },
+    {
+      "articolo": "150",
+      "rubrica": "150",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art150",
+      "text_length": 5157,
+      "citations_count": 0,
+      "file": "art-150-incrocio-tra-veicoli-nei-passaggi-ingombrati-o-su-strade-di-montagna.html"
+    },
+    {
+      "articolo": "151",
+      "rubrica": "151",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art151",
+      "text_length": 10349,
+      "citations_count": 0,
+      "file": "art-151-definizioni-relative-alle-segnalazioni-visive-e-allilluminazione-dei-veicoli-a-motore-e-dei-rimorchi.html"
+    },
+    {
+      "articolo": "152",
+      "rubrica": "152",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art152",
+      "text_length": 3928,
+      "citations_count": 1,
+      "file": "art-152-segnalazione-visiva-e-illuminazione-dei-veicoli.html"
+    },
+    {
+      "articolo": "153",
+      "rubrica": "153",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art153",
+      "text_length": 10195,
+      "citations_count": 0,
+      "file": "art-153-uso-dei-dispositivi-di-segnalazione-visiva-e-di-illuminazione-dei-veicoli-a-motore-e-dei-rimorchi.html"
+    },
+    {
+      "articolo": "154",
+      "rubrica": "154",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art154",
+      "text_length": 7562,
+      "citations_count": 0,
+      "file": "art-154-cambiamento-di-direzione-o-di-corsia-o-altre-manovre.html"
+    },
+    {
+      "articolo": "155",
+      "rubrica": "155",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art155",
+      "text_length": 4265,
+      "citations_count": 2,
+      "file": "art-155-limitazione-dei-rumori.html"
+    },
+    {
+      "articolo": "156",
+      "rubrica": "156",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art156",
+      "text_length": 3075,
+      "citations_count": 0,
+      "file": "art-156-uso-dei-dispositivi-di-segnalazione-acustica.html"
+    },
+    {
+      "articolo": "157",
+      "rubrica": "157",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art157",
+      "text_length": 7550,
+      "citations_count": 0,
+      "file": "art-157-arresto-fermata-e-sosta-dei-veicoli.html"
+    },
+    {
+      "articolo": "158",
+      "rubrica": "158",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art158",
+      "text_length": 8756,
+      "citations_count": 0,
+      "file": "art-158-divieto-di-fermata-e-di-sosta-dei-veicoli.html"
+    },
+    {
+      "articolo": "159",
+      "rubrica": "159",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art159",
+      "text_length": 16612,
+      "citations_count": 8,
+      "file": "art-159-rimozione-e-blocco-dei-veicoli.html"
+    },
+    {
+      "articolo": "16",
+      "rubrica": "16",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art16",
+      "text_length": 7917,
+      "citations_count": 2,
+      "file": "art-16-fasce-di-rispetto-in-rettilineo-ed-aree-di-visibilita-nelle-intersezioni-fuori-dei-centri-abitati.html"
+    },
+    {
+      "articolo": "160",
+      "rubrica": "160",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art160",
+      "text_length": 2554,
+      "citations_count": 1,
+      "file": "art-160-sosta-degli-animali.html"
+    },
+    {
+      "articolo": "161",
+      "rubrica": "161",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art161",
+      "text_length": 6345,
+      "citations_count": 0,
+      "file": "art-161-ingombro-della-carreggiata.html"
+    },
+    {
+      "articolo": "162",
+      "rubrica": "162",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art162",
+      "text_length": 6751,
+      "citations_count": 1,
+      "file": "art-162-segnalazione-di-veicolo-fermo.html"
+    },
+    {
+      "articolo": "163",
+      "rubrica": "163",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art163",
+      "text_length": 2066,
+      "citations_count": 0,
+      "file": "art-163-convogli-militari-cortei-e-simili.html"
+    },
+    {
+      "articolo": "164",
+      "rubrica": "164",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art164",
+      "text_length": 9271,
+      "citations_count": 2,
+      "file": "art-164-sistemazione-del-carico-sui-veicoli.html"
+    },
+    {
+      "articolo": "165",
+      "rubrica": "165",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art165",
+      "text_length": 4004,
+      "citations_count": 0,
+      "file": "art-165-traino-di-veicoli-in-avaria.html"
+    },
+    {
+      "articolo": "166",
+      "rubrica": "166",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art166",
+      "text_length": 2070,
+      "citations_count": 0,
+      "file": "art-166-trasporto-di-cose-su-veicoli-a-trazione-animale.html"
+    },
+    {
+      "articolo": "167",
+      "rubrica": "167",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art167",
+      "text_length": 12759,
+      "citations_count": 0,
+      "file": "art-167-trasporti-di-cose-su-veicoli-a-motore-e-sui-rimorchi.html"
+    },
+    {
+      "articolo": "168",
+      "rubrica": "168",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art168",
+      "text_length": 13908,
+      "citations_count": 3,
+      "file": "art-168-disciplina-del-trasporto-su-strada-dei-materiali-pericolosi.html"
+    },
+    {
+      "articolo": "169",
+      "rubrica": "169",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art169",
+      "text_length": 7722,
+      "citations_count": 1,
+      "file": "art-169-trasporto-di-persone-animali-e-oggetti-sui-veicoli-a-motore.html"
+    },
+    {
+      "articolo": "17",
+      "rubrica": "17",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art17",
+      "text_length": 3734,
+      "citations_count": 1,
+      "file": "art-17-fasce-di-rispetto-nelle-curve-fuori-dei-centri-abitati.html"
+    },
+    {
+      "articolo": "170",
+      "rubrica": "170",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art170",
+      "text_length": 6284,
+      "citations_count": 1,
+      "file": "art-170-trasporto-di-persone-e-di-oggetti-sui-veicoli-a-motore-a-due-ruote.html"
+    },
+    {
+      "articolo": "171",
+      "rubrica": "171",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art171",
+      "text_length": 7280,
+      "citations_count": 1,
+      "file": "art-171-uso-del-casco-protettivo-per-gli-utenti-di-veicoli-a-due-ruote.html"
+    },
+    {
+      "articolo": "172",
+      "rubrica": "172",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art172",
+      "text_length": 14168,
+      "citations_count": 0,
+      "file": "art-172-uso-delle-cinture-di-sicurezza-e-sistemi-di-ritenuta.html"
+    },
+    {
+      "articolo": "173",
+      "rubrica": "173",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art173",
+      "text_length": 5102,
+      "citations_count": 2,
+      "file": "art-173-uso-di-lenti-o-di-determinati-apparecchi-durante-la-guida.html"
+    },
+    {
+      "articolo": "174",
+      "rubrica": "174",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art174",
+      "text_length": 25733,
+      "citations_count": 4,
+      "file": "art-174-durata-della-guida-degli-autoveicoli-adibiti-al-trasporto-di-persone-o-cose.html"
+    },
+    {
+      "articolo": "175",
+      "rubrica": "175",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art175",
+      "text_length": 15580,
+      "citations_count": 2,
+      "file": "art-175-condizioni-e-limitazioni-della-circolazione-sulle-autostrade-e-sulle-strade-extraurbane-principali.html"
+    },
+    {
+      "articolo": "176",
+      "rubrica": "176",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art176",
+      "text_length": 20930,
+      "citations_count": 1,
+      "file": "art-176-comportamenti-durante-la-circolazione-sulle-autostrade-e-sulle-strade-extraurbane-principali.html"
+    },
+    {
+      "articolo": "177",
+      "rubrica": "177",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art177",
+      "text_length": 11093,
+      "citations_count": 0,
+      "file": "art-177-circolazione-degli-autoveicoli-e-dei-motoveicoli-adibiti-a-servizi-di-polizia-o-antincendio-e-delle-autoambulanze.html"
+    },
+    {
+      "articolo": "178",
+      "rubrica": "178",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art178",
+      "text_length": 13470,
+      "citations_count": 1,
+      "file": "art-178-documenti-di-viaggio-per-trasporti-professionali-con-veicoli-non-muniti-di-cronotachigrafo.html"
+    },
+    {
+      "articolo": "179",
+      "rubrica": "179",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art179",
+      "text_length": 13266,
+      "citations_count": 2,
+      "file": "art-179-cronotachigrafo.html"
+    },
+    {
+      "articolo": "18",
+      "rubrica": "18",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art18",
+      "text_length": 5381,
+      "citations_count": 0,
+      "file": "art-18-fasce-di-rispetto-ed-aree-di-visibilita-nei-centri-abitati.html"
+    },
+    {
+      "articolo": "180",
+      "rubrica": "180",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art180",
+      "text_length": 10802,
+      "citations_count": 2,
+      "file": "art-180-possesso-dei-documenti-di-circolazione-e-di-guida.html"
+    },
+    {
+      "articolo": "181",
+      "rubrica": "181",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art181",
+      "text_length": 3714,
+      "citations_count": 0,
+      "file": "art-181-esposizione-dei-contrassegni-per-la-circolazione.html"
+    },
+    {
+      "articolo": "182",
+      "rubrica": "182",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art182",
+      "text_length": 6535,
+      "citations_count": 1,
+      "file": "art-182-circolazione-dei-velocipedi.html"
+    },
+    {
+      "articolo": "183",
+      "rubrica": "183",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art183",
+      "text_length": 3543,
+      "citations_count": 0,
+      "file": "art-183-circolazione-dei-veicoli-a-trazione-animale.html"
+    },
+    {
+      "articolo": "184",
+      "rubrica": "184",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art184",
+      "text_length": 6181,
+      "citations_count": 0,
+      "file": "art-184-circolazione-degli-animali-degli-armenti-e-delle-greggi.html"
+    },
+    {
+      "articolo": "185",
+      "rubrica": "185",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art185",
+      "text_length": 6188,
+      "citations_count": 0,
+      "file": "art-185-circolazione-e-sosta-delle-autocaravan.html"
+    },
+    {
+      "articolo": "186",
+      "rubrica": "186",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art186",
+      "text_length": 24223,
+      "citations_count": 6,
+      "file": "art-186-guida-sotto-linfluenza-dellalcool.html"
+    },
+    {
+      "articolo": "187",
+      "rubrica": "187",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art187",
+      "text_length": 22282,
+      "citations_count": 3,
+      "file": "art-187-guida-in-stato-di-alterazione-psico-fisica-per-uso-di-sostanze-stupefacenti.html"
+    },
+    {
+      "articolo": "188",
+      "rubrica": "188",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art188",
+      "text_length": 4440,
+      "citations_count": 2,
+      "file": "art-188-circolazione-e-sosta-dei-veicoli-al-servizio-di-persone-invalide.html"
+    },
+    {
+      "articolo": "189",
+      "rubrica": "189",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art189",
+      "text_length": 11481,
+      "citations_count": 0,
+      "file": "art-189-comportamento-in-caso-di-incidente.html"
+    },
+    {
+      "articolo": "19",
+      "rubrica": "19",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art19",
+      "text_length": 3559,
+      "citations_count": 0,
+      "file": "art-19-distanze-di-sicurezza-dalle-strade.html"
+    },
+    {
+      "articolo": "190",
+      "rubrica": "190",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art190",
+      "text_length": 8624,
+      "citations_count": 0,
+      "file": "art-190-comportamento-dei-pedoni.html"
+    },
+    {
+      "articolo": "191",
+      "rubrica": "191",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art191",
+      "text_length": 6116,
+      "citations_count": 0,
+      "file": "art-191-comportamento-dei-conducenti-nei-confronti-dei-pedoni.html"
+    },
+    {
+      "articolo": "192",
+      "rubrica": "192",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art192",
+      "text_length": 6632,
+      "citations_count": 0,
+      "file": "art-192-obblighi-verso-funzionari-ufficiali-e-agenti.html"
+    },
+    {
+      "articolo": "193",
+      "rubrica": "193",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art193",
+      "text_length": 11751,
+      "citations_count": 1,
+      "file": "art-193-obbligo-dellassicurazione-di-responsabilita-civile.html"
+    },
+    {
+      "articolo": "194",
+      "rubrica": "194",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art194",
+      "text_length": 2887,
+      "citations_count": 1,
+      "file": "art-194-disposizioni-di-carattere-generale.html"
+    },
+    {
+      "articolo": "195",
+      "rubrica": "195",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art195",
+      "text_length": 7415,
+      "citations_count": 5,
+      "file": "art-195-applicazione-delle-sanzioni-amministrative-pecuniarie.html"
+    },
+    {
+      "articolo": "196",
+      "rubrica": "196",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art196",
+      "text_length": 7761,
+      "citations_count": 1,
+      "file": "art-196-principio-di-solidarieta.html"
+    },
+    {
+      "articolo": "197",
+      "rubrica": "197",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art197",
+      "text_length": 2546,
+      "citations_count": 1,
+      "file": "art-197-concorso-di-persone-nella-violazione.html"
+    },
+    {
+      "articolo": "198",
+      "rubrica": "198",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art198",
+      "text_length": 3866,
+      "citations_count": 1,
+      "file": "art-198-piu-violazioni-di-norme-che-prevedono-sanzioni-amministrative-pecuniarie.html"
+    },
+    {
+      "articolo": "199",
+      "rubrica": "199",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art199",
+      "text_length": 2585,
+      "citations_count": 1,
+      "file": "art-199-non-trasmissibilita-dellobbligazione.html"
+    },
+    {
+      "articolo": "2",
+      "rubrica": "2",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art2",
+      "text_length": 16213,
+      "citations_count": 1,
+      "file": "art-2-definizione-e-classificazione-delle-strade.html"
+    },
+    {
+      "articolo": "20",
+      "rubrica": "20",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art20",
+      "text_length": 5532,
+      "citations_count": 2,
+      "file": "art-20-occupazione-della-sede-stradale.html"
+    },
+    {
+      "articolo": "200",
+      "rubrica": "200",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art200",
+      "text_length": 4402,
+      "citations_count": 0,
+      "file": "art-200-contestazione-e-verbalizzazione-delle-violazioni.html"
+    },
+    {
+      "articolo": "201",
+      "rubrica": "201",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art201",
+      "text_length": 19773,
+      "citations_count": 7,
+      "file": "art-201-notificazione-delle-violazioni.html"
+    },
+    {
+      "articolo": "202",
+      "rubrica": "202",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art202",
+      "text_length": 14020,
+      "citations_count": 2,
+      "file": "art-202-bis-rateazione-delle-sanzioni-pecuniarie.html"
+    },
+    {
+      "articolo": "202",
+      "rubrica": "202",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art202",
+      "text_length": 11875,
+      "citations_count": 0,
+      "file": "art-202-pagamento-in-misura-ridotta.html"
+    },
+    {
+      "articolo": "203",
+      "rubrica": "203",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art203",
+      "text_length": 7029,
+      "citations_count": 0,
+      "file": "art-203-ricorso-al-prefetto.html"
+    },
+    {
+      "articolo": "204",
+      "rubrica": "204",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art204",
+      "text_length": 3140,
+      "citations_count": 0,
+      "file": "art-204-bis-ricorso-al-giudice-di-pace.html"
+    },
+    {
+      "articolo": "204",
+      "rubrica": "204",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art204",
+      "text_length": 8085,
+      "citations_count": 0,
+      "file": "art-204-provvedimenti-del-prefetto.html"
+    },
+    {
+      "articolo": "205",
+      "rubrica": "205",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art205",
+      "text_length": 2434,
+      "citations_count": 1,
+      "file": "art-205-opposizione-innanzi-allautorita-giudiziaria.html"
+    },
+    {
+      "articolo": "206",
+      "rubrica": "206",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art206",
+      "text_length": 3604,
+      "citations_count": 1,
+      "file": "art-206-riscossione-dei-proventi-delle-sanzioni-amministrative-pecuniarie.html"
+    },
+    {
+      "articolo": "207",
+      "rubrica": "207",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art207",
+      "text_length": 7092,
+      "citations_count": 0,
+      "file": "art-207-veicoli-immatricolati-allestero-o-muniti-di-targa-ee.html"
+    },
+    {
+      "articolo": "208",
+      "rubrica": "208",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art208",
+      "text_length": 16427,
+      "citations_count": 6,
+      "file": "art-208-proventi-delle-sanzioni-amministrative-pecuniarie.html"
+    },
+    {
+      "articolo": "209",
+      "rubrica": "209",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art209",
+      "text_length": 3132,
+      "citations_count": 0,
+      "file": "art-209-prescrizione.html"
+    },
+    {
+      "articolo": "21",
+      "rubrica": "21",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art21",
+      "text_length": 4900,
+      "citations_count": 0,
+      "file": "art-21-opere-depositi-e-cantieri-stradali.html"
+    },
+    {
+      "articolo": "210",
+      "rubrica": "210",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art210",
+      "text_length": 5897,
+      "citations_count": 0,
+      "file": "art-210-sanzioni-amministrative-accessorie-a-sanzioni-amministrative-pecuniarie-in-generale.html"
+    },
+    {
+      "articolo": "211",
+      "rubrica": "211",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art211",
+      "text_length": 8031,
+      "citations_count": 0,
+      "file": "art-211-sanzione-accessoria-dellobbligo-di-ripristino-dello-stato-dei-luoghi-o-di-rimozione-di-opere-abusive.html"
+    },
+    {
+      "articolo": "212",
+      "rubrica": "212",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art212",
+      "text_length": 7337,
+      "citations_count": 1,
+      "file": "art-212-sanzione-accessoria-dellobbligo-di-sospendere-una-determinata-attivita.html"
+    },
+    {
+      "articolo": "213",
+      "rubrica": "213",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art213",
+      "text_length": 20654,
+      "citations_count": 7,
+      "file": "art-213-misura-cautelare-del-sequestro-e-sanzione-accessoria-della-confisca-amministrativa.html"
+    },
+    {
+      "articolo": "214",
+      "rubrica": "214",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art214",
+      "text_length": 7230,
+      "citations_count": 1,
+      "file": "art-214-bis-alienazione-dei-veicoli-nei-casi-di-sequestro-amministrativo-fermo-e-confisca.html"
+    },
+    {
+      "articolo": "214",
+      "rubrica": "214",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art214",
+      "text_length": 11274,
+      "citations_count": 0,
+      "file": "art-214-fermo-amministrativo-del-veicolo.html"
+    },
+    {
+      "articolo": "214",
+      "rubrica": "214",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art214",
+      "text_length": 5246,
+      "citations_count": 3,
+      "file": "art-214-ter-destinazione-dei-veicoli-confiscati.html"
+    },
+    {
+      "articolo": "215",
+      "rubrica": "215",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art215",
+      "text_length": 6235,
+      "citations_count": 2,
+      "file": "art-215-sanzione-accessoria-della-rimozione-o-blocco-del-veicolo.html"
+    },
+    {
+      "articolo": "217",
+      "rubrica": "217",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art217",
+      "text_length": 9736,
+      "citations_count": 2,
+      "file": "art-217-sanzione-accessoria-della-sospensione-della-carta-di-circolazione.html"
+    },
+    {
+      "articolo": "218",
+      "rubrica": "1",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art218",
+      "text_length": 4999,
+      "citations_count": 2,
+      "file": "art-218-bis-applicazione-della-sospensione-della-patente-per-i-neo-patentati.html"
+    },
+    {
+      "articolo": "218",
+      "rubrica": "218",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art218",
+      "text_length": 11688,
+      "citations_count": 1,
+      "file": "art-218-sanzione-accessoria-della-sospensione-della-patente.html"
+    },
+    {
+      "articolo": "219",
+      "rubrica": "219",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art219",
+      "text_length": 6029,
+      "citations_count": 2,
+      "file": "art-219-bis-ritiro-sospensione-o-revoca-del-certificato-di-idoneita-alla-guida.html"
+    },
+    {
+      "articolo": "219",
+      "rubrica": "219",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art219",
+      "text_length": 6340,
+      "citations_count": 1,
+      "file": "art-219-revoca-della-patente-di-guida.html"
+    },
+    {
+      "articolo": "22",
+      "rubrica": "22",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art22",
+      "text_length": 9171,
+      "citations_count": 1,
+      "file": "art-22-accessi-e-diramazioni.html"
+    },
+    {
+      "articolo": "220",
+      "rubrica": "220",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art220",
+      "text_length": 4660,
+      "citations_count": 0,
+      "file": "art-220-accertamento-e-cognizione-dei-reati-previsti-dal-presente-codice.html"
+    },
+    {
+      "articolo": "221",
+      "rubrica": "221",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art221",
+      "text_length": 4540,
+      "citations_count": 1,
+      "file": "art-221-connessione-obiettiva-con-un-reato.html"
+    },
+    {
+      "articolo": "222",
+      "rubrica": "222",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art222",
+      "text_length": 11241,
+      "citations_count": 1,
+      "file": "art-222-sanzioni-amministrative-accessorie-allaccertamento-di-reati.html"
+    },
+    {
+      "articolo": "223",
+      "rubrica": "223",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art223",
+      "text_length": 7970,
+      "citations_count": 1,
+      "file": "art-223-ritiro-della-patente-in-conseguenza-a-ipotesi-di-reato.html"
+    },
+    {
+      "articolo": "224",
+      "rubrica": "224",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art224",
+      "text_length": 6114,
+      "citations_count": 2,
+      "file": "art-224-bis-obblighi-del-condannato.html"
+    },
+    {
+      "articolo": "224",
+      "rubrica": "224",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art224",
+      "text_length": 6015,
+      "citations_count": 0,
+      "file": "art-224-procedimento-di-applicazione-delle-sanzioni-amministrative-accessorie-della-sospensione-e-della-revoca-della-patente.html"
+    },
+    {
+      "articolo": "225",
+      "rubrica": "225",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art225",
+      "text_length": 2673,
+      "citations_count": 0,
+      "file": "art-225-istituzione-di-archivi-ed-anagrafe-nazionali.html"
+    },
+    {
+      "articolo": "226",
+      "rubrica": "226",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art226",
+      "text_length": 11606,
+      "citations_count": 1,
+      "file": "art-226-organizzazione-degli-archivi-e-dellanagrafe-nazionale.html"
+    },
+    {
+      "articolo": "227",
+      "rubrica": "227",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art227",
+      "text_length": 3537,
+      "citations_count": 3,
+      "file": "art-227-servizio-e-dispositivi-di-monitoraggio.html"
+    },
+    {
+      "articolo": "229",
+      "rubrica": "229",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art229",
+      "text_length": 2637,
+      "citations_count": 1,
+      "file": "art-229-attuazione-di-direttive-comunitarie.html"
+    },
+    {
+      "articolo": "23",
+      "rubrica": "23",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art23",
+      "text_length": 20546,
+      "citations_count": 6,
+      "file": "art-23-pubblicita-sulle-strade-e-sui-veicoli.html"
+    },
+    {
+      "articolo": "230",
+      "rubrica": "230",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art230",
+      "text_length": 9808,
+      "citations_count": 4,
+      "file": "art-230-educazione-stradale.html"
+    },
+    {
+      "articolo": "231",
+      "rubrica": "231",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art231",
+      "text_length": 8735,
+      "citations_count": 70,
+      "file": "art-231-abrogazione-di-norme-precedentemente-in-vigore.html"
+    },
+    {
+      "articolo": "232",
+      "rubrica": "232",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art232",
+      "text_length": 4168,
+      "citations_count": 0,
+      "file": "art-232-norme-regolamentari-e-decreti-ministeriali-di-esecuzione-e-di-attuazione.html"
+    },
+    {
+      "articolo": "233",
+      "rubrica": "233",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art233",
+      "text_length": 3408,
+      "citations_count": 3,
+      "file": "art-233-norme-transitorie-relative-al-titolo-i.html"
+    },
+    {
+      "articolo": "234",
+      "rubrica": "234",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art234",
+      "text_length": 6197,
+      "citations_count": 1,
+      "file": "art-234-norme-transitorie-relative-al-titolo-ii.html"
+    },
+    {
+      "articolo": "235",
+      "rubrica": "235",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art235",
+      "text_length": 11994,
+      "citations_count": 0,
+      "file": "art-235-norme-transitorie-relative-al-titolo-iii.html"
+    },
+    {
+      "articolo": "236",
+      "rubrica": "236",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art236",
+      "text_length": 4116,
+      "citations_count": 0,
+      "file": "art-236-norme-transitorie-relative-al-titolo-iv.html"
+    },
+    {
+      "articolo": "237",
+      "rubrica": "237",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art237",
+      "text_length": 4447,
+      "citations_count": 3,
+      "file": "art-237-norme-transitorie-relative-al-titolo-v.html"
+    },
+    {
+      "articolo": "238",
+      "rubrica": "238",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art238",
+      "text_length": 2406,
+      "citations_count": 1,
+      "file": "art-238-norme-transitorie-relative-al-titolo-vi.html"
+    },
+    {
+      "articolo": "239",
+      "rubrica": "239",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art239",
+      "text_length": 3039,
+      "citations_count": 0,
+      "file": "art-239-norme-transitorie-relative-al-titolo-vii.html"
+    },
+    {
+      "articolo": "24",
+      "rubrica": "24",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art24",
+      "text_length": 10186,
+      "citations_count": 8,
+      "file": "art-24-pertinenze-delle-strade.html"
+    },
+    {
+      "articolo": "240",
+      "rubrica": "240",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art240",
+      "text_length": 1787,
+      "citations_count": 1,
+      "file": "art-240-entrata-in-vigore-delle-norme-del-presente-codice.html"
+    },
+    {
+      "articolo": "25",
+      "rubrica": "25",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art25",
+      "text_length": 5671,
+      "citations_count": 0,
+      "file": "art-25-attraversamenti-ed-uso-della-sede-stradale.html"
+    },
+    {
+      "articolo": "26",
+      "rubrica": "26",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art26",
+      "text_length": 5900,
+      "citations_count": 0,
+      "file": "art-26-competenza-per-le-autorizzazioni-e-le-concessioni.html"
+    },
+    {
+      "articolo": "27",
+      "rubrica": "27",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art27",
+      "text_length": 8838,
+      "citations_count": 0,
+      "file": "art-27-formalita-per-il-rilascio-delle-autorizzazioni-e-concessioni.html"
+    },
+    {
+      "articolo": "28",
+      "rubrica": "28",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art28",
+      "text_length": 5174,
+      "citations_count": 2,
+      "file": "art-28-obblighi-dei-concessionari-di-determinati-servizi.html"
+    },
+    {
+      "articolo": "29",
+      "rubrica": "29",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art29",
+      "text_length": 4016,
+      "citations_count": 0,
+      "file": "art-29-piantagioni-e-siepi.html"
+    },
+    {
+      "articolo": "3",
+      "rubrica": "3",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art3",
+      "text_length": 21746,
+      "citations_count": 0,
+      "file": "art-3-definizioni-stradali-e-di-traffico.html"
+    },
+    {
+      "articolo": "30",
+      "rubrica": "30",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art30",
+      "text_length": 7017,
+      "citations_count": 2,
+      "file": "art-30-fabbricati-muri-e-opere-di-sostegno.html"
+    },
+    {
+      "articolo": "31",
+      "rubrica": "31",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art31",
+      "text_length": 3520,
+      "citations_count": 0,
+      "file": "art-31-manutenzione-delle-ripe.html"
+    },
+    {
+      "articolo": "32",
+      "rubrica": "32",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art32",
+      "text_length": 5514,
+      "citations_count": 0,
+      "file": "art-32-condotta-delle-acque.html"
+    },
+    {
+      "articolo": "33",
+      "rubrica": "33",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art33",
+      "text_length": 5653,
+      "citations_count": 0,
+      "file": "art-33-canali-artificiali-e-manufatti-sui-medesimi.html"
+    },
+    {
+      "articolo": "34",
+      "rubrica": "34",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art34",
+      "text_length": 1933,
+      "citations_count": 0,
+      "file": "art-34-bis-decoro-delle-strade.html"
+    },
+    {
+      "articolo": "34",
+      "rubrica": "34",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art34",
+      "text_length": 5276,
+      "citations_count": 2,
+      "file": "art-34-oneri-supplementari-a-carico-dei-mezzi-dopera-per-ladeguamento-delle-infrastrutture-stradali.html"
+    },
+    {
+      "articolo": "35",
+      "rubrica": "35",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art35",
+      "text_length": 5118,
+      "citations_count": 0,
+      "file": "art-35-competenze.html"
+    },
+    {
+      "articolo": "36",
+      "rubrica": "36",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art36",
+      "text_length": 10476,
+      "citations_count": 1,
+      "file": "art-36-piani-urbani-del-traffico-e-piani-del-traffico-per-la-viabilita-extraurbana.html"
+    },
+    {
+      "articolo": "37",
+      "rubrica": "37",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art37",
+      "text_length": 5158,
+      "citations_count": 1,
+      "file": "art-37-apposizione-e-manutenzione-della-segnaletica-stradale.html"
+    },
+    {
+      "articolo": "38",
+      "rubrica": "38",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art38",
+      "text_length": 11859,
+      "citations_count": 3,
+      "file": "art-38-segnaletica-stradale.html"
+    },
+    {
+      "articolo": "39",
+      "rubrica": "39",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art39",
+      "text_length": 5217,
+      "citations_count": 0,
+      "file": "art-39-segnali-verticali.html"
+    },
+    {
+      "articolo": "4",
+      "rubrica": "4",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art4",
+      "text_length": 3572,
+      "citations_count": 0,
+      "file": "art-4-delimitazione-del-centro-abitato.html"
+    },
+    {
+      "articolo": "40",
+      "rubrica": "40",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art40",
+      "text_length": 7717,
+      "citations_count": 0,
+      "file": "art-40-segnali-orizzontali.html"
+    },
+    {
+      "articolo": "41",
+      "rubrica": "41",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art41",
+      "text_length": 20847,
+      "citations_count": 1,
+      "file": "art-41-segnali-luminosi.html"
+    },
+    {
+      "articolo": "42",
+      "rubrica": "42",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art42",
+      "text_length": 4040,
+      "citations_count": 0,
+      "file": "art-42-segnali-complementari.html"
+    },
+    {
+      "articolo": "43",
+      "rubrica": "43",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art43",
+      "text_length": 6735,
+      "citations_count": 0,
+      "file": "art-43-segnalazioni-degli-agenti-del-traffico.html"
+    },
+    {
+      "articolo": "44",
+      "rubrica": "44",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art44",
+      "text_length": 6455,
+      "citations_count": 0,
+      "file": "art-44-passaggi-a-livello.html"
+    },
+    {
+      "articolo": "45",
+      "rubrica": "45",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art45",
+      "text_length": 11734,
+      "citations_count": 0,
+      "file": "art-45-uniformita-della-segnaletica-dei-mezzi-di-regolazione-e-controllo-ed-omologazioni.html"
+    },
+    {
+      "articolo": "46",
+      "rubrica": "46",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art46",
+      "text_length": 2675,
+      "citations_count": 1,
+      "file": "art-46-nozione-di-veicolo.html"
+    },
+    {
+      "articolo": "47",
+      "rubrica": "47",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art47",
+      "text_length": 12487,
+      "citations_count": 2,
+      "file": "art-47-classificazione-dei-veicoli.html"
+    },
+    {
+      "articolo": "48",
+      "rubrica": "48",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art48",
+      "text_length": 1644,
+      "citations_count": 1,
+      "file": "art-48-veicoli-a-braccia.html"
+    },
+    {
+      "articolo": "49",
+      "rubrica": "49",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art49",
+      "text_length": 2631,
+      "citations_count": 2,
+      "file": "art-49-veicoli-a-trazione-animale.html"
+    },
+    {
+      "articolo": "5",
+      "rubrica": "5",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art5",
+      "text_length": 4862,
+      "citations_count": 2,
+      "file": "art-5-regolamentazione-della-circolazione-in-generale.html"
+    },
+    {
+      "articolo": "50",
+      "rubrica": "50",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art50",
+      "text_length": 3602,
+      "citations_count": 3,
+      "file": "art-50-velocipedi.html"
+    },
+    {
+      "articolo": "51",
+      "rubrica": "51",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art51",
+      "text_length": 2078,
+      "citations_count": 2,
+      "file": "art-51-slitte.html"
+    },
+    {
+      "articolo": "52",
+      "rubrica": "52",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art52",
+      "text_length": 4317,
+      "citations_count": 0,
+      "file": "art-52-ciclomotori.html"
+    },
+    {
+      "articolo": "53",
+      "rubrica": "53",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art53",
+      "text_length": 6725,
+      "citations_count": 0,
+      "file": "art-53-motoveicoli.html"
+    },
+    {
+      "articolo": "54",
+      "rubrica": "54",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art54",
+      "text_length": 8666,
+      "citations_count": 0,
+      "file": "art-54-autoveicoli.html"
+    },
+    {
+      "articolo": "55",
+      "rubrica": "55",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art55",
+      "text_length": 2270,
+      "citations_count": 1,
+      "file": "art-55-filoveicoli.html"
+    },
+    {
+      "articolo": "56",
+      "rubrica": "56",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art56",
+      "text_length": 5775,
+      "citations_count": 0,
+      "file": "art-56-rimorchi.html"
+    },
+    {
+      "articolo": "57",
+      "rubrica": "57",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art57",
+      "text_length": 8330,
+      "citations_count": 0,
+      "file": "art-57-macchine-agricole.html"
+    },
+    {
+      "articolo": "58",
+      "rubrica": "58",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art58",
+      "text_length": 6166,
+      "citations_count": 1,
+      "file": "art-58-macchine-operatrici.html"
+    },
+    {
+      "articolo": "59",
+      "rubrica": "59",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art59",
+      "text_length": 2994,
+      "citations_count": 1,
+      "file": "art-59-veicoli-con-caratteristiche-atipiche.html"
+    },
+    {
+      "articolo": "6",
+      "rubrica": "6",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art6",
+      "text_length": 15637,
+      "citations_count": 0,
+      "file": "art-6-regolamentazione-della-circolazione-fuori-dei-centri-abitati.html"
+    },
+    {
+      "articolo": "60",
+      "rubrica": "60",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art60",
+      "text_length": 6975,
+      "citations_count": 1,
+      "file": "art-60-motoveicoli-e-autoveicoli-depoca-e-di-interesse-storico-e-collezionistico.html"
+    },
+    {
+      "articolo": "61",
+      "rubrica": "61",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art61",
+      "text_length": 7945,
+      "citations_count": 0,
+      "file": "art-61-sagoma-limite.html"
+    },
+    {
+      "articolo": "62",
+      "rubrica": "62",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art62",
+      "text_length": 7466,
+      "citations_count": 3,
+      "file": "art-62-massa-limite.html"
+    },
+    {
+      "articolo": "63",
+      "rubrica": "63",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art63",
+      "text_length": 3357,
+      "citations_count": 0,
+      "file": "art-63-traino-veicoli.html"
+    },
+    {
+      "articolo": "64",
+      "rubrica": "64",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art64",
+      "text_length": 2490,
+      "citations_count": 0,
+      "file": "art-64-dispositivi-di-frenatura-dei-veicoli-a-trazione-animale-e-delle-slitte.html"
+    },
+    {
+      "articolo": "65",
+      "rubrica": "65",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art65",
+      "text_length": 3444,
+      "citations_count": 0,
+      "file": "art-65-dispositivi-di-segnalazione-visiva-dei-veicoli-a-trazione-animale-e-delle-slitte.html"
+    },
+    {
+      "articolo": "66",
+      "rubrica": "66",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art66",
+      "text_length": 3523,
+      "citations_count": 0,
+      "file": "art-66-cerchioni-alle-ruote.html"
+    },
+    {
+      "articolo": "67",
+      "rubrica": "67",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art67",
+      "text_length": 4814,
+      "citations_count": 0,
+      "file": "art-67-targhe-dei-veicoli-a-trazione-animale-e-delle-slitte.html"
+    },
+    {
+      "articolo": "68",
+      "rubrica": "68",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art68",
+      "text_length": 5817,
+      "citations_count": 0,
+      "file": "art-68-caratteristiche-costruttive-e-funzionali-e-dispositivi-di-equipaggiamento-dei-velocipedi.html"
+    },
+    {
+      "articolo": "69",
+      "rubrica": "69",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art69",
+      "text_length": 2655,
+      "citations_count": 0,
+      "file": "art-69-caratteristiche-dei-dispositivi-di-segnalazione-e-di-frenatura-dei-veicoli-a-trazione-animale-delle-slitte-e-dei-velocipedi.html"
+    },
+    {
+      "articolo": "7",
+      "rubrica": "7",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art7",
+      "text_length": 20233,
+      "citations_count": 3,
+      "file": "art-7-regolamentazione-della-circolazione-nei-centri-abitati.html"
+    },
+    {
+      "articolo": "70",
+      "rubrica": "70",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art70",
+      "text_length": 5297,
+      "citations_count": 1,
+      "file": "art-70-servizio-di-piazza-con-veicoli-a-trazione-animale-o-con-slitte.html"
+    },
+    {
+      "articolo": "71",
+      "rubrica": "71",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art71",
+      "text_length": 7219,
+      "citations_count": 0,
+      "file": "art-71-caratteristiche-costruttive-e-funzionali-dei-veicoli-a-motore-e-loro-rimorchi.html"
+    },
+    {
+      "articolo": "72",
+      "rubrica": "72",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art72",
+      "text_length": 13908,
+      "citations_count": 2,
+      "file": "art-72-dispositivi-di-equipaggiamento-dei-veicoli-a-motore-e-loro-rimorchi.html"
+    },
+    {
+      "articolo": "73",
+      "rubrica": "73",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art73",
+      "text_length": 3844,
+      "citations_count": 1,
+      "file": "art-73-veicoli-su-rotaia-in-sede-promiscua.html"
+    },
+    {
+      "articolo": "74",
+      "rubrica": "74",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art74",
+      "text_length": 6910,
+      "citations_count": 0,
+      "file": "art-74-dati-di-identificazione.html"
+    },
+    {
+      "articolo": "75",
+      "rubrica": "75",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art75",
+      "text_length": 9913,
+      "citations_count": 1,
+      "file": "art-75-accertamento-dei-requisiti-di-idoneita-alla-circolazione-e-omologazione.html"
+    },
+    {
+      "articolo": "76",
+      "rubrica": "76",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art76",
+      "text_length": 7023,
+      "citations_count": 1,
+      "file": "art-76-certificato-di-approvazione-certificato-di-origine-e-dichiarazione-di-conformita.html"
+    },
+    {
+      "articolo": "77",
+      "rubrica": "77",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art77",
+      "text_length": 6779,
+      "citations_count": 2,
+      "file": "art-77-controlli-di-conformita-al-tipo-omologato.html"
+    },
+    {
+      "articolo": "78",
+      "rubrica": "78",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art78",
+      "text_length": 5948,
+      "citations_count": 0,
+      "file": "art-78-modifiche-delle-caratteristiche-costruttive-dei-veicoli-in-circolazione-e-aggiornamento-della-carta-di-circolazione.html"
+    },
+    {
+      "articolo": "79",
+      "rubrica": "79",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art79",
+      "text_length": 6259,
+      "citations_count": 0,
+      "file": "art-79-efficienza-dei-veicoli-a-motore-e-loro-rimorchi-in-circolazione.html"
+    },
+    {
+      "articolo": "8",
+      "rubrica": "8",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art8",
+      "text_length": 3025,
+      "citations_count": 2,
+      "file": "art-8-circolazione-nelle-piccole-isole.html"
+    },
+    {
+      "articolo": "80",
+      "rubrica": "80",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art80",
+      "text_length": 21193,
+      "citations_count": 2,
+      "file": "art-80-revisioni.html"
+    },
+    {
+      "articolo": "81",
+      "rubrica": "81",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art81",
+      "text_length": 4001,
+      "citations_count": 0,
+      "file": "art-81-competenze-dei-funzionari-del-ministero-delle-infrastrutture-e-dei-trasporti-dipartimento-per-i-trasporti-terrestri.html"
+    },
+    {
+      "articolo": "82",
+      "rubrica": "82",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art82",
+      "text_length": 7472,
+      "citations_count": 0,
+      "file": "art-82-destinazione-ed-uso-dei-veicoli.html"
+    },
+    {
+      "articolo": "83",
+      "rubrica": "83",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art83",
+      "text_length": 5623,
+      "citations_count": 1,
+      "file": "art-83-uso-proprio.html"
+    },
+    {
+      "articolo": "84",
+      "rubrica": "84",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art84",
+      "text_length": 8357,
+      "citations_count": 0,
+      "file": "art-84-locazione-senza-conducente.html"
+    },
+    {
+      "articolo": "85",
+      "rubrica": "85",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art85",
+      "text_length": 4849,
+      "citations_count": 0,
+      "file": "art-85-servizio-di-noleggio-con-conducente-per-trasporto-di-persone.html"
+    },
+    {
+      "articolo": "86",
+      "rubrica": "86",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art86",
+      "text_length": 4489,
+      "citations_count": 1,
+      "file": "art-86-servizio-di-piazza-con-autovetture-con-conducente-o-taxi.html"
+    },
+    {
+      "articolo": "87",
+      "rubrica": "87",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art87",
+      "text_length": 5897,
+      "citations_count": 0,
+      "file": "art-87-servizio-di-linea-per-trasporto-di-persone.html"
+    },
+    {
+      "articolo": "88",
+      "rubrica": "88",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art88",
+      "text_length": 3356,
+      "citations_count": 1,
+      "file": "art-88-servizio-di-trasporto-di-cose-per-conto-terzi.html"
+    },
+    {
+      "articolo": "89",
+      "rubrica": "89",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art89",
+      "text_length": 1857,
+      "citations_count": 0,
+      "file": "art-89-servizio-di-linea-per-trasporto-di-cose.html"
+    },
+    {
+      "articolo": "9",
+      "rubrica": "9",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art9",
+      "text_length": 6410,
+      "citations_count": 2,
+      "file": "art-9-bis-organizzazione-di-competizioni-non-autorizzate-in-velocita-con-veicoli-a-motore-e-partecipazione-alle-gare.html"
+    },
+    {
+      "articolo": "9",
+      "rubrica": "9",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art9",
+      "text_length": 19435,
+      "citations_count": 4,
+      "file": "art-9-competizioni-sportive-su-strada.html"
+    },
+    {
+      "articolo": "9",
+      "rubrica": "9",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art9",
+      "text_length": 5104,
+      "citations_count": 0,
+      "file": "art-9-ter-divieto-di-gareggiare-in-velocita-con-veicoli-a.motore.html"
+    },
+    {
+      "articolo": "90",
+      "rubrica": "90",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art90",
+      "text_length": 2311,
+      "citations_count": 0,
+      "file": "art-90-trasporto-di-cose-per-conto-terzi-in-servizio-di-piazza.html"
+    },
+    {
+      "articolo": "91",
+      "rubrica": "91",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art91",
+      "text_length": 7502,
+      "citations_count": 0,
+      "file": "art-91-locazione-senza-conducente-con-facolta-di-acquisto-leasing-e-vendita-di-veicoli-con-patto-di-riservato-dominio.html"
+    },
+    {
+      "articolo": "92",
+      "rubrica": "92",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art92",
+      "text_length": 7578,
+      "citations_count": 1,
+      "file": "art-92-estratto-dei-documenti-di-circolazione-o-di-guida.html"
+    },
+    {
+      "articolo": "93",
+      "rubrica": "93",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art93",
+      "text_length": 11587,
+      "citations_count": 2,
+      "file": "art-93-formalita-necessarie-per-la-circolazione-degli-autoveicoli-motoveicoli-e-rimorchi.html"
+    },
+    {
+      "articolo": "94",
+      "rubrica": "94",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art94",
+      "text_length": 6597,
+      "citations_count": 1,
+      "file": "art-94-bis-divieto-di-intestazione-fittizia-dei-veicoli.html"
+    },
+    {
+      "articolo": "95",
+      "rubrica": "95",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art95",
+      "text_length": 5630,
+      "citations_count": 2,
+      "file": "art-95-carta-provvisoria-di-circolazione-duplicato-ed-estratto-della-carta-di-circolazione.html"
+    },
+    {
+      "articolo": "96",
+      "rubrica": "96",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art96",
+      "text_length": 3958,
+      "citations_count": 2,
+      "file": "art-96-adempimenti-conseguenti-al-mancato-pagamento-della-tassa-automobilistica.html"
+    },
+    {
+      "articolo": "97",
+      "rubrica": "97",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art97",
+      "text_length": 13898,
+      "citations_count": 5,
+      "file": "art-97-formalita-necessarie-per-la-circolazione-dei-ciclomotori.html"
+    },
+    {
+      "articolo": "98",
+      "rubrica": "98",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art98",
+      "text_length": 7049,
+      "citations_count": 3,
+      "file": "art-98-circolazione-di-prova.html"
+    },
+    {
+      "articolo": "99",
+      "rubrica": "99",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art99",
+      "text_length": 6211,
+      "citations_count": 0,
+      "file": "art-99-foglio-di-via.html"
+    },
+    {
+      "articolo": "269",
+      "rubrica": "1",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art269",
+      "text_length": 21956,
+      "citations_count": 0,
+      "file": "index.html"
+    },
+    {
+      "articolo": "270",
+      "rubrica": null,
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art270",
+      "text_length": 8927,
+      "citations_count": 1,
+      "file": "indice-del-regolamento.html"
+    },
+    {
+      "articolo": "271",
+      "rubrica": null,
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art271",
+      "text_length": 4758,
+      "citations_count": 2,
+      "file": "indice-delle-appendici.html"
+    },
+    {
+      "articolo": "1",
+      "rubrica": "1",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art1",
+      "text_length": 2446,
+      "citations_count": 1,
+      "file": "regolamento-art-1.html"
+    },
+    {
+      "articolo": "10",
+      "rubrica": "9",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art10",
+      "text_length": 32705,
+      "citations_count": 1,
+      "file": "regolamento-art-10.html"
+    },
+    {
+      "articolo": "100",
+      "rubrica": "256",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art100",
+      "text_length": 28926,
+      "citations_count": 3,
+      "file": "regolamento-art-100.html"
+    },
+    {
+      "articolo": "101",
+      "rubrica": "256",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art101",
+      "text_length": 40867,
+      "citations_count": 2,
+      "file": "regolamento-art-101.html"
+    },
+    {
+      "articolo": "103",
+      "rubrica": "256",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art103",
+      "text_length": 40872,
+      "citations_count": 2,
+      "file": "regolamento-art-103.html"
+    },
+    {
+      "articolo": "104",
+      "rubrica": "265",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art104",
+      "text_length": 17562,
+      "citations_count": 1,
+      "file": "regolamento-art-104.html"
+    },
+    {
+      "articolo": "106",
+      "rubrica": "269",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art106",
+      "text_length": 65767,
+      "citations_count": 4,
+      "file": "regolamento-art-106.html"
+    },
+    {
+      "articolo": "107",
+      "rubrica": "290",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art107",
+      "text_length": 12231,
+      "citations_count": 1,
+      "file": "regolamento-art-107.html"
+    },
+    {
+      "articolo": "108",
+      "rubrica": "293",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art108",
+      "text_length": 3004,
+      "citations_count": 1,
+      "file": "regolamento-art-108.html"
+    },
+    {
+      "articolo": "110",
+      "rubrica": "294",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art110",
+      "text_length": 5993,
+      "citations_count": 2,
+      "file": "regolamento-art-110.html"
+    },
+    {
+      "articolo": "111",
+      "rubrica": "295",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art111",
+      "text_length": 2275,
+      "citations_count": 1,
+      "file": "regolamento-art-111.html"
+    },
+    {
+      "articolo": "114",
+      "rubrica": "296",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art114",
+      "text_length": 30040,
+      "citations_count": 1,
+      "file": "regolamento-art-114.html"
+    },
+    {
+      "articolo": "115",
+      "rubrica": "307",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art115",
+      "text_length": 2745,
+      "citations_count": 1,
+      "file": "regolamento-art-115.html"
+    },
+    {
+      "articolo": "116",
+      "rubrica": "308",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art116",
+      "text_length": 15679,
+      "citations_count": 1,
+      "file": "regolamento-art-116.html"
+    },
+    {
+      "articolo": "117",
+      "rubrica": null,
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art117",
+      "text_length": 1492,
+      "citations_count": 0,
+      "file": "regolamento-art-117.html"
+    },
+    {
+      "articolo": "118",
+      "rubrica": "317",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art118",
+      "text_length": 8859,
+      "citations_count": 2,
+      "file": "regolamento-art-118.html"
+    },
+    {
+      "articolo": "119",
+      "rubrica": "319",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art119",
+      "text_length": 28782,
+      "citations_count": 1,
+      "file": "regolamento-art-119.html"
+    },
+    {
+      "articolo": "12",
+      "rubrica": "21",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art12",
+      "text_length": 17647,
+      "citations_count": 1,
+      "file": "regolamento-art-12.html"
+    },
+    {
+      "articolo": "121",
+      "rubrica": "332",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art121",
+      "text_length": 5885,
+      "citations_count": 1,
+      "file": "regolamento-art-121.html"
+    },
+    {
+      "articolo": "122",
+      "rubrica": "334",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art122",
+      "text_length": 3518,
+      "citations_count": 1,
+      "file": "regolamento-art-122.html"
+    },
+    {
+      "articolo": "123",
+      "rubrica": "335",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art123",
+      "text_length": 20039,
+      "citations_count": 3,
+      "file": "regolamento-art-123.html"
+    },
+    {
+      "articolo": "127",
+      "rubrica": "338",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art127",
+      "text_length": 1044,
+      "citations_count": 1,
+      "file": "regolamento-art-127.html"
+    },
+    {
+      "articolo": "132",
+      "rubrica": "339",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art132",
+      "text_length": 3608,
+      "citations_count": 1,
+      "file": "regolamento-art-132.html"
+    },
+    {
+      "articolo": "133",
+      "rubrica": "339",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art133",
+      "text_length": 3608,
+      "citations_count": 1,
+      "file": "regolamento-art-133.html"
+    },
+    {
+      "articolo": "134",
+      "rubrica": "340",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art134",
+      "text_length": 5549,
+      "citations_count": 2,
+      "file": "regolamento-art-134.html"
+    },
+    {
+      "articolo": "139",
+      "rubrica": "341",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art139",
+      "text_length": 6706,
+      "citations_count": 1,
+      "file": "regolamento-art-139.html"
+    },
+    {
+      "articolo": "14",
+      "rubrica": "25",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art14",
+      "text_length": 2848,
+      "citations_count": 1,
+      "file": "regolamento-art-14.html"
+    },
+    {
+      "articolo": "141",
+      "rubrica": "342",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art141",
+      "text_length": 1430,
+      "citations_count": 1,
+      "file": "regolamento-art-141.html"
+    },
+    {
+      "articolo": "142",
+      "rubrica": "343",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art142",
+      "text_length": 9051,
+      "citations_count": 1,
+      "file": "regolamento-art-142.html"
+    },
+    {
+      "articolo": "144",
+      "rubrica": "346",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art144",
+      "text_length": 5979,
+      "citations_count": 1,
+      "file": "regolamento-art-144.html"
+    },
+    {
+      "articolo": "148",
+      "rubrica": "347",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art148",
+      "text_length": 2080,
+      "citations_count": 1,
+      "file": "regolamento-art-148.html"
+    },
+    {
+      "articolo": "149",
+      "rubrica": "348",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art149",
+      "text_length": 2019,
+      "citations_count": 1,
+      "file": "regolamento-art-149.html"
+    },
+    {
+      "articolo": "154",
+      "rubrica": "349",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art154",
+      "text_length": 1634,
+      "citations_count": 1,
+      "file": "regolamento-art-154.html"
+    },
+    {
+      "articolo": "155",
+      "rubrica": "350",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art155",
+      "text_length": 2101,
+      "citations_count": 1,
+      "file": "regolamento-art-155.html"
+    },
+    {
+      "articolo": "157",
+      "rubrica": "351",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art157",
+      "text_length": 9329,
+      "citations_count": 1,
+      "file": "regolamento-art-157.html"
+    },
+    {
+      "articolo": "158",
+      "rubrica": "353",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art158",
+      "text_length": 2166,
+      "citations_count": 1,
+      "file": "regolamento-art-158.html"
+    },
+    {
+      "articolo": "159",
+      "rubrica": "12",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art159",
+      "text_length": 14422,
+      "citations_count": 2,
+      "file": "regolamento-art-159.html"
+    },
+    {
+      "articolo": "16",
+      "rubrica": "26",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art16",
+      "text_length": 8349,
+      "citations_count": 1,
+      "file": "regolamento-art-16.html"
+    },
+    {
+      "articolo": "161",
+      "rubrica": "356",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art161",
+      "text_length": 3883,
+      "citations_count": 1,
+      "file": "regolamento-art-161.html"
+    },
+    {
+      "articolo": "162",
+      "rubrica": "357",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art162",
+      "text_length": 9671,
+      "citations_count": 1,
+      "file": "regolamento-art-162.html"
+    },
+    {
+      "articolo": "163",
+      "rubrica": "360",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art163",
+      "text_length": 4197,
+      "citations_count": 1,
+      "file": "regolamento-art-163.html"
+    },
+    {
+      "articolo": "164",
+      "rubrica": "361",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art164",
+      "text_length": 5411,
+      "citations_count": 1,
+      "file": "regolamento-art-164.html"
+    },
+    {
+      "articolo": "167",
+      "rubrica": "363",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art167",
+      "text_length": 1782,
+      "citations_count": 1,
+      "file": "regolamento-art-167.html"
+    },
+    {
+      "articolo": "168",
+      "rubrica": "364",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art168",
+      "text_length": 12219,
+      "citations_count": 3,
+      "file": "regolamento-art-168.html"
+    },
+    {
+      "articolo": "169",
+      "rubrica": "371",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art169",
+      "text_length": 4047,
+      "citations_count": 1,
+      "file": "regolamento-art-169.html"
+    },
+    {
+      "articolo": "17",
+      "rubrica": "27",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art17",
+      "text_length": 2446,
+      "citations_count": 1,
+      "file": "regolamento-art-17.html"
+    },
+    {
+      "articolo": "175",
+      "rubrica": "372",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art175",
+      "text_length": 6095,
+      "citations_count": 1,
+      "file": "regolamento-art-175.html"
+    },
+    {
+      "articolo": "176",
+      "rubrica": "373",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art176",
+      "text_length": 7422,
+      "citations_count": 2,
+      "file": "regolamento-art-176.html"
+    },
+    {
+      "articolo": "178",
+      "rubrica": "375",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art178",
+      "text_length": 2625,
+      "citations_count": 2,
+      "file": "regolamento-art-178.html"
+    },
+    {
+      "articolo": "179",
+      "rubrica": "375",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art179",
+      "text_length": 2625,
+      "citations_count": 2,
+      "file": "regolamento-art-179.html"
+    },
+    {
+      "articolo": "18",
+      "rubrica": "28",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art18",
+      "text_length": 3453,
+      "citations_count": 1,
+      "file": "regolamento-art-18.html"
+    },
+    {
+      "articolo": "180",
+      "rubrica": "376",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art180",
+      "text_length": 5322,
+      "citations_count": 2,
+      "file": "regolamento-art-180.html"
+    },
+    {
+      "articolo": "182",
+      "rubrica": "377",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art182",
+      "text_length": 5055,
+      "citations_count": 1,
+      "file": "regolamento-art-182.html"
+    },
+    {
+      "articolo": "185",
+      "rubrica": "378",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art185",
+      "text_length": 8615,
+      "citations_count": 3,
+      "file": "regolamento-art-185.html"
+    },
+    {
+      "articolo": "186",
+      "rubrica": "379",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art186",
+      "text_length": 5942,
+      "citations_count": 1,
+      "file": "regolamento-art-186.html"
+    },
+    {
+      "articolo": "187",
+      "rubrica": "380",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art187",
+      "text_length": 3712,
+      "citations_count": 1,
+      "file": "regolamento-art-187.html"
+    },
+    {
+      "articolo": "188",
+      "rubrica": "381",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art188",
+      "text_length": 11979,
+      "citations_count": 3,
+      "file": "regolamento-art-188.html"
+    },
+    {
+      "articolo": "196",
+      "rubrica": "382",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art196",
+      "text_length": 1953,
+      "citations_count": 1,
+      "file": "regolamento-art-196.html"
+    },
+    {
+      "articolo": "2",
+      "rubrica": "2",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art2",
+      "text_length": 23055,
+      "citations_count": 4,
+      "file": "regolamento-art-2.html"
+    },
+    {
+      "articolo": "20",
+      "rubrica": "29",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art20",
+      "text_length": 1674,
+      "citations_count": 1,
+      "file": "regolamento-art-20.html"
+    },
+    {
+      "articolo": "200",
+      "rubrica": "383",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art200",
+      "text_length": 4506,
+      "citations_count": 1,
+      "file": "regolamento-art-200.html"
+    },
+    {
+      "articolo": "201",
+      "rubrica": "384",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art201",
+      "text_length": 11285,
+      "citations_count": 1,
+      "file": "regolamento-art-201.html"
+    },
+    {
+      "articolo": "202",
+      "rubrica": "387",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art202",
+      "text_length": 3063,
+      "citations_count": 2,
+      "file": "regolamento-art-202.html"
+    },
+    {
+      "articolo": "203",
+      "rubrica": "388",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art203",
+      "text_length": 2106,
+      "citations_count": 1,
+      "file": "regolamento-art-203.html"
+    },
+    {
+      "articolo": "206",
+      "rubrica": "389",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art206",
+      "text_length": 4993,
+      "citations_count": 2,
+      "file": "regolamento-art-206.html"
+    },
+    {
+      "articolo": "207",
+      "rubrica": "391",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art207",
+      "text_length": 4726,
+      "citations_count": 1,
+      "file": "regolamento-art-207.html"
+    },
+    {
+      "articolo": "208",
+      "rubrica": "392",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art208",
+      "text_length": 5148,
+      "citations_count": 1,
+      "file": "regolamento-art-208.html"
+    },
+    {
+      "articolo": "21",
+      "rubrica": "30",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art21",
+      "text_length": 114530,
+      "citations_count": 1,
+      "file": "regolamento-art-21.html"
+    },
+    {
+      "articolo": "213",
+      "rubrica": "394",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art213",
+      "text_length": 11075,
+      "citations_count": 2,
+      "file": "regolamento-art-213.html"
+    },
+    {
+      "articolo": "214",
+      "rubrica": "396",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art214",
+      "text_length": 3872,
+      "citations_count": 1,
+      "file": "regolamento-art-214.html"
+    },
+    {
+      "articolo": "215",
+      "rubrica": "397",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art215",
+      "text_length": 10026,
+      "citations_count": 1,
+      "file": "regolamento-art-215.html"
+    },
+    {
+      "articolo": "216",
+      "rubrica": "399",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art216",
+      "text_length": 5729,
+      "citations_count": 1,
+      "file": "regolamento-art-216-217.html"
+    },
+    {
+      "articolo": "218",
+      "rubrica": "400",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art218",
+      "text_length": 3828,
+      "citations_count": 1,
+      "file": "regolamento-art-218.html"
+    },
+    {
+      "articolo": "22",
+      "rubrica": "44",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art22",
+      "text_length": 16974,
+      "citations_count": 2,
+      "file": "regolamento-art-22.html"
+    },
+    {
+      "articolo": "226",
+      "rubrica": "401",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art226",
+      "text_length": 32658,
+      "citations_count": 5,
+      "file": "regolamento-art-226.html"
+    },
+    {
+      "articolo": "227",
+      "rubrica": "404",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art227",
+      "text_length": 5198,
+      "citations_count": 1,
+      "file": "regolamento-art-227.html"
+    },
+    {
+      "articolo": "228",
+      "rubrica": "405",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art228",
+      "text_length": 8667,
+      "citations_count": 3,
+      "file": "regolamento-art-228.html"
+    },
+    {
+      "articolo": "23",
+      "rubrica": "47",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art23",
+      "text_length": 72200,
+      "citations_count": 2,
+      "file": "regolamento-art-23.html"
+    },
+    {
+      "articolo": "231",
+      "rubrica": "406",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art231",
+      "text_length": 3419,
+      "citations_count": 4,
+      "file": "regolamento-art-231.html"
+    },
+    {
+      "articolo": "232",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art232",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-232.html"
+    },
+    {
+      "articolo": "233",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art233",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-233.html"
+    },
+    {
+      "articolo": "234",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art234",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-234.html"
+    },
+    {
+      "articolo": "235",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art235",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-235.html"
+    },
+    {
+      "articolo": "236",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art236",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-236.html"
+    },
+    {
+      "articolo": "237",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art237",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-237.html"
+    },
+    {
+      "articolo": "238",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art238",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-238.html"
+    },
+    {
+      "articolo": "239",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art239",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-239.html"
+    },
+    {
+      "articolo": "24",
+      "rubrica": "60",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art24",
+      "text_length": 15898,
+      "citations_count": 1,
+      "file": "regolamento-art-24.html"
+    },
+    {
+      "articolo": "240",
+      "rubrica": "407",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art240",
+      "text_length": 2779,
+      "citations_count": 1,
+      "file": "regolamento-art-240.html"
+    },
+    {
+      "articolo": "25",
+      "rubrica": "65",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art25",
+      "text_length": 13293,
+      "citations_count": 1,
+      "file": "regolamento-art-25.html"
+    },
+    {
+      "articolo": "28",
+      "rubrica": "69",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art28",
+      "text_length": 3854,
+      "citations_count": 1,
+      "file": "regolamento-art-28.html"
+    },
+    {
+      "articolo": "3",
+      "rubrica": "5",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art3",
+      "text_length": 9861,
+      "citations_count": 1,
+      "file": "regolamento-art-3.html"
+    },
+    {
+      "articolo": "32",
+      "rubrica": "70",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art32",
+      "text_length": 2856,
+      "citations_count": 1,
+      "file": "regolamento-art-32.html"
+    },
+    {
+      "articolo": "33",
+      "rubrica": "71",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art33",
+      "text_length": 1465,
+      "citations_count": 1,
+      "file": "regolamento-art-33.html"
+    },
+    {
+      "articolo": "34",
+      "rubrica": "72",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art34",
+      "text_length": 3980,
+      "citations_count": 2,
+      "file": "regolamento-art-34.html"
+    },
+    {
+      "articolo": "35",
+      "rubrica": "73",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art35",
+      "text_length": 7536,
+      "citations_count": 3,
+      "file": "regolamento-art-35.html"
+    },
+    {
+      "articolo": "37",
+      "rubrica": "74",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art37",
+      "text_length": 3942,
+      "citations_count": 1,
+      "file": "regolamento-art-37.html"
+    },
+    {
+      "articolo": "38",
+      "rubrica": "75",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art38",
+      "text_length": 6509,
+      "citations_count": 1,
+      "file": "regolamento-art-38.html"
+    },
+    {
+      "articolo": "39",
+      "rubrica": "77",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art39",
+      "text_length": 294012,
+      "citations_count": 2,
+      "file": "regolamento-art-39.html"
+    },
+    {
+      "articolo": "40",
+      "rubrica": "137",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art40",
+      "text_length": 73512,
+      "citations_count": 1,
+      "file": "regolamento-art-40.html"
+    },
+    {
+      "articolo": "41",
+      "rubrica": "156",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art41",
+      "text_length": 52582,
+      "citations_count": 1,
+      "file": "regolamento-art-41.html"
+    },
+    {
+      "articolo": "42",
+      "rubrica": "172",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art42",
+      "text_length": 27175,
+      "citations_count": 1,
+      "file": "regolamento-art-42.html"
+    },
+    {
+      "articolo": "43",
+      "rubrica": "181",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art43",
+      "text_length": 10483,
+      "citations_count": 1,
+      "file": "regolamento-art-43.html"
+    },
+    {
+      "articolo": "44",
+      "rubrica": "184",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art44",
+      "text_length": 27751,
+      "citations_count": 1,
+      "file": "regolamento-art-44.html"
+    },
+    {
+      "articolo": "45",
+      "rubrica": "192",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art45",
+      "text_length": 23377,
+      "citations_count": 1,
+      "file": "regolamento-art-45.html"
+    },
+    {
+      "articolo": "46",
+      "rubrica": "196",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art46",
+      "text_length": 3971,
+      "citations_count": 1,
+      "file": "regolamento-art-46.html"
+    },
+    {
+      "articolo": "48",
+      "rubrica": "197",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art48",
+      "text_length": 1294,
+      "citations_count": 1,
+      "file": "regolamento-art-48.html"
+    },
+    {
+      "articolo": "5",
+      "rubrica": "6",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art5",
+      "text_length": 15972,
+      "citations_count": 3,
+      "file": "regolamento-art-5.html"
+    },
+    {
+      "articolo": "52",
+      "rubrica": "198",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art52",
+      "text_length": 3823,
+      "citations_count": 1,
+      "file": "regolamento-art-52.html"
+    },
+    {
+      "articolo": "53",
+      "rubrica": "199",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art53",
+      "text_length": 2606,
+      "citations_count": 1,
+      "file": "regolamento-art-53.html"
+    },
+    {
+      "articolo": "54",
+      "rubrica": "201",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art54",
+      "text_length": 5560,
+      "citations_count": 1,
+      "file": "regolamento-art-54.html"
+    },
+    {
+      "articolo": "56",
+      "rubrica": "204",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art56",
+      "text_length": 10847,
+      "citations_count": 2,
+      "file": "regolamento-art-56.html"
+    },
+    {
+      "articolo": "57",
+      "rubrica": "206",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art57",
+      "text_length": 16072,
+      "citations_count": 3,
+      "file": "regolamento-art-57.html"
+    },
+    {
+      "articolo": "58",
+      "rubrica": "211",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art58",
+      "text_length": 6228,
+      "citations_count": 1,
+      "file": "regolamento-art-58.html"
+    },
+    {
+      "articolo": "60",
+      "rubrica": "214",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art60",
+      "text_length": 11381,
+      "citations_count": 1,
+      "file": "regolamento-art-60.html"
+    },
+    {
+      "articolo": "61",
+      "rubrica": "216",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art61",
+      "text_length": 7684,
+      "citations_count": 1,
+      "file": "regolamento-art-61.html"
+    },
+    {
+      "articolo": "63",
+      "rubrica": "219",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art63",
+      "text_length": 3868,
+      "citations_count": 1,
+      "file": "regolamento-art-63.html"
+    },
+    {
+      "articolo": "64",
+      "rubrica": "220",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art64",
+      "text_length": 33130,
+      "citations_count": 1,
+      "file": "regolamento-art-64.html"
+    },
+    {
+      "articolo": "65",
+      "rubrica": "220",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art65",
+      "text_length": 33130,
+      "citations_count": 1,
+      "file": "regolamento-art-65.html"
+    },
+    {
+      "articolo": "67",
+      "rubrica": "220",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art67",
+      "text_length": 33130,
+      "citations_count": 1,
+      "file": "regolamento-art-67.html"
+    },
+    {
+      "articolo": "68",
+      "rubrica": "220",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art68",
+      "text_length": 33130,
+      "citations_count": 1,
+      "file": "regolamento-art-68.html"
+    },
+    {
+      "articolo": "69",
+      "rubrica": "220",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art69",
+      "text_length": 33130,
+      "citations_count": 1,
+      "file": "regolamento-art-69.html"
+    },
+    {
+      "articolo": "70",
+      "rubrica": "226",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art70",
+      "text_length": 12775,
+      "citations_count": 2,
+      "file": "regolamento-art-70.html"
+    },
+    {
+      "articolo": "71",
+      "rubrica": "227",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art71",
+      "text_length": 5130,
+      "citations_count": 2,
+      "file": "regolamento-art-71.html"
+    },
+    {
+      "articolo": "72",
+      "rubrica": "228",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art72",
+      "text_length": 12706,
+      "citations_count": 1,
+      "file": "regolamento-art-72.html"
+    },
+    {
+      "articolo": "74",
+      "rubrica": "232",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art74",
+      "text_length": 4081,
+      "citations_count": 1,
+      "file": "regolamento-art-74.html"
+    },
+    {
+      "articolo": "76",
+      "rubrica": "234",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art76",
+      "text_length": 6664,
+      "citations_count": 2,
+      "file": "regolamento-art-76.html"
+    },
+    {
+      "articolo": "78",
+      "rubrica": "236",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art78",
+      "text_length": 7594,
+      "citations_count": 1,
+      "file": "regolamento-art-78.html"
+    },
+    {
+      "articolo": "79",
+      "rubrica": "237",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art79",
+      "text_length": 3444,
+      "citations_count": 2,
+      "file": "regolamento-art-79.html"
+    },
+    {
+      "articolo": "80",
+      "rubrica": "238",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art80",
+      "text_length": 15413,
+      "citations_count": 3,
+      "file": "regolamento-art-80.html"
+    },
+    {
+      "articolo": "81",
+      "rubrica": "242",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art81",
+      "text_length": 4193,
+      "citations_count": 1,
+      "file": "regolamento-art-81.html"
+    },
+    {
+      "articolo": "82",
+      "rubrica": "243",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art82",
+      "text_length": 1607,
+      "citations_count": 1,
+      "file": "regolamento-art-82.html"
+    },
+    {
+      "articolo": "84",
+      "rubrica": "244",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art84",
+      "text_length": 1559,
+      "citations_count": 1,
+      "file": "regolamento-art-84.html"
+    },
+    {
+      "articolo": "85",
+      "rubrica": "244",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art85",
+      "text_length": 1559,
+      "citations_count": 1,
+      "file": "regolamento-art-85.html"
+    },
+    {
+      "articolo": "93",
+      "rubrica": "245",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art93",
+      "text_length": 7909,
+      "citations_count": 1,
+      "file": "regolamento-art-93.html"
+    },
+    {
+      "articolo": "94",
+      "rubrica": "247",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art94",
+      "text_length": 6179,
+      "citations_count": 2,
+      "file": "regolamento-art-94.html"
+    },
+    {
+      "articolo": "97",
+      "rubrica": "248",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art97",
+      "text_length": 2706,
+      "citations_count": 1,
+      "file": "regolamento-art-97.html"
+    },
+    {
+      "articolo": "98",
+      "rubrica": "254",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art98",
+      "text_length": 1336,
+      "citations_count": 2,
+      "file": "regolamento-art-98.html"
+    },
+    {
+      "articolo": "99",
+      "rubrica": "255",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art99",
+      "text_length": 2897,
+      "citations_count": 1,
+      "file": "regolamento-art-99.html"
+    },
+    {
+      "articolo": "411",
+      "rubrica": "218",
+      "urn": "urn:nir:stato:decreto.legislativo:1992-04-30;285:art411",
+      "text_length": 1490,
+      "citations_count": 1,
+      "file": "regolamento.html"
+    }
+  ],
+  "errors": []
+}

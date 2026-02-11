@@ -44,6 +44,16 @@ scraping = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# =============================================================================
+# PYTORCH CUDA - RTX 5080/5090 Blackwell (sm_120)
+# =============================================================================
+# PyTorch nightly è richiesto per Blackwell. Dopo `uv sync`:
+#   uv pip install --index-url https://download.pytorch.org/whl/nightly/cu128 torch torchvision --force-reinstall
+#
+# IMPORTANTE: Usare `uv run --no-sync` per evitare che uv reinstalli torch CPU
+# Esempio: uv run --no-sync python script.py
+# =============================================================================
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/lexe_api"]
 

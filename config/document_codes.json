@@ -1,0 +1,116 @@
+{
+  "_comment": "Mappa codici documento per estrazione articoli. Usato da llm_assisted_extraction.py",
+  "_updated": "2026-02-06",
+
+  "documents": {
+    "Costituzione e 4 codici": {
+      "costituzione-italiana": {"codice": "COST", "articoli_attesi": 139, "note": "Costituzione della Repubblica Italiana"},
+      "codice-civile": {"codice": "CC", "articoli_attesi": 2969, "note": "Codice Civile"},
+      "codice-penale": {"codice": "CP", "articoli_attesi": 734, "note": "Codice Penale"},
+      "codice-procedura-civile": {"codice": "CPC", "articoli_attesi": 840, "note": "Codice di Procedura Civile"},
+      "codice-procedura-penale": {"codice": "CPP", "articoli_attesi": 746, "note": "Codice di Procedura Penale"}
+    },
+
+    "Commerciale": {
+      "codice-crisi-impresa": {"codice": "CCII", "articoli_attesi": 391, "note": "D.Lgs. 14/2019", "falsi_positivi": ["69-septies", "104-bis"]},
+      "codice-proprieta-industriale": {"codice": "CPI", "articoli_attesi": 245, "note": "D.Lgs. 30/2005"},
+      "legge-fallimentare": {"codice": "LF", "articoli_attesi": 264, "note": "R.D. 267/1942 - abrogata"},
+      "testo-unico-bancario": {"codice": "TUB", "articoli_attesi": 162, "note": "D.Lgs. 385/1993"},
+      "testo-unico-finanza": {"codice": "TUF", "articoli_attesi": 214, "note": "D.Lgs. 58/1998"}
+    },
+
+    "Civile": {
+      "codice-consumo": {"codice": "CCONS", "articoli_attesi": 170, "note": "D.Lgs. 206/2005"},
+      "codice-del-turismo": {"codice": "CTUR", "articoli_attesi": 74, "note": "D.Lgs. 79/2011"},
+      "codice-giustizia-sportiva": {"codice": "CGS", "articoli_attesi": 152, "note": "FIGC"},
+      "codice-privacy": {"codice": "CPRIV", "articoli_attesi": 186, "note": "D.Lgs. 196/2003"},
+      "codice-terzo-settore": {"codice": "CTS", "articoli_attesi": 104, "note": "D.Lgs. 117/2017"},
+      "gdpr": {"codice": "GDPR", "articoli_attesi": 99, "note": "Reg. UE 2016/679"},
+      "legge-diritto-autore": {"codice": "LDA", "articoli_attesi": 206, "note": "L. 633/1941"},
+      "legge-divorzio": {"codice": "LDIV", "articoli_attesi": 12, "note": "L. 898/1970"},
+      "legge-locazioni-abitative": {"codice": "LLOC", "articoli_attesi": 14, "note": "L. 431/1998"},
+      "mediazione-civile": {"codice": "DMED", "articoli_attesi": 24, "note": "D.Lgs. 28/2010"},
+      "testo-unico-spese-giustizia": {"codice": "TUSG", "articoli_attesi": 302, "note": "D.P.R. 115/2002"}
+    },
+
+    "Amministrativo": {
+      "codice-amministrazione-digitale": {"codice": "CAD", "articoli_attesi": 92, "note": "D.Lgs. 82/2005"},
+      "codice-antimafia": {"codice": "CAM", "articoli_attesi": 144, "note": "D.Lgs. 159/2011"},
+      "codice-appalti": {"codice": "CAPP", "articoli_attesi": 229, "note": "D.Lgs. 36/2023"},
+      "codice-giustizia-contabile": {"codice": "CGC", "articoli_attesi": 219, "note": "D.Lgs. 174/2016"},
+      "codice-medicinali": {"codice": "CMED", "articoli_attesi": 158, "note": "D.Lgs. 219/2006"},
+      "codice-processo-amministrativo": {"codice": "CPA", "articoli_attesi": 138, "note": "D.Lgs. 104/2010"},
+      "legge-procedimento-amministrativo": {"codice": "LPA", "articoli_attesi": 31, "note": "L. 241/1990"},
+      "responsabilita-amministrativa-societa": {"codice": "DLAS", "articoli_attesi": 83, "note": "D.Lgs. 231/2001"},
+      "sicurezza-urbana": {"codice": "DSIC", "articoli_attesi": 17, "note": "D.L. 14/2017"},
+      "testo-unico-edilizia": {"codice": "TUE", "articoli_attesi": 138, "note": "D.P.R. 380/2001"},
+      "testo-unico-enti-locali": {"codice": "TUEL", "articoli_attesi": 275, "note": "D.Lgs. 267/2000"},
+      "testo-unico-espropriazioni": {"codice": "TUESP", "articoli_attesi": 59, "note": "D.P.R. 327/2001"},
+      "testo-unico-immigrazione": {"codice": "TUI", "articoli_attesi": 46, "note": "D.Lgs. 286/1998"},
+      "testo-unico-istruzione": {"codice": "TUIST", "articoli_attesi": 676, "note": "D.Lgs. 297/1994"},
+      "testo-unico-pubblico-impiego": {"codice": "TUPI", "articoli_attesi": 73, "note": "D.Lgs. 165/2001"},
+      "testo-unico-societa-partecipate": {"codice": "TUSP", "articoli_attesi": 26, "note": "D.Lgs. 175/2016"},
+      "testo-unico-documentazione-amministrativa": {"codice": "TUDA", "articoli_attesi": 78, "note": "D.P.R. 445/2000"}
+    },
+
+    "Ambiente": {
+      "codice-ambiente": {"codice": "CAMB", "articoli_attesi": 318, "note": "D.Lgs. 152/2006"},
+      "codice-beni-culturali-paesaggio": {"codice": "CBCP", "articoli_attesi": 184, "note": "D.Lgs. 42/2004"},
+      "testo-unico-foreste": {"codice": "TUFOR", "articoli_attesi": 20, "note": "D.Lgs. 34/2018"}
+    },
+
+    "Circolazione e assicurazioni": {
+      "codice-assicurazioni-private": {"codice": "CAP", "articoli_attesi": 355, "note": "D.Lgs. 209/2005"},
+      "codice-della-strada": {"codice": "CDS", "articoli_attesi": 245, "note": "D.Lgs. 285/1992"},
+      "codice-nautica-diporto": {"codice": "CND", "articoli_attesi": 66, "note": "D.Lgs. 171/2005"},
+      "regolamento-esecuzione-strada": {"codice": "REGCDS", "articoli_attesi": 408, "note": "D.P.R. 495/1992"}
+    },
+
+    "Comunicazioni": {
+      "codice-comunicazioni-elettroniche": {"codice": "CCE", "articoli_attesi": 98, "note": "D.Lgs. 259/2003"},
+      "testo-unico-radiotelevisione": {"codice": "TUSMAR", "articoli_attesi": 63, "note": "D.Lgs. 177/2005"}
+    },
+
+    "Fisco e Tributi": {
+      "codice-processo-tributario": {"codice": "CPT", "articoli_attesi": 72, "note": "D.Lgs. 546/1992"},
+      "legge-reati-tributari": {"codice": "LRT", "articoli_attesi": 25, "note": "D.Lgs. 74/2000"},
+      "statuto-contribuente": {"codice": "STATC", "articoli_attesi": 21, "note": "L. 212/2000"},
+      "testo-unico-imposte-redditi": {"codice": "TUIR", "articoli_attesi": 188, "note": "D.P.R. 917/1986"},
+      "testo-unico-iva": {"codice": "DIVA", "articoli_attesi": 74, "note": "D.P.R. 633/1972"}
+    },
+
+    "Internazionale": {
+      "dichiarazione-universale-diritti-uomo": {"codice": "DUDU", "articoli_attesi": 30, "note": "ONU 1948"},
+      "legge-diritto-internazionale-privato": {"codice": "LDIP", "articoli_attesi": 74, "note": "L. 218/1995"}
+    },
+
+    "Lavoro": {
+      "codice-pari-opportunita": {"codice": "CPO", "articoli_attesi": 60, "note": "D.Lgs. 198/2006"},
+      "legge-sciopero-servizi-pubblici": {"codice": "LSSP", "articoli_attesi": 13, "note": "L. 146/1990"},
+      "riforma-lavoro-biagi": {"codice": "DBIAGI", "articoli_attesi": 86, "note": "D.Lgs. 276/2003"},
+      "riforma-lavoro-fornero": {"codice": "LFORN", "articoli_attesi": 4, "note": "L. 92/2012"},
+      "statuto-lavoratori": {"codice": "SL", "articoli_attesi": 41, "note": "L. 300/1970"},
+      "testo-unico-previdenza-complementare": {"codice": "TUPC", "articoli_attesi": 23, "note": "D.Lgs. 252/2005"},
+      "testo-unico-maternita-paternita": {"codice": "TUMP", "articoli_attesi": 88, "note": "D.Lgs. 151/2001"},
+      "testo-unico-sicurezza-lavoro": {"codice": "TUSL", "articoli_attesi": 306, "note": "D.Lgs. 81/2008"}
+    },
+
+    "Penale": {
+      "codice-processo-penale-minorile": {"codice": "CPPM", "articoli_attesi": 41, "note": "D.P.R. 448/1988"},
+      "legge-depenalizzazione": {"codice": "LDEP", "articoli_attesi": 42, "note": "D.Lgs. 8/2016"},
+      "ordinamento-penitenziario": {"codice": "OP", "articoli_attesi": 91, "note": "L. 354/1975"},
+      "testo-unico-casellario-giudiziale": {"codice": "TUCG", "articoli_attesi": 48, "note": "D.P.R. 313/2002"},
+      "testo-unico-stupefacenti": {"codice": "TUS", "articoli_attesi": 127, "note": "D.P.R. 309/1990"}
+    },
+
+    "Professioni": {
+      "codice-deontologico-forense": {"codice": "CDF", "articoli_attesi": 73, "note": "CNF 2014"},
+      "legge-professionale-forense": {"codice": "LPF", "articoli_attesi": 67, "note": "L. 247/2012"}
+    }
+  },
+
+  "filtri_specifici": {
+    "_comment": "Falsi positivi noti per documento, da escludere dall'estrazione",
+    "CCII": ["69-septies", "104-bis"]
+  }
+}

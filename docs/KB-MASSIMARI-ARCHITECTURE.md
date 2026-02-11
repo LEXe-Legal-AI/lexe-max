@@ -1,7 +1,7 @@
 # KB Massimari - Architettura Sistema
 
 > Knowledge Base per Massimari Giurisprudenziali della Corte di Cassazione
->
+> 
 > Data: 2026-01-27 | Status: **MVP Funzionante**
 
 ---
@@ -19,15 +19,15 @@ Il modulo KB Massimari è un sistema di ingestion e retrieval per i massimari de
 
 ## Stack Tecnologico
 
-| Componente | Tecnologia | Versione | Porta |
-|------------|------------|----------|-------|
-| Database | PostgreSQL | 17.7 | 5432 |
-| Vector Search | pgvector | 0.7.4 | - |
-| BM25 Search | pg_search (ParadeDB) | 0.21.4 | - |
-| Graph DB | Apache AGE | 1.6.0 | - |
-| Fuzzy Search | pg_trgm | 1.6 | - |
-| PDF Extraction | Unstructured API | latest | 8500 |
-| PDF Extraction (alt) | PyMuPDF | 1.26.7 | - |
+| Componente           | Tecnologia           | Versione | Porta |
+| -------------------- | -------------------- | -------- | ----- |
+| Database             | PostgreSQL           | 17.7     | 5432  |
+| Vector Search        | pgvector             | 0.7.4    | -     |
+| BM25 Search          | pg_search (ParadeDB) | 0.21.4   | -     |
+| Graph DB             | Apache AGE           | 1.6.0    | -     |
+| Fuzzy Search         | pg_trgm              | 1.6      | -     |
+| PDF Extraction       | Unstructured API     | latest   | 8500  |
+| PDF Extraction (alt) | PyMuPDF              | 1.26.7   | -     |
 
 ---
 
@@ -118,44 +118,44 @@ kb.ingestion_profiles   # Profili configurazione ingestion (NEW)
 
 ### Tabella `documents`
 
-| Colonna | Tipo | Descrizione |
-|---------|------|-------------|
-| id | UUID | PK |
-| source_path | TEXT | Path PDF originale |
-| source_hash | VARCHAR(64) | SHA256 del filename |
-| anno | INTEGER | Anno del massimario |
-| volume | INTEGER | Numero volume |
-| tipo | VARCHAR(10) | 'civile' o 'penale' |
-| titolo | TEXT | Titolo completo |
-| pagine | INTEGER | Numero pagine |
-| ocr_quality_score | FLOAT | Score qualità OCR |
+| Colonna           | Tipo        | Descrizione         |
+| ----------------- | ----------- | ------------------- |
+| id                | UUID        | PK                  |
+| source_path       | TEXT        | Path PDF originale  |
+| source_hash       | VARCHAR(64) | SHA256 del filename |
+| anno              | INTEGER     | Anno del massimario |
+| volume            | INTEGER     | Numero volume       |
+| tipo              | VARCHAR(10) | 'civile' o 'penale' |
+| titolo            | TEXT        | Titolo completo     |
+| pagine            | INTEGER     | Numero pagine       |
+| ocr_quality_score | FLOAT       | Score qualità OCR   |
 
 ### Tabella `massime`
 
-| Colonna | Tipo | Descrizione |
-|---------|------|-------------|
-| id | UUID | PK |
-| document_id | UUID | FK → documents |
-| testo | TEXT | Testo massima |
-| testo_normalizzato | TEXT | Testo normalizzato per search |
-| content_hash | VARCHAR(64) | SHA256 per dedup |
-| sezione | VARCHAR(20) | Es. "4", "Un." |
-| numero | VARCHAR(20) | Numero sentenza |
-| anno | INTEGER | Anno decisione |
-| data_decisione | DATE | Data decisione |
-| materia | VARCHAR(100) | Civile/Penale |
-| tsv_simple | TSVECTOR | FTS simple (generated) |
-| tsv_italian | TSVECTOR | FTS italian (generated) |
+| Colonna            | Tipo         | Descrizione                   |
+| ------------------ | ------------ | ----------------------------- |
+| id                 | UUID         | PK                            |
+| document_id        | UUID         | FK → documents                |
+| testo              | TEXT         | Testo massima                 |
+| testo_normalizzato | TEXT         | Testo normalizzato per search |
+| content_hash       | VARCHAR(64)  | SHA256 per dedup              |
+| sezione            | VARCHAR(20)  | Es. "4", "Un."                |
+| numero             | VARCHAR(20)  | Numero sentenza               |
+| anno               | INTEGER      | Anno decisione                |
+| data_decisione     | DATE         | Data decisione                |
+| materia            | VARCHAR(100) | Civile/Penale                 |
+| tsv_simple         | TSVECTOR     | FTS simple (generated)        |
+| tsv_italian        | TSVECTOR     | FTS italian (generated)       |
 
 ### Tabella `embeddings`
 
-| Colonna | Tipo | Descrizione |
-|---------|------|-------------|
-| id | UUID | PK |
-| massima_id | UUID | FK → massime |
-| model | VARCHAR(50) | qwen3/e5-large/bge-m3/legal-bert-it |
-| channel | VARCHAR(20) | testo/tema/contesto |
-| embedding | VECTOR(1536) | Vettore (dim varia per modello) |
+| Colonna    | Tipo         | Descrizione                         |
+| ---------- | ------------ | ----------------------------------- |
+| id         | UUID         | PK                                  |
+| massima_id | UUID         | FK → massime                        |
+| model      | VARCHAR(50)  | qwen3/e5-large/bge-m3/legal-bert-it |
+| channel    | VARCHAR(20)  | testo/tema/contesto                 |
+| embedding  | VECTOR(1536) | Vettore (dim varia per modello)     |
 
 ### Indici
 
@@ -218,22 +218,22 @@ src/lexe_api/kb/
 
 ### Configurazioni Sistema (S1-S5)
 
-| Config | Descrizione | Componenti |
-|--------|-------------|------------|
-| S1 | Atomico | Solo BM25 |
-| S2 | Hybrid | BM25 + HNSW + RRF |
-| S3 | Rerank | S2 + Cross-encoder |
-| S4 | Graph | S3 + Cypher expansion |
-| S5 | Full | S4 + Multi-model ensemble |
+| Config | Descrizione | Componenti                |
+| ------ | ----------- | ------------------------- |
+| S1     | Atomico     | Solo BM25                 |
+| S2     | Hybrid      | BM25 + HNSW + RRF         |
+| S3     | Rerank      | S2 + Cross-encoder        |
+| S4     | Graph       | S3 + Cypher expansion     |
+| S5     | Full        | S4 + Multi-model ensemble |
 
 ### Modelli Embedding
 
-| Modello | Dimensioni | Uso |
-|---------|------------|-----|
-| Qwen3 | 1536 | Default, multilingue |
-| E5-Large | 1024 | Retrieval ottimizzato |
-| BGE-M3 | 1024 | Multilingue, dense+sparse |
-| Legal-BERT-IT | 768 | Dominio legale italiano |
+| Modello       | Dimensioni | Uso                       |
+| ------------- | ---------- | ------------------------- |
+| Qwen3         | 1536       | Default, multilingue      |
+| E5-Large      | 1024       | Retrieval ottimizzato     |
+| BGE-M3        | 1024       | Multilingue, dense+sparse |
+| Legal-BERT-IT | 768        | Dominio legale italiano   |
 
 ---
 
@@ -272,25 +272,26 @@ uv run python scripts/test_unstructured.py
 
 ### Confronto Estrazione PDF
 
-| PDF | PyMuPDF | Unstructured | Ratio |
-|-----|---------|--------------|-------|
-| 2021 PENALE Vol.1 | 645 | **2114** | 3.3x |
-| 2023 PENALE Vol.1 | 433 | **1633** | 3.8x |
-| 2018 CIVILE Vol.1 | 189 | **800** | 4.2x |
-| **TOTALE** | 1267 | **4547** | **3.6x** |
+| PDF               | PyMuPDF | Unstructured | Ratio    |
+| ----------------- | ------- | ------------ | -------- |
+| 2021 PENALE Vol.1 | 645     | **2114**     | 3.3x     |
+| 2023 PENALE Vol.1 | 433     | **1633**     | 3.8x     |
+| 2018 CIVILE Vol.1 | 189     | **800**      | 4.2x     |
+| **TOTALE**        | 1267    | **4547**     | **3.6x** |
 
 **Conclusione:** Unstructured estrae **3.6x più massime** grazie a:
+
 - Migliore gestione layout PDF
 - OCR integrato
 - Estrazione completa del documento (non solo prime N pagine)
 
 ### Timing
 
-| Metodo | Tempo medio |
-|--------|-------------|
-| PyMuPDF | ~0.3s |
-| Unstructured (fast) | ~25s |
-| Unstructured (hi_res) | ~60s |
+| Metodo                | Tempo medio |
+| --------------------- | ----------- |
+| PyMuPDF               | ~0.3s       |
+| Unstructured (fast)   | ~25s        |
+| Unstructured (hi_res) | ~60s        |
 
 ### Retrieval FTS
 
@@ -399,20 +400,20 @@ Lo script `extract_index.py` estrae la struttura gerarchica (TOC) dai PDF:
 
 ### Risultati Estrazione
 
-| PDF | Parti | Capitoli | Sezioni | Totale |
-|-----|-------|----------|---------|--------|
-| 2018 CIVILE | 8 | 35 | 179 | **224** |
-| 2021 PENALE | 3 | 9 | 81 | **95** |
-| 2023 PENALE | 5 | 7 | 5 | **17** |
-| **TOTALE** | **16** | **51** | **265** | **336** |
+| PDF         | Parti  | Capitoli | Sezioni | Totale  |
+| ----------- | ------ | -------- | ------- | ------- |
+| 2018 CIVILE | 8      | 35       | 179     | **224** |
+| 2021 PENALE | 3      | 9        | 81      | **95**  |
+| 2023 PENALE | 5      | 7        | 5       | **17**  |
+| **TOTALE**  | **16** | **51**   | **265** | **336** |
 
 ### Copertura Pagine Sezioni (dopo Backfill)
 
-| PDF | Sezioni | Con Pagina | Coverage |
-|-----|---------|------------|----------|
-| 2018 CIVILE | 224 | 209 | **93.3%** |
-| 2021 PENALE | 95 | 95 | **100%** |
-| 2023 PENALE | 17 | 17 | **100%** |
+| PDF         | Sezioni | Con Pagina | Coverage  |
+| ----------- | ------- | ---------- | --------- |
+| 2018 CIVILE | 224     | 209        | **93.3%** |
+| 2021 PENALE | 95      | 95         | **100%**  |
+| 2023 PENALE | 17      | 17         | **100%**  |
 
 **Backfill** cerca i titoli nel testo PDF (dopo area indice) con match fuzzy.
 
@@ -426,6 +427,7 @@ SELECT kb.find_section_for_page(document_id, page_number);
 ### Pipeline End-to-End (kb_pipeline.py)
 
 Script unificato che esegue:
+
 1. Estrazione massime con Unstructured (page_number incluso)
 2. Content hash standardizzato (SHA256 completo)
 3. Calcolo page_end per sezioni
@@ -435,12 +437,12 @@ Script unificato che esegue:
 
 ### Risultati Pipeline (2026-01-27) - Con Gate Policy
 
-| PDF | Massime | Linked | Short | Out of Range | Coverage |
-|-----|---------|--------|-------|--------------|----------|
-| 2018 CIVILE | 492 | 492 | 0% | 0 | **100%** |
-| 2021 PENALE | 102 | 102 | 0% | 0 | **100%** |
-| 2023 PENALE | 178 | 178 | 0% | 0 | **100%** |
-| **TOTALE** | **772** | **772** | **0%** | **0** | **100%** |
+| PDF         | Massime | Linked  | Short  | Out of Range | Coverage |
+| ----------- | ------- | ------- | ------ | ------------ | -------- |
+| 2018 CIVILE | 492     | 492     | 0%     | 0            | **100%** |
+| 2021 PENALE | 102     | 102     | 0%     | 0            | **100%** |
+| 2023 PENALE | 178     | 178     | 0%     | 0            | **100%** |
+| **TOTALE**  | **772** | **772** | **0%** | **0**        | **100%** |
 
 **Gate Policy** ha filtrato il 52% dei falsi positivi (liste citazioni, frammenti).
 
@@ -456,21 +458,21 @@ Ogni documento usa un profilo di configurazione che definisce parametri di estra
 
 ### Tabella `kb.ingestion_profiles`
 
-| Colonna | Tipo | Descrizione |
-|---------|------|-------------|
-| id | UUID | PK |
-| name | VARCHAR(100) | Nome profilo univoco |
-| doc_type | VARCHAR(50) | 'civile', 'penale', NULL=tutti |
-| anno_min/max | INTEGER | Range anni applicabile |
-| config | JSONB | Configurazione completa |
-| is_default | BOOLEAN | Profilo fallback |
+| Colonna      | Tipo         | Descrizione                    |
+| ------------ | ------------ | ------------------------------ |
+| id           | UUID         | PK                             |
+| name         | VARCHAR(100) | Nome profilo univoco           |
+| doc_type     | VARCHAR(50)  | 'civile', 'penale', NULL=tutti |
+| anno_min/max | INTEGER      | Range anni applicabile         |
+| config       | JSONB        | Configurazione completa        |
+| is_default   | BOOLEAN      | Profilo fallback               |
 
 ### Profili Definiti
 
-| Profilo | Tipo | Anni | Caratteristiche |
-|---------|------|------|-----------------|
-| `massimario_default_v1` | tutti | tutti | SKIP_PAGES dinamico, gate standard |
-| `massimario_penale_2021_2023` | penale | 2021-2023 | TOC pulito, soglie QA strette |
+| Profilo                           | Tipo   | Anni      | Caratteristiche                                 |
+| --------------------------------- | ------ | --------- | ----------------------------------------------- |
+| `massimario_default_v1`           | tutti  | tutti     | SKIP_PAGES dinamico, gate standard              |
+| `massimario_penale_2021_2023`     | penale | 2021-2023 | TOC pulito, soglie QA strette                   |
 | `massimario_civile_toc_collision` | civile | 2015-2020 | Normalizzazione aggressiva, gestione collisioni |
 
 ### Struttura Config JSONB
@@ -516,11 +518,11 @@ SELECT kb.get_profile_config(profile_id, 'gate_policy.min_length');
 
 ### View QA
 
-| View | Descrizione |
-|------|-------------|
-| `kb.qa_document_report` | Report completo: short%, linked%, out_of_range |
-| `kb.qa_page_collisions` | Sezioni con stessa pagina (anomalia TOC) |
-| `kb.qa_hierarchy_anomalies` | Figli con pagina prima del padre |
+| View                        | Descrizione                                    |
+| --------------------------- | ---------------------------------------------- |
+| `kb.qa_document_report`     | Report completo: short%, linked%, out_of_range |
+| `kb.qa_page_collisions`     | Sezioni con stessa pagina (anomalia TOC)       |
+| `kb.qa_hierarchy_anomalies` | Figli con pagina prima del padre               |
 
 ### Query Report QA
 
@@ -533,11 +535,11 @@ FROM kb.qa_document_report;
 
 ### Metriche Monitoraggio
 
-| Metrica | Soglia | Azione se superata |
-|---------|--------|-------------------|
-| pct_short | < 5% | Review gate policy |
-| out_of_range | < 10 | Check section pages |
-| pct_linked | > 90% | OK |
+| Metrica         | Soglia          | Azione se superata    |
+| --------------- | --------------- | --------------------- |
+| pct_short       | < 5%            | Review gate policy    |
+| out_of_range    | < 10            | Check section pages   |
+| pct_linked      | > 90%           | OK                    |
 | page_collisions | < 3 per livello | Backfill conservativo |
 
 ---

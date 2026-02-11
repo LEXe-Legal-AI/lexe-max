@@ -1,7 +1,7 @@
 # KB Normativa Altalex - Pipeline Ingestion
 
 > Documentazione del lavoro svolto per l'ingestion di 68+ PDF Altalex nella Knowledge Base LEXE.
->
+> 
 > **Data:** 2026-02-04
 > **Status:** FASE 3 completata, pronto per batch
 
@@ -10,6 +10,7 @@
 ## Obiettivo
 
 Creare pipeline robusta per ingestionare codici e leggi italiane (PDF Altalex) nella KB LEXE con:
+
 - Chunking semantico per articolo
 - Embeddings multi-dimensione
 - Hybrid retrieval (Dense + FTS + Trigram + RRF)
@@ -60,33 +61,35 @@ Hybrid Retrieval (Dense + FTS + Trigram + RRF)
 
 **Estensioni a kb.normativa_altalex:**
 
-| Colonna | Tipo | Descrizione |
-|---------|------|-------------|
-| `articolo_num_norm` | INTEGER | Numero normalizzato (2043 per "2043-bis") |
-| `articolo_suffix` | TEXT | Suffisso: bis, ter, quater, ..., octiesdecies |
-| `articolo_sort_key` | TEXT | Chiave ordinamento: 002043.bis |
-| `global_key` | TEXT UNIQUE | Chiave globale: altalex:cc:2043:bis |
-| `testo_context` | TEXT | Testo con overlap ±200 chars |
-| `commi` | JSONB | Array commi strutturati |
-| `riferimenti_parsed` | JSONB | Riferimenti validati |
-| `riferimenti_raw` | TEXT[] | Riferimenti raw |
-| `page_start` | INTEGER | Pagina inizio |
-| `page_end` | INTEGER | Pagina fine |
-| `testo_tsv` | tsvector | FTS con unaccent |
+| Colonna              | Tipo        | Descrizione                                   |
+| -------------------- | ----------- | --------------------------------------------- |
+| `articolo_num_norm`  | INTEGER     | Numero normalizzato (2043 per "2043-bis")     |
+| `articolo_suffix`    | TEXT        | Suffisso: bis, ter, quater, ..., octiesdecies |
+| `articolo_sort_key`  | TEXT        | Chiave ordinamento: 002043.bis                |
+| `global_key`         | TEXT UNIQUE | Chiave globale: altalex:cc:2043:bis           |
+| `testo_context`      | TEXT        | Testo con overlap ±200 chars                  |
+| `commi`              | JSONB       | Array commi strutturati                       |
+| `riferimenti_parsed` | JSONB       | Riferimenti validati                          |
+| `riferimenti_raw`    | TEXT[]      | Riferimenti raw                               |
+| `page_start`         | INTEGER     | Pagina inizio                                 |
+| `page_end`           | INTEGER     | Pagina fine                                   |
+| `testo_tsv`          | tsvector    | FTS con unaccent                              |
 
 **Nuove tabelle:**
 
-| Tabella | Scopo |
-|---------|-------|
-| `kb.altalex_ingestion_logs` | Tracking errori e quarantina |
-| `kb.altalex_embeddings` | Embeddings multi-dim (384-1536) |
-| `kb.altalex_embedding_cache` | Cache embeddings persistente |
+| Tabella                      | Scopo                           |
+| ---------------------------- | ------------------------------- |
+| `kb.altalex_ingestion_logs`  | Tracking errori e quarantina    |
+| `kb.altalex_embeddings`      | Embeddings multi-dim (384-1536) |
+| `kb.altalex_embedding_cache` | Cache embeddings persistente    |
 
 **Trigger automatici:**
+
 - `trg_altalex_sort_key` - Genera sort key per ordinamento
 - `trg_altalex_global_key` - Genera chiave globale univoca
 
 **Indici:**
+
 - HNSW per vector search (dims 768, 1024, 1536)
 - GIN per FTS (tsvector)
 - Composite unique per deduplicazione
@@ -100,6 +103,7 @@ Hybrid Retrieval (Dense + FTS + Trigram + RRF)
 **File:** `src/lexe_api/kb/ingestion/marker_chunker.py`
 
 **Funzionalità:**
+
 1. Legge JSON output di marker-pdf
 2. Identifica header articoli (SectionHeader con "Art. N" o "Articolo N")
 3. Raggruppa blocchi consecutivi fino al prossimo header
@@ -109,6 +113,7 @@ Hybrid Retrieval (Dense + FTS + Trigram + RRF)
 7. Valida articoli estratti
 
 **Suffissi latini supportati:**
+
 ```
 bis, ter, quater, quinquies, sexies, septies, octies, novies, nonies,
 decies, undecies, duodecies, terdecies, quaterdecies, quinquiesdecies,
@@ -117,13 +122,14 @@ sexiesdecies, septiesdecies, octiesdecies
 
 **Risultati test:**
 
-| Documento | Articoli Estratti | Validi | Percentuale |
-|-----------|-------------------|--------|-------------|
-| **GDPR** | 98 | 98 | **100%** |
-| **Codice Penale** | 924 | 869 | **94%** |
-| Dichiarazione Universale | 30 | 22 | 73% (formato edge case) |
+| Documento                | Articoli Estratti | Validi | Percentuale             |
+| ------------------------ | ----------------- | ------ | ----------------------- |
+| **GDPR**                 | 98                | 98     | **100%**                |
+| **Codice Penale**        | 924               | 869    | **94%**                 |
+| Dichiarazione Universale | 30                | 22     | 73% (formato edge case) |
 
 **Output per articolo:**
+
 ```python
 @dataclass
 class ExtractedArticle:
@@ -144,6 +150,7 @@ class ExtractedArticle:
 ```
 
 **Uso:**
+
 ```bash
 # Test chunking su file JSON
 python -m src.lexe_api.kb.ingestion.marker_chunker "path/to/file.json" CODICE
@@ -157,36 +164,37 @@ python -m src.lexe_api.kb.ingestion.marker_chunker "path/to/file.json" CODICE
 
 **Modelli testati:**
 
-| Modello | Provider | Dims | Recall@10 | MRR | Latency | Throughput |
-|---------|----------|------|-----------|-----|---------|------------|
-| **openai/text-embedding-3-small** | OpenRouter | 1536 | **95%** | **0.920** | 30.4ms | 32.9/s |
-| multilingual-e5-large-instruct | sentence-transformers | 1024 | 90% | 0.825 | 51.2ms | 19.5/s |
+| Modello                           | Provider              | Dims | Recall@10 | MRR       | Latency | Throughput |
+| --------------------------------- | --------------------- | ---- | --------- | --------- | ------- | ---------- |
+| **openai/text-embedding-3-small** | OpenRouter            | 1536 | **95%**   | **0.920** | 30.4ms  | 32.9/s     |
+| multilingual-e5-large-instruct    | sentence-transformers | 1024 | 90%       | 0.825     | 51.2ms  | 19.5/s     |
 
 **Confronto dettagliato:**
 
-| Metrica | OpenAI (OpenRouter) | e5-large (Locale) | Differenza |
-|---------|---------------------|-------------------|------------|
-| Recall@10 | 95% | 90% | **+5%** |
-| MRR | 0.920 | 0.825 | **+0.095** |
-| Latency | 30.4ms | 51.2ms | **-40%** |
-| Throughput | 32.9/s | 19.5/s | **+69%** |
+| Metrica    | OpenAI (OpenRouter) | e5-large (Locale) | Differenza |
+| ---------- | ------------------- | ----------------- | ---------- |
+| Recall@10  | 95%                 | 90%               | **+5%**    |
+| MRR        | 0.920               | 0.825             | **+0.095** |
+| Latency    | 30.4ms              | 51.2ms            | **-40%**   |
+| Throughput | 32.9/s              | 19.5/s            | **+69%**   |
 
 **Query di test (10 su GDPR):**
 
-| Query | Expected | OpenAI Top-3 | e5 Top-3 |
-|-------|----------|--------------|----------|
-| diritto all'oblio cancellazione dati | Art. 17 | 17, 20, 21 ✓ | 17, 15, 21 ✓ |
-| consenso al trattamento dati | Art. 7, 8 | 7, 32, 25 | 7, 21, 9 |
-| portabilità dei dati | Art. 20 | 20, 49, 5 ✓ | 96, 20, 45 |
-| data protection officer DPO | Art. 37, 38, 39 | 39, 38, 37 ✓ | 31, 39, 38 |
-| trasferimento dati paesi terzi | Art. 44, 45, 46 | 45, 49, 44 ✓ | 45, 46, 44 ✓ |
-| sanzioni amministrative | Art. 83, 84 | 83, 84, 59 ✓ | 83, 59, 84 ✓ |
-| responsabile del trattamento | Art. 28, 29 | 28, 31, 29 ✓ | 28, 39, 38 |
-| informativa privacy interessato | Art. 13, 14 | 11, 15, 12 | 11, 4, 15 |
-| valutazione impatto DPIA | Art. 35, 36 | 35, 34, 36 ✓ | 35, 34, 39 |
-| diritto di rettifica | Art. 16 | 16, 19, 79 ✓ | 16, 82, 21 ✓ |
+| Query                                | Expected        | OpenAI Top-3 | e5 Top-3     |
+| ------------------------------------ | --------------- | ------------ | ------------ |
+| diritto all'oblio cancellazione dati | Art. 17         | 17, 20, 21 ✓ | 17, 15, 21 ✓ |
+| consenso al trattamento dati         | Art. 7, 8       | 7, 32, 25    | 7, 21, 9     |
+| portabilità dei dati                 | Art. 20         | 20, 49, 5 ✓  | 96, 20, 45   |
+| data protection officer DPO          | Art. 37, 38, 39 | 39, 38, 37 ✓ | 31, 39, 38   |
+| trasferimento dati paesi terzi       | Art. 44, 45, 46 | 45, 49, 44 ✓ | 45, 46, 44 ✓ |
+| sanzioni amministrative              | Art. 83, 84     | 83, 84, 59 ✓ | 83, 59, 84 ✓ |
+| responsabile del trattamento         | Art. 28, 29     | 28, 31, 29 ✓ | 28, 39, 38   |
+| informativa privacy interessato      | Art. 13, 14     | 11, 15, 12   | 11, 4, 15    |
+| valutazione impatto DPIA             | Art. 35, 36     | 35, 34, 36 ✓ | 35, 34, 39   |
+| diritto di rettifica                 | Art. 16         | 16, 19, 79 ✓ | 16, 82, 21 ✓ |
 
 **Decisione:** Usare **`openai/text-embedding-3-small` via OpenRouter** come modello primario:
+
 - Recall@10 migliore (95% vs 90%)
 - MRR migliore (0.920 vs 0.825)
 - Latency migliore (30ms vs 51ms)
@@ -203,6 +211,7 @@ python -m src.lexe_api.kb.ingestion.marker_chunker "path/to/file.json" CODICE
 **File:** `src/lexe_api/kb/ingestion/altalex_pipeline.py`
 
 Pipeline a 4 stadi:
+
 1. **Chunk** - marker_chunker.py (JSON → Articles)
 2. **Validate** - Validazione articoli (min/max text length)
 3. **Embed** - OpenRouter batch (NO FALLBACK!)
@@ -211,6 +220,7 @@ Pipeline a 4 stadi:
 **File:** `src/lexe_api/kb/ingestion/openrouter_embedder.py`
 
 Client OpenRouter per text-embedding-3-small con:
+
 - Batch processing (50 articoli/batch)
 - Cache in-memory
 - Retry con backoff
@@ -224,28 +234,29 @@ Client OpenRouter per text-embedding-3-small con:
 
 **Risultati Finali:**
 
-| Metrica | Valore |
-|---------|--------|
-| **File processati** | 69 |
-| **Articoli totali** | 14,091 |
-| **Articoli embedded** | 13,354 |
-| **Quarantine** | 737 |
-| **Success rate** | **94.8%** |
-| **Tempo marker** | ~95 min |
-| **Tempo embedding** | ~10 min |
-| **Tempo totale** | ~105 min |
+| Metrica               | Valore    |
+| --------------------- | --------- |
+| **File processati**   | 69        |
+| **Articoli totali**   | 14,091    |
+| **Articoli embedded** | 13,354    |
+| **Quarantine**        | 737       |
+| **Success rate**      | **94.8%** |
+| **Tempo marker**      | ~95 min   |
+| **Tempo embedding**   | ~10 min   |
+| **Tempo totale**      | ~105 min  |
 
 **Top 5 documenti per articoli:**
 
-| Codice | Documento | Articoli | Embedded |
-|--------|-----------|----------|----------|
-| CC | Codice Civile | 3,542 | 2,987 |
-| CPP | Codice Procedura Penale | 1,237 | 1,236 |
-| CP | Codice Penale | 924 | 869 |
-| APPALTI | Codice Appalti | 476 | 474 |
-| CAP | Codice Assicurazioni | 417 | 417 |
+| Codice  | Documento               | Articoli | Embedded |
+| ------- | ----------------------- | -------- | -------- |
+| CC      | Codice Civile           | 3,542    | 2,987    |
+| CPP     | Codice Procedura Penale | 1,237    | 1,236    |
+| CP      | Codice Penale           | 924      | 869      |
+| APPALTI | Codice Appalti          | 476      | 474      |
+| CAP     | Codice Assicurazioni    | 417      | 417      |
 
 **Articoli in quarantine (737):**
+
 - 555 dal Codice Civile (articoli abrogati)
 - ~180 da altri codici (testo vuoto o troppo lungo)
 
@@ -293,12 +304,12 @@ psql -h localhost -p 5434 -U lexe_kb -d lexe_kb \
 
 ## Metriche Target
 
-| Metrica | Target | Attuale |
-|---------|--------|---------|
-| Chunking accuracy | >95% | 94-100% ✓ |
-| Recall@10 | >90% | 90% ✓ |
-| MRR | >0.7 | 0.825 ✓ |
-| Latency P95 | <200ms | 50ms ✓ |
+| Metrica           | Target | Attuale   |
+| ----------------- | ------ | --------- |
+| Chunking accuracy | >95%   | 94-100% ✓ |
+| Recall@10         | >90%   | 90% ✓     |
+| MRR               | >0.7   | 0.825 ✓   |
+| Latency P95       | <200ms | 50ms ✓    |
 
 ---
 
@@ -317,11 +328,14 @@ structlog                   # Logging
 ## Note Tecniche
 
 ### Overlap Strategy
+
 - **Dentro articolo:** NO overlap (unità atomica)
 - **Tra articoli consecutivi:** SÌ, ±200 chars per contesto retrieval
 
 ### Articoli Invalidi (5-6%)
+
 Articoli con testo vuoto sono tipicamente:
+
 - Articoli abrogati
 - Errori di parsing marker
 - Articoli con solo rubrica (dichiarativi)
@@ -329,6 +343,7 @@ Articoli con testo vuoto sono tipicamente:
 Vengono messi in quarantine (`kb.altalex_ingestion_logs`) per review manuale.
 
 ### Global Key Format
+
 ```
 altalex:{codice}:{articolo_num_norm}:{suffix|null}
 

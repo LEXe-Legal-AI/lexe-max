@@ -164,6 +164,9 @@ class AltalexStore:
         """Store embedding with UPSERT."""
         dims = len(embedding)
 
+        # Convert list to pgvector string format: "[0.1, 0.2, ...]"
+        embedding_str = "[" + ",".join(str(x) for x in embedding) + "]"
+
         await conn.execute(
             """
             INSERT INTO kb.altalex_embeddings (
@@ -179,7 +182,7 @@ class AltalexStore:
             model,
             channel,
             dims,
-            embedding,
+            embedding_str,
             text_hash,
         )
 

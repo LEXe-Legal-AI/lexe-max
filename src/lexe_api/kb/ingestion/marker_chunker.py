@@ -29,9 +29,16 @@ logger = structlog.get_logger(__name__)
 # Regex patterns for article detection
 ARTICOLO_HEADER_PATTERNS = [
     # HTML-style headers from marker: <h1><b>Articolo 17</b></h1> or <h1><b>Art. 17</b></h1>
-    # Also handles spaced bold: <b>Art.</b> <b>17.</b>
+    # Also handles <span> tags before Art: <h3><span id="..."></span>ART. 5 (...)
+    # Uses (?:<[^>]+>)* to skip any nested tags (span, b, etc.) before Art.
     re.compile(
-        r'<h\d[^>]*>(?:<b>\s*)?(?:Articolo|Art\.?)\s*(?:</b>\s*<b>)?\s*(\d+(?:-\w+)?)',
+        r'<h\d[^>]*>(?:<[^>]+>)*\s*(?:Articolo|Art\.?)\s*(\d+(?:-\w+)?)',
+        re.IGNORECASE
+    ),
+    # Altalex format: <p block-type="Text"><b>Art. 3.</b> <b>Rubrica...</b></p>
+    # The <b> tag wraps the article number
+    re.compile(
+        r'<p[^>]*>(?:<b>\s*)?(?:Articolo|Art\.?)\s*(\d+(?:-\w+)?)',
         re.IGNORECASE
     ),
     # Plain text header: Art. 17. or Articolo 17
@@ -42,6 +49,18 @@ ARTICOLO_HEADER_PATTERNS = [
     re.compile(r'^\*\*(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\*\*', re.IGNORECASE | re.MULTILINE),
     # Paragraph with Art.: <p block-type="Text">Art. 3-bis.</p>
     re.compile(r'<p[^>]*>(?:Articolo|Art\.?)\s+(\d+(?:-\w+)?)\.</p>', re.IGNORECASE),
+    # Art. anywhere followed by rubrica in parentheses: "...text... ART. 318-bis (Ambito di applicazione)"
+    # Common in Text blocks where article header is mid-text
+    re.compile(
+        r'ART\.?\s*(\d+(?:-(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|sexiesdecies|septiesdecies|octiesdecies))?)\s*\(',
+        re.IGNORECASE
+    ),
+    # Bold Art. N. anywhere in text: "...section title <b>Art. 172.</b> <b>Rubrica</b>..."
+    # Common in CCI where section headers precede article headers in same block
+    re.compile(
+        r'<b>Art\.?\s*(\d+(?:-(?:bis|ter|quater|quinquies|sexies|septies|octies|novies|decies|undecies|duodecies|terdecies|quaterdecies|quinquiesdecies|sexiesdecies|septiesdecies|octiesdecies))?)\.</b>',
+        re.IGNORECASE
+    ),
 ]
 
 # Pattern for extracting article number parts
@@ -369,10 +388,13 @@ class MarkerChunker:
 
         # Also check Text blocks that might be standalone article headers
         # (e.g., <p block-type="Text">Art. 3-bis.</p>)
-        if block.block_type in ("TextBlock", "Text"):
+        # Note: Altalex PDFs often have "Art. N. Rubrica (note) In vigore dal..."
+        # all in one Text block, which can be 200-300+ chars
+        # ListItem added: CCI has article headers inside <li> tags (e.g., Art. 39)
+        if block.block_type in ("TextBlock", "Text", "ListItem"):
             text_to_check = block.html if block.html else block.text
-            # Only consider short text blocks as potential headers
-            if len(block.text) < 100:
+            # Allow longer text blocks - Altalex often combines header+rubrica+date
+            if len(block.text) < 400:
                 for pattern in ARTICOLO_HEADER_PATTERNS:
                     match = pattern.search(text_to_check)
                     if match:

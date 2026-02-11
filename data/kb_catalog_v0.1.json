@@ -1,0 +1,2748 @@
+{
+  "version": "0.1",
+  "generated_at": "2026-02-08T03:00:00.610902",
+  "summary": {
+    "total_documents": 76,
+    "total_articles_ingested": 10556,
+    "total_articles_validated": 10556,
+    "total_articles_in_review": 0,
+    "status_breakdown": {
+      "READY": 60,
+      "NEEDS_REVIEW": 0,
+      "PARTIAL_EXTRACT": 15,
+      "EXCLUDED": 1
+    }
+  },
+  "quality_gates": {
+    "check_conteggi": "validati + in_review = ingestiti - skipped",
+    "check_duplicati": "stesso atto_riferimento → DUPLICATE_CANDIDATE",
+    "check_max_anomaly": "MAX > COUNT * 5 → MAX_NUM_ANOMALY",
+    "check_partial": "articoli < 10 → PARTIAL_EXTRACT"
+  },
+  "documents": [
+    {
+      "sigla": "AUTO",
+      "nome": "AUTO",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.257515",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 4,
+      "articoli_validati": 4,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 4,
+        "con_suffix": 0,
+        "gaps": 0
+      },
+      "status": "EXCLUDED",
+      "status_reason": "Pending source verification",
+      "flags": [
+        "MISSING_SOURCE_VERIFICATION"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CAD",
+      "nome": "CAD",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 82,
+        "anno": 2005
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.259709",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 57,
+      "articoli_validati": 57,
+      "articoli_in_review": 0,
+      "articoli_skipped": 3,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 83,
+        "con_suffix": 10,
+        "gaps": 35
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CAMAFIA",
+      "nome": "CAMAFIA",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.262020",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 61,
+      "articoli_validati": 61,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 416,
+        "con_suffix": 11,
+        "gaps": 357
+      },
+      "status": "READY",
+      "status_reason": "QC manuale: MAX 416 giustificato da art. 416-bis (associazione mafiosa). Refs CP integrati nel Codice Antimafia.",
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CAMB",
+      "nome": "CAMB",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.300231",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 180,
+      "articoli_validati": 180,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 159,
+        "cataldi_confirmed": 16,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 9,
+        "max": 483,
+        "con_suffix": 37,
+        "gaps": 325
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CAP",
+      "nome": "CAP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.316036",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 216,
+      "articoli_validati": 216,
+      "articoli_in_review": 0,
+      "articoli_skipped": 4,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 204,
+        "cataldi_confirmed": 42,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 352,
+        "con_suffix": 72,
+        "gaps": 189
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CAPP",
+      "nome": "CAPP",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 36,
+        "anno": 2023
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.336444",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 123,
+      "articoli_validati": 123,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 116,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 229,
+        "con_suffix": 4,
+        "gaps": 109
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CBC",
+      "nome": "CBC",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.338948",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 64,
+      "articoli_validati": 64,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 184,
+        "con_suffix": 2,
+        "gaps": 121
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CC",
+      "nome": "CC",
+      "atto_riferimento": {
+        "tipo": "REGIO_DECRETO",
+        "numero": 262,
+        "anno": 1942
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.376123",
+      "articoli_attesi": 2969,
+      "articoli_ingestiti": 3211,
+      "articoli_validati": 3211,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": -242,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 2969,
+        "con_suffix": 245,
+        "gaps": 3
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CCE",
+      "nome": "CCE",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.381631",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 58,
+      "articoli_validati": 58,
+      "articoli_in_review": 0,
+      "articoli_skipped": 22,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 100,
+        "con_suffix": 7,
+        "gaps": 49
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CCI",
+      "nome": "CCI",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 14,
+        "anno": 2019
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "BROCARDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.388030",
+      "articoli_attesi": 391,
+      "articoli_ingestiti": 415,
+      "articoli_validati": 415,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": -24,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 1
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 391,
+        "con_suffix": 24,
+        "gaps": 0
+      },
+      "status": "READY",
+      "status_reason": "QC fix: Art.373 recuperato da Brocardi (troncato in PDF)",
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CCONS",
+      "nome": "CCONS",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 206,
+        "anno": 2005
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.394363",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 55,
+      "articoli_validati": 55,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 40,
+        "cataldi_confirmed": 6,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 143,
+        "con_suffix": 14,
+        "gaps": 96
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CDF",
+      "nome": "CDF",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.395063",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 6,
+      "articoli_validati": 6,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 69,
+        "con_suffix": 0,
+        "gaps": 63
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale. Necessaria fonte completa.",
+      "flags": [
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CDS",
+      "nome": "CDS",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.408132",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 71,
+      "articoli_validati": 71,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 66,
+        "cataldi_confirmed": 2,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 3,
+        "max": 301,
+        "con_suffix": 11,
+        "gaps": 233
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CGC",
+      "nome": "CGC",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.410148",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 30,
+      "articoli_validati": 30,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 207,
+        "con_suffix": 3,
+        "gaps": 180
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale. Necessaria fonte completa.",
+      "flags": [
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CGS",
+      "nome": "CGS",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.415072",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 1,
+      "articoli_validati": 1,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 10,
+        "max": 10,
+        "con_suffix": 0,
+        "gaps": 0
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale. Necessaria fonte completa.",
+      "flags": [
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CMED",
+      "nome": "CMED",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.417996",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 56,
+      "articoli_validati": 56,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 159,
+        "con_suffix": 8,
+        "gaps": 108
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CND",
+      "nome": "CND",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.419676",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 43,
+      "articoli_validati": 43,
+      "articoli_in_review": 0,
+      "articoli_skipped": 4,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 65,
+        "con_suffix": 12,
+        "gaps": 31
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "COST",
+      "nome": "COST",
+      "atto_riferimento": {
+        "tipo": "COSTITUZIONE",
+        "numero": null,
+        "anno": 1948
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.421674",
+      "articoli_attesi": 139,
+      "articoli_ingestiti": 136,
+      "articoli_validati": 136,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": 3,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 139,
+        "con_suffix": 0,
+        "gaps": 3
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CP",
+      "nome": "CP",
+      "atto_riferimento": {
+        "tipo": "REGIO_DECRETO",
+        "numero": 1398,
+        "anno": 1930
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.431476",
+      "articoli_attesi": 734,
+      "articoli_ingestiti": 905,
+      "articoli_validati": 905,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": -171,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 734,
+        "con_suffix": 203,
+        "gaps": 29
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPA",
+      "nome": "CPA",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.434830",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 49,
+      "articoli_validati": 49,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 193,
+        "con_suffix": 5,
+        "gaps": 146
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPC",
+      "nome": "CPC",
+      "atto_riferimento": {
+        "tipo": "REGIO_DECRETO",
+        "numero": 1443,
+        "anno": 1940
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.455194",
+      "articoli_attesi": 840,
+      "articoli_ingestiti": 1052,
+      "articoli_validati": 1052,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": -212,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 840,
+        "con_suffix": 216,
+        "gaps": 4
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPI",
+      "nome": "CPI",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.461912",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 88,
+      "articoli_validati": 88,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 83,
+        "cataldi_confirmed": 15,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 373,
+        "con_suffix": 11,
+        "gaps": 291
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPO",
+      "nome": "CPO",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.462937",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 17,
+      "articoli_validati": 17,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 8,
+        "max": 55,
+        "con_suffix": 6,
+        "gaps": 36
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPP",
+      "nome": "CPP",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 447,
+        "anno": 1988
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.483820",
+      "articoli_attesi": 746,
+      "articoli_ingestiti": 920,
+      "articoli_validati": 920,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": -174,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 746,
+        "con_suffix": 191,
+        "gaps": 14
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPPM",
+      "nome": "CPPM",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.485430",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 23,
+      "articoli_validati": 23,
+      "articoli_in_review": 0,
+      "articoli_skipped": 6,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 6,
+        "max": 40,
+        "con_suffix": 4,
+        "gaps": 16
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPRIV",
+      "nome": "CPRIV",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 196,
+        "anno": 2003
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.488592",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 82,
+      "articoli_validati": 82,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 63,
+        "cataldi_confirmed": 10,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 326,
+        "con_suffix": 11,
+        "gaps": 249
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPROT",
+      "nome": "CPROT",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "BROCARDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.490016",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 51,
+      "articoli_validati": 51,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 51
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 50,
+        "con_suffix": 1,
+        "gaps": 0
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CPT",
+      "nome": "CPT",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.491934",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 14,
+      "articoli_validati": 14,
+      "articoli_in_review": 0,
+      "articoli_skipped": 5,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 70,
+        "con_suffix": 2,
+        "gaps": 57
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CTS",
+      "nome": "CTS",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.493652",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 50,
+      "articoli_validati": 50,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 157,
+        "con_suffix": 1,
+        "gaps": 107
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "CTUR",
+      "nome": "CTUR",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.494754",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 37,
+      "articoli_validati": 37,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 52,
+        "con_suffix": 0,
+        "gaps": 15
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "D231",
+      "nome": "D231",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 231,
+        "anno": 2001
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.495582",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 29,
+      "articoli_validati": 29,
+      "articoli_in_review": 0,
+      "articoli_skipped": 3,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 84,
+        "con_suffix": 3,
+        "gaps": 57
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "DISP_CC",
+      "nome": "DISP_CC",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "BROCARDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.498861",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 298,
+      "articoli_validati": 298,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 298
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 424,
+        "con_suffix": 41,
+        "gaps": 167
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "DISP_CP",
+      "nome": "DISP_CP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "BROCARDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.499669",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 61,
+      "articoli_validati": 61,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 61
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 57,
+        "con_suffix": 4,
+        "gaps": 0
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "DISP_CPC",
+      "nome": "DISP_CPC",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "BROCARDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.502852",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 304,
+      "articoli_validati": 304,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 304
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 231,
+        "con_suffix": 73,
+        "gaps": 0
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "DISP_CPP",
+      "nome": "DISP_CPP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "BROCARDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.506832",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 323,
+      "articoli_validati": 323,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 323
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 260,
+        "con_suffix": 63,
+        "gaps": 0
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "DUDU",
+      "nome": "DUDU",
+      "atto_riferimento": {
+        "tipo": "ALTRO",
+        "numero": null,
+        "anno": 1948
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.507219",
+      "articoli_attesi": 30,
+      "articoli_ingestiti": 2,
+      "articoli_validati": 2,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": 28,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 3,
+        "con_suffix": 0,
+        "gaps": 1
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 2 articoli estratti",
+      "flags": [
+        "PARTIAL_EXTRACTION"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "GDPR",
+      "nome": "GDPR",
+      "atto_riferimento": {
+        "tipo": "REGOLAMENTO_UE",
+        "numero": 679,
+        "anno": 2016
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.509200",
+      "articoli_attesi": 99,
+      "articoli_ingestiti": 28,
+      "articoli_validati": 28,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": 71,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 93,
+        "con_suffix": 0,
+        "gaps": 65
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "L241",
+      "nome": "L241",
+      "atto_riferimento": {
+        "tipo": "LEGGE",
+        "numero": 241,
+        "anno": 1990
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.510155",
+      "articoli_attesi": 31,
+      "articoli_ingestiti": 14,
+      "articoli_validati": 14,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": 17,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 29,
+        "con_suffix": 5,
+        "gaps": 19
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LDA",
+      "nome": "LDA",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.512303",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 46,
+      "articoli_validati": 46,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 206,
+        "con_suffix": 14,
+        "gaps": 166
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LDEP",
+      "nome": "LDEP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.512784",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 7,
+      "articoli_validati": 7,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 36,
+        "con_suffix": 0,
+        "gaps": 29
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale. Necessaria fonte completa.",
+      "flags": [
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LDIP",
+      "nome": "LDIP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.513163",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 6,
+      "articoli_validati": 6,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 6,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 73,
+        "con_suffix": 0,
+        "gaps": 67
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale. Necessaria fonte completa.",
+      "flags": [
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LDIV",
+      "nome": "LDIV",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.513464",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 1,
+      "articoli_validati": 1,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 1,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 1,
+        "con_suffix": 0,
+        "gaps": 0
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 1 articoli estratti",
+      "flags": [
+        "PARTIAL_EXTRACTION"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LFALL",
+      "nome": "LFALL",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.516053",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 59,
+      "articoli_validati": 59,
+      "articoli_in_review": 0,
+      "articoli_skipped": 4,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 250,
+        "con_suffix": 0,
+        "gaps": 191
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LLOC",
+      "nome": "LLOC",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.516583",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 12,
+      "articoli_validati": 12,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 10,
+        "cataldi_confirmed": 1,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 56,
+        "con_suffix": 0,
+        "gaps": 44
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LMED",
+      "nome": "LMED",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.517111",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 12,
+      "articoli_validati": 12,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 16,
+        "con_suffix": 4,
+        "gaps": 7
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LPF",
+      "nome": "LPF",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.517899",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 24,
+      "articoli_validati": 24,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 65,
+        "con_suffix": 2,
+        "gaps": 42
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LRT",
+      "nome": "LRT",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.518488",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 16,
+      "articoli_validati": 16,
+      "articoli_in_review": 0,
+      "articoli_skipped": 3,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 24,
+        "con_suffix": 3,
+        "gaps": 10
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LSCIO",
+      "nome": "LSCIO",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.518923",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 4,
+      "articoli_validati": 4,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 12,
+        "con_suffix": 0,
+        "gaps": 8
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 4 articoli estratti",
+      "flags": [
+        "PARTIAL_EXTRACTION"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "LSIC",
+      "nome": "LSIC",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.519281",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 8,
+      "articoli_validati": 8,
+      "articoli_in_review": 0,
+      "articoli_skipped": 1,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 13,
+        "con_suffix": 2,
+        "gaps": 6
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 8 articoli estratti",
+      "flags": [
+        "CONTEGGIO_MISMATCH",
+        "PARTIAL_EXTRACTION"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "OP",
+      "nome": "OP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.521208",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 38,
+      "articoli_validati": 38,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 38,
+        "cataldi_confirmed": 5,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 80,
+        "con_suffix": 12,
+        "gaps": 49
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "RBIAGI",
+      "nome": "RBIAGI",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.522584",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 34,
+      "articoli_validati": 34,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 75,
+        "con_suffix": 0,
+        "gaps": 41
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "REGCDS",
+      "nome": "REGCDS",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.523641",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 13,
+      "articoli_validati": 13,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 87,
+        "con_suffix": 0,
+        "gaps": 74
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale (13/87 art). Necessaria fonte completa.",
+      "flags": [
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "RFORN",
+      "nome": "RFORN",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.523948",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 2,
+      "articoli_validati": 2,
+      "articoli_in_review": 0,
+      "articoli_skipped": 6,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 3,
+        "con_suffix": 0,
+        "gaps": 1
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 2 articoli estratti",
+      "flags": [
+        "CONTEGGIO_MISMATCH",
+        "PARTIAL_EXTRACTION"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "SCONTR",
+      "nome": "SCONTR",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.524645",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 13,
+      "articoli_validati": 13,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 24,
+        "con_suffix": 6,
+        "gaps": 14
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "SLAV",
+      "nome": "SLAV",
+      "atto_riferimento": {
+        "tipo": "LEGGE",
+        "numero": 300,
+        "anno": 1970
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.525156",
+      "articoli_attesi": 41,
+      "articoli_ingestiti": 11,
+      "articoli_validati": 11,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": 30,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 39,
+        "con_suffix": 0,
+        "gaps": 28
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUB",
+      "nome": "TUB",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 385,
+        "anno": 1993
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.530367",
+      "articoli_attesi": 162,
+      "articoli_ingestiti": 26,
+      "articoli_validati": 26,
+      "articoli_in_review": 0,
+      "articoli_skipped": 1,
+      "delta_vs_riferimento": 136,
+      "delta_vs_mirror": {
+        "cataldi_found": 25,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 145,
+        "con_suffix": 12,
+        "gaps": 125
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF Altalex incompleto (26/162 art). Fonte completa: Studio Cataldi (280 art)",
+      "flags": [
+        "CONTEGGIO_MISMATCH",
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUCAS",
+      "nome": "TUCAS",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.531162",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 17,
+      "articoli_validati": 17,
+      "articoli_in_review": 0,
+      "articoli_skipped": 4,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 46,
+        "con_suffix": 2,
+        "gaps": 29
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUDA",
+      "nome": "TUDA",
+      "atto_riferimento": {
+        "tipo": "DPR",
+        "numero": 445,
+        "anno": 2000
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.531390",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 5,
+      "articoli_validati": 5,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 5,
+        "con_suffix": 0,
+        "gaps": 0
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 5 articoli estratti",
+      "flags": [
+        "PARTIAL_EXTRACTION",
+        "DUPLICATE_CANDIDATE"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": "Possibile duplicato con: TUDOC",
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUDOC",
+      "nome": "TUDOC",
+      "atto_riferimento": {
+        "tipo": "DPR",
+        "numero": 445,
+        "anno": 2000
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.531597",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 3,
+      "articoli_validati": 3,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 7,
+        "con_suffix": 0,
+        "gaps": 4
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "Solo 3 articoli estratti",
+      "flags": [
+        "PARTIAL_EXTRACTION",
+        "DUPLICATE_CANDIDATE"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": "Possibile duplicato con: TUDA",
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUE",
+      "nome": "TUE",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.535824",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 58,
+      "articoli_validati": 58,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 55,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 135,
+        "con_suffix": 5,
+        "gaps": 81
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUEL",
+      "nome": "TUEL",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 267,
+        "anno": 2000
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.544260",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 96,
+      "articoli_validati": 96,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 43,
+        "cataldi_confirmed": 2,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 271,
+        "con_suffix": 8,
+        "gaps": 180
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUESP",
+      "nome": "TUESP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.545618",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 11,
+      "articoli_validati": 11,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 59,
+        "con_suffix": 0,
+        "gaps": 48
+      },
+      "status": "PARTIAL_EXTRACT",
+      "status_reason": "PDF parziale. Necessaria fonte completa.",
+      "flags": [
+        "CONTEGGIO_MISMATCH",
+        "MAX_NUM_ANOMALY"
+      ],
+      "parent_document": null,
+      "variant_type": "EXTRACT",
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUF",
+      "nome": "TUF",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 58,
+        "anno": 1998
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.560679",
+      "articoli_attesi": 214,
+      "articoli_ingestiti": 169,
+      "articoli_validati": 169,
+      "articoli_in_review": 0,
+      "articoli_skipped": 14,
+      "delta_vs_riferimento": 45,
+      "delta_vs_mirror": {
+        "cataldi_found": 159,
+        "cataldi_confirmed": 17,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 216,
+        "con_suffix": 79,
+        "gaps": 104
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUFF",
+      "nome": "TUFF",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.561689",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 11,
+      "articoli_validati": 11,
+      "articoli_in_review": 0,
+      "articoli_skipped": 1,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 18,
+        "con_suffix": 0,
+        "gaps": 7
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUI",
+      "nome": "TUI",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.564297",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 38,
+      "articoli_validati": 38,
+      "articoli_in_review": 0,
+      "articoli_skipped": 8,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 37,
+        "cataldi_confirmed": 1,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 44,
+        "con_suffix": 12,
+        "gaps": 16
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUIR",
+      "nome": "TUIR",
+      "atto_riferimento": {
+        "tipo": "DPR",
+        "numero": 917,
+        "anno": 1986
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.570884",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 93,
+      "articoli_validati": 93,
+      "articoli_in_review": 0,
+      "articoli_skipped": 3,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 86,
+        "cataldi_confirmed": 5,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 185,
+        "con_suffix": 11,
+        "gaps": 99
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUIST",
+      "nome": "TUIST",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.576800",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 154,
+      "articoli_validati": 154,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 663,
+        "con_suffix": 1,
+        "gaps": 509
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUIVA",
+      "nome": "TUIVA",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.581058",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 53,
+      "articoli_validati": 53,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 199,
+        "con_suffix": 26,
+        "gaps": 165
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUMAT",
+      "nome": "TUMAT",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.582408",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 47,
+      "articoli_validati": 47,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 88,
+        "con_suffix": 6,
+        "gaps": 45
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUPI",
+      "nome": "TUPI",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.585511",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 39,
+      "articoli_validati": 39,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 73,
+        "con_suffix": 6,
+        "gaps": 38
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUPREV",
+      "nome": "TUPREV",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.586973",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 30,
+      "articoli_validati": 30,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 105,
+        "con_suffix": 14,
+        "gaps": 87
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TURTV",
+      "nome": "TURTV",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.588477",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 29,
+      "articoli_validati": 29,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 56,
+        "con_suffix": 7,
+        "gaps": 34
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUS",
+      "nome": "TUS",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.593742",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 28,
+      "articoli_validati": 28,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 114,
+        "con_suffix": 2,
+        "gaps": 87
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUSG",
+      "nome": "TUSG",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.596867",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 116,
+      "articoli_validati": 116,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 112,
+        "cataldi_confirmed": 13,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 455,
+        "con_suffix": 3,
+        "gaps": 342
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUSL",
+      "nome": "TUSL",
+      "atto_riferimento": {
+        "tipo": "DLGS",
+        "numero": 81,
+        "anno": 2008
+      },
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [
+        "STUDIO_CATALDI"
+      ],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.609875",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 77,
+      "articoli_validati": 77,
+      "articoli_in_review": 0,
+      "articoli_skipped": 0,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 76,
+        "cataldi_confirmed": 8,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 295,
+        "con_suffix": 3,
+        "gaps": 220
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    },
+    {
+      "sigla": "TUSP",
+      "nome": "TUSP",
+      "atto_riferimento": null,
+      "fonte_primaria": "PDF_ALTALEX",
+      "fonti_mirror": [],
+      "data_aggiornamento_fonte": null,
+      "data_ingestione": "2026-02-08T03:00:00.610815",
+      "articoli_attesi": null,
+      "articoli_ingestiti": 16,
+      "articoli_validati": 16,
+      "articoli_in_review": 0,
+      "articoli_skipped": 2,
+      "delta_vs_riferimento": null,
+      "delta_vs_mirror": {
+        "cataldi_found": 0,
+        "cataldi_confirmed": 0,
+        "brocardi_found": 0
+      },
+      "range_articoli": {
+        "min": 1,
+        "max": 28,
+        "con_suffix": 0,
+        "gaps": 12
+      },
+      "status": "READY",
+      "status_reason": null,
+      "flags": [
+        "CONTEGGIO_MISMATCH"
+      ],
+      "parent_document": null,
+      "variant_type": null,
+      "note": null,
+      "url_fonte": null
+    }
+  ]
+}

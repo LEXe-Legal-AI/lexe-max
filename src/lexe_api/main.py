@@ -13,9 +13,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from lexe_api import __version__
 from lexe_api.api.health import router as health_router
+from lexe_api.api.kb_retrieval import router as kb_normativa_router
 from lexe_api.cache import cache
 from lexe_api.config import settings
 from lexe_api.database import db
+from lexe_api.kb.retrieval.normativa_hybrid import close_normativa_pool
 
 LOG_LEVELS = {
     "DEBUG": logging.DEBUG,
@@ -67,6 +69,7 @@ async def lifespan(app: FastAPI):
 
     # Shutdown
     logger.info("Shutting down LEXe Max KB")
+    await close_normativa_pool()
     await cache.disconnect()
     await db.disconnect()
 
@@ -102,6 +105,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health_router)
+app.include_router(kb_normativa_router)
 
 
 @app.get("/")
