@@ -15,6 +15,7 @@ import asyncio
 import json
 import argparse
 import hashlib
+import os
 import re
 from pathlib import Path
 from datetime import datetime
@@ -27,8 +28,11 @@ logger = structlog.get_logger()
 
 
 # Database connection (use KB database)
-# Credentials from docker env: lexe_max / lexe_max_dev_password on port 5436
-DB_URL = "postgresql://lexe_max:lexe_max_dev_password@localhost:5436/lexe_max"
+# Override with LEXE_KB_DSN env var for staging/prod
+DB_URL = os.environ.get(
+    "LEXE_KB_DSN",
+    "postgresql://lexe_max:lexe_max_dev_password@localhost:5436/lexe_max"
+)
 
 
 async def normalize_text(text: str) -> str:

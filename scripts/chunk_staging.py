@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """
-Chunk normativa articles on STAGING (normativa_altalex).
-Uses SSH tunnel on port 5437 -> staging:5436.
+Chunk normativa articles on STAGING into kb.normativa_chunk.
+
+Uses SSH tunnel to staging lexe-max DB (port 5436).
+Migration 060 must be applied first (creates normativa_chunk + FTS trigger).
+
+Setup SSH tunnel:
+    ssh -i ~/.ssh/id_stage_new -L 5437:localhost:5436 root@91.99.229.111 -N
 
 Usage:
     uv run python scripts/chunk_staging.py --dry-run
     uv run python scripts/chunk_staging.py
+    uv run python scripts/chunk_staging.py --code CPC
 """
 
 import argparse
@@ -20,15 +26,14 @@ if platform.system() == "Windows":
 
 import asyncpg
 
-# Staging via SSH tunnel (port 5438 -> staging:5435)
+# Staging via SSH tunnel (5437 -> staging lexe-max:5436)
 DB_HOST = "localhost"
-DB_PORT = 5438
-DB_USER = "lexe"
-DB_PASS = "lexe_stage_cc07b664a88cb8e6"
+DB_PORT = 5437
+DB_USER = "lexe_kb"
+DB_PASS = "lexe_kb_secret"
 DB_NAME = "lexe_kb"
 
 TARGET_CHARS = 1000
-MIN_CHARS = 900
 OVERLAP_CHARS = 150
 MIN_CHUNK_LEN = 30
 
@@ -91,7 +96,7 @@ def create_chunks(text: str) -> list[Chunk]:
                 char_start=pos,
                 char_end=end_pos,
                 text=chunk_text,
-                token_est=len(chunk_text) // 4
+                token_est=max(1, len(chunk_text) // 4)
             ))
             chunk_no += 1
         pos = end_pos - OVERLAP_CHARS if end_pos < len(text) else end_pos
@@ -109,86 +114,83 @@ async def get_connection():
     )
 
 
-async def create_chunk_table(conn):
-    """Create the chunk table if it doesn't exist."""
-    await conn.execute("""
-        CREATE TABLE IF NOT EXISTS kb.normativa_chunk (
-            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            normativa_id UUID NOT NULL REFERENCES kb.normativa_altalex(id),
-            codice VARCHAR(50) NOT NULL,
-            articolo VARCHAR(20) NOT NULL,
-            chunk_no INTEGER NOT NULL,
-            char_start INTEGER NOT NULL,
-            char_end INTEGER NOT NULL,
-            text TEXT NOT NULL,
-            token_est INTEGER NOT NULL,
-            embedding vector(1536),
-            created_at TIMESTAMPTZ DEFAULT now()
-        )
-    """)
-    await conn.execute("""
-        CREATE INDEX IF NOT EXISTS idx_normativa_chunk_codice
-        ON kb.normativa_chunk(codice)
-    """)
-    await conn.execute("""
-        CREATE INDEX IF NOT EXISTS idx_normativa_chunk_normativa_id
-        ON kb.normativa_chunk(normativa_id)
-    """)
-    print("  Table kb.normativa_chunk ready")
-
-
 async def main():
-    parser = argparse.ArgumentParser(description="Chunk normativa on staging")
-    parser.add_argument("--dry-run", action="store_true", help="Don't insert")
-    parser.add_argument("--codice", help="Single codice (e.g., CC, CP)")
+    parser = argparse.ArgumentParser(description="Chunk normativa on staging (migration 060 schema)")
+    parser.add_argument("--dry-run", action="store_true", help="Don't insert, just report stats")
+    parser.add_argument("--code", help="Single code (e.g., CC, CP, CPC, CPP, COST)")
     args = parser.parse_args()
 
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] Connecting to STAGING via tunnel...")
+    ts = lambda: datetime.now().strftime('%H:%M:%S')
+    print(f"[{ts()}] Connecting to STAGING via SSH tunnel (localhost:{DB_PORT})...")
     conn = await get_connection()
     print("Connected!")
 
     try:
-        if not args.dry_run:
-            await create_chunk_table(conn)
-
-        # Get articles from normativa_altalex
-        if args.codice:
+        # Fetch articles from kb.normativa with work linkage
+        if args.code:
             articles = await conn.fetch("""
-                SELECT id, codice, articolo, testo
-                FROM kb.normativa_altalex
-                WHERE codice = $1
-                ORDER BY articolo
-            """, args.codice.upper())
+                SELECT n.id, n.work_id, n.codice, n.articolo,
+                       n.articolo_num, n.articolo_suffix, n.articolo_sort_key,
+                       n.testo
+                FROM kb.normativa n
+                WHERE UPPER(n.codice) = $1
+                  AND n.work_id IS NOT NULL
+                ORDER BY n.articolo_sort_key
+            """, args.code.upper())
         else:
             articles = await conn.fetch("""
-                SELECT id, codice, articolo, testo
-                FROM kb.normativa_altalex
-                ORDER BY codice, articolo
+                SELECT n.id, n.work_id, n.codice, n.articolo,
+                       n.articolo_num, n.articolo_suffix, n.articolo_sort_key,
+                       n.testo
+                FROM kb.normativa n
+                WHERE n.work_id IS NOT NULL
+                ORDER BY n.codice, n.articolo_sort_key
             """)
 
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] Articles: {len(articles)}")
+        print(f"[{ts()}] Articles to chunk: {len(articles)}")
+
+        if not args.dry_run:
+            # Clear existing chunks for the codes we're processing
+            codes = set(art['codice'] for art in articles)
+            for code in codes:
+                deleted = await conn.fetchval("""
+                    DELETE FROM kb.normativa_chunk nc
+                    USING kb.work w
+                    WHERE nc.work_id = w.id AND w.code = $1
+                    RETURNING count(*)
+                """, code.upper())
+                # fetchval on DELETE RETURNING count(*) won't work, use execute
+            for code in codes:
+                await conn.execute("""
+                    DELETE FROM kb.normativa_chunk nc
+                    USING kb.work w
+                    WHERE nc.work_id = w.id AND w.code = $1
+                """, code.upper())
+            print(f"[{ts()}] Cleared existing chunks for: {', '.join(sorted(codes))}")
 
         articoli_chunkizzati = 0
         chunks_creati = 0
         articoli_troppo_corti = 0
         stats_per_codice = {}
+        batch_values = []
+        BATCH_SIZE = 500
 
         for art in articles:
-            text = art['testo']
             codice = art['codice']
-
             if codice not in stats_per_codice:
-                stats_per_codice[codice] = {'articles': 0, 'chunks': 0}
-
+                stats_per_codice[codice] = {'articles': 0, 'chunks': 0, 'skipped': 0}
             stats_per_codice[codice]['articles'] += 1
 
+            text = art['testo'] or ""
             if len(text.strip()) < MIN_CHUNK_LEN:
                 articoli_troppo_corti += 1
+                stats_per_codice[codice]['skipped'] += 1
                 continue
 
             chunks = create_chunks(text)
             if not chunks:
                 articoli_troppo_corti += 1
+                stats_per_codice[codice]['skipped'] += 1
                 continue
 
             articoli_chunkizzati += 1
@@ -196,41 +198,69 @@ async def main():
             stats_per_codice[codice]['chunks'] += len(chunks)
 
             if not args.dry_run:
-                await conn.execute(
-                    "DELETE FROM kb.normativa_chunk WHERE normativa_id = $1",
-                    art['id']
-                )
-
                 for chunk in chunks:
-                    await conn.execute("""
-                        INSERT INTO kb.normativa_chunk
-                        (normativa_id, codice, articolo, chunk_no, char_start, char_end, text, token_est)
-                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-                    """, art['id'], codice, art['articolo'],
-                        chunk.chunk_no, chunk.char_start, chunk.char_end,
-                        chunk.text, chunk.token_est)
+                    batch_values.append((
+                        art['id'],           # normativa_id
+                        art['work_id'],      # work_id
+                        art['articolo_sort_key'] or '',  # articolo_sort_key
+                        art['articolo_num'],  # articolo_num
+                        art['articolo_suffix'],  # articolo_suffix
+                        chunk.chunk_no,
+                        chunk.char_start,
+                        chunk.char_end,
+                        chunk.text,
+                        chunk.token_est,
+                    ))
+
+                    if len(batch_values) >= BATCH_SIZE:
+                        await conn.executemany("""
+                            INSERT INTO kb.normativa_chunk
+                            (normativa_id, work_id, articolo_sort_key, articolo_num,
+                             articolo_suffix, chunk_no, char_start, char_end, text, token_est)
+                            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                        """, batch_values)
+                        print(f"  [{ts()}] Inserted batch of {len(batch_values)} chunks...")
+                        batch_values = []
+
+        # Flush remaining batch
+        if batch_values and not args.dry_run:
+            await conn.executemany("""
+                INSERT INTO kb.normativa_chunk
+                (normativa_id, work_id, articolo_sort_key, articolo_num,
+                 articolo_suffix, chunk_no, char_start, char_end, text, token_est)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            """, batch_values)
+            print(f"  [{ts()}] Inserted final batch of {len(batch_values)} chunks")
 
         # Summary
         print(f"\n{'='*60}")
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] SUMMARY")
+        print(f"[{ts()}] SUMMARY")
         print(f"{'='*60}")
+        print(f"{'Code':<8} {'Articles':>10} {'Chunks':>10} {'Skipped':>10} {'Avg':>8}")
+        print(f"{'-'*46}")
 
         for codice, stats in sorted(stats_per_codice.items()):
-            avg = stats['chunks'] / stats['articles'] if stats['articles'] > 0 else 0
-            print(f"  {codice}: {stats['articles']} articles -> {stats['chunks']} chunks (avg {avg:.1f})")
+            chunked = stats['articles'] - stats['skipped']
+            avg = stats['chunks'] / chunked if chunked > 0 else 0
+            print(f"{codice:<8} {stats['articles']:>10} {stats['chunks']:>10} {stats['skipped']:>10} {avg:>8.1f}")
 
-        print(f"\nTotal articles: {len(articles)}")
-        print(f"Chunked: {articoli_chunkizzati}")
-        print(f"Chunks: {chunks_creati}")
-        print(f"Too short: {articoli_troppo_corti}")
+        print(f"{'-'*46}")
+        print(f"{'TOTAL':<8} {len(articles):>10} {chunks_creati:>10} {articoli_troppo_corti:>10}")
 
         if args.dry_run:
-            print("\n[DRY-RUN] No changes made")
+            print(f"\n[DRY-RUN] No changes made")
+        else:
+            # Verify with stats view
+            stats = await conn.fetch("SELECT * FROM kb.v_chunk_stats ORDER BY work_code")
+            print(f"\n--- DB Coverage (v_chunk_stats) ---")
+            print(f"{'Code':<8} {'Articles':>10} {'Chunked':>10} {'Cov%':>8} {'EmbCov%':>8}")
+            for s in stats:
+                print(f"{s['work_code']:<8} {s['articoli_tot']:>10} {s['articoli_chunkizzati']:>10} {s['chunk_coverage_pct']:>7.1f}% {s['emb_coverage_pct']:>7.1f}%")
 
     finally:
         await conn.close()
 
-    print(f"\n[{datetime.now().strftime('%H:%M:%S')}] Done!")
+    print(f"\n[{ts()}] Done!")
 
 
 if __name__ == "__main__":

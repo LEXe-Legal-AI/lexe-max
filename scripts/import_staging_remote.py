@@ -1,35 +1,30 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
-Import ingested JSON to kb.normativa on STAGING.
+Import ingested JSON to kb.normativa on STAGING — runs directly on server.
+Uses psycopg2 (no asyncpg needed). Connects to localhost:5436.
 
-Uses SSH tunnel on port 5437 -> staging:5436.
-
-Usage:
-    uv run python scripts/import_to_staging.py --all
-    uv run python scripts/import_to_staging.py --doc CC --dry-run
+Usage (on staging server):
+    python3 /tmp/import_staging_remote.py --all
+    python3 /tmp/import_staging_remote.py --doc CC --dry-run
 """
 
-import asyncio
 import json
 import argparse
-import platform
+import os
+import sys
 from pathlib import Path
 
-# Windows event loop fix
-if platform.system() == "Windows":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+import psycopg2
+import psycopg2.extras
 
-import asyncpg
-
-# Database connection - STAGING via SSH tunnel
-# Tunnel: ssh -i ~/.ssh/id_stage_new -L 5437:localhost:5436 root@91.99.229.111 -N
+# Database connection - STAGING localhost
 DB_HOST = "localhost"
-DB_PORT = 5437
+DB_PORT = 5436
 DB_USER = "lexe_kb"
 DB_PASS = "lexe_kb_secret"
 DB_NAME = "lexe_kb"
 
-INGESTED_ROOT = Path(__file__).parent.parent / "data" / "ingested"
+INGESTED_ROOT = Path("/tmp/ingested")
 
 # Latin suffix order for sort_key
 SUFFIX_ORDER = {
@@ -42,15 +37,13 @@ SUFFIX_ORDER = {
 }
 
 
-def compute_sort_key(articolo_num: int | None, suffix: str | None) -> str:
-    """Compute sort key for article ordering."""
+def compute_sort_key(articolo_num, suffix):
     num_part = articolo_num or 0
     suffix_order = SUFFIX_ORDER.get(suffix, 99)
     return f"{num_part:06d}.{suffix_order:02d}"
 
 
-def determine_identity_class(articolo: str, suffix: str | None) -> str:
-    """Determine identity class for article."""
+def determine_identity_class(articolo, suffix):
     if suffix:
         return "SUFFIX"
     if any(x in articolo.lower() for x in ["preleggi", "disp.", "transitorie", "allegato"]):
@@ -58,38 +51,26 @@ def determine_identity_class(articolo: str, suffix: str | None) -> str:
     return "BASE"
 
 
-async def get_connection():
-    return await asyncpg.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        user=DB_USER,
-        password=DB_PASS,
-        database=DB_NAME,
-        ssl=False
-    )
+def get_work_id(cur, code):
+    cur.execute("SELECT id FROM kb.work WHERE code = %s", (code,))
+    row = cur.fetchone()
+    return row[0] if row else None
 
 
-async def get_work_id(conn, code: str):
-    """Get work_id from kb.work by code."""
-    row = await conn.fetchrow("SELECT id FROM kb.work WHERE code = $1", code)
-    return row["id"] if row else None
-
-
-async def import_document(conn, doc_code: str, dry_run: bool = False) -> dict:
-    """Import single document from ingested JSON."""
+def import_document(cur, doc_code, dry_run=False):
     json_path = INGESTED_ROOT / doc_code / "ingested.json"
 
     if not json_path.exists():
         print(f"  SKIP: {json_path} not found")
-        return {"code": doc_code, "status": "not_found", "imported": 0}
+        return {"code": doc_code, "status": "not_found", "imported": 0, "skipped": 0, "errors": 0}
 
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    work_id = await get_work_id(conn, doc_code)
+    work_id = get_work_id(cur, doc_code)
     if not work_id:
-        print(f"  ERROR: work '{doc_code}' not found in kb.work")
-        return {"code": doc_code, "status": "work_not_found", "imported": 0}
+        print(f"  SKIP: work '{doc_code}' not found in kb.work")
+        return {"code": doc_code, "status": "work_not_found", "imported": 0, "skipped": 0, "errors": 0}
 
     articles = data.get("articles", [])
     imported = 0
@@ -97,13 +78,11 @@ async def import_document(conn, doc_code: str, dry_run: bool = False) -> dict:
     errors = 0
 
     for art in articles:
-        # Get text
         text_final = art.get("text_final", "") or art.get("text", "")
         if not text_final or len(text_final.strip()) < 10:
             skipped += 1
             continue
 
-        # Build article identifier
         base_num = art.get("base_num")
         suffix = art.get("suffix")
 
@@ -116,7 +95,6 @@ async def import_document(conn, doc_code: str, dry_run: bool = False) -> dict:
 
         articolo_num = base_num or art.get("article_num")
 
-        # Quality mapping
         quality_raw = art.get("quality_class", "VALID_STRONG")
         quality_map = {
             "VALID": "VALID_STRONG",
@@ -137,38 +115,41 @@ async def import_document(conn, doc_code: str, dry_run: bool = False) -> dict:
             continue
 
         try:
-            await conn.execute("""
+            cur.execute("""
                 INSERT INTO kb.normativa (
-                    work_id, articolo, articolo_num, articolo_suffix,
+                    codice, work_id, articolo, articolo_num, articolo_suffix,
                     identity_class, quality, lifecycle, articolo_sort_key,
                     rubrica, testo, is_current
                 ) VALUES (
-                    $1, $2, $3, $4,
-                    $5::kb.article_identity_class, $6::kb.article_quality_class, 'UNKNOWN'::kb.lifecycle_status, $7,
-                    $8, $9, TRUE
+                    %s, %s, %s, %s, %s,
+                    %s::kb.article_identity_class, %s::kb.article_quality_class,
+                    'UNKNOWN'::kb.lifecycle_status, %s,
+                    %s, %s, TRUE
                 )
                 ON CONFLICT (work_id, articolo_sort_key) DO UPDATE SET
                     testo = EXCLUDED.testo,
                     rubrica = EXCLUDED.rubrica,
                     quality = EXCLUDED.quality,
                     articolo = EXCLUDED.articolo,
+                    codice = EXCLUDED.codice,
                     updated_at = now()
-            """, work_id, articolo, articolo_num, suffix,
-                identity_class, quality, sort_key,
-                rubrica, text_final)
+            """, (doc_code, str(work_id), articolo, articolo_num, suffix,
+                  identity_class, quality, sort_key,
+                  rubrica, text_final))
             imported += 1
         except Exception as e:
+            conn = cur.connection
+            conn.rollback()
             errors += 1
-            if errors <= 3:
+            if errors <= 5:
                 print(f"    ERROR {doc_code}:{articolo}: {e}")
 
-    status = "dry_run" if dry_run else "imported"
     print(f"  {doc_code}: {imported} imported, {skipped} skipped, {errors} errors")
-    return {"code": doc_code, "status": status, "imported": imported, "skipped": skipped, "errors": errors}
+    return {"code": doc_code, "status": "ok", "imported": imported, "skipped": skipped, "errors": errors}
 
 
-async def main():
-    parser = argparse.ArgumentParser(description="Import ingested JSON to kb.normativa (STAGING)")
+def main():
+    parser = argparse.ArgumentParser(description="Import ingested JSON to kb.normativa (STAGING REMOTE)")
     parser.add_argument("--doc", help="Document code (e.g., CC, COST)")
     parser.add_argument("--all", action="store_true", help="Import all available documents")
     parser.add_argument("--dry-run", action="store_true", help="Don't actually insert")
@@ -177,8 +158,14 @@ async def main():
     if not args.doc and not args.all:
         parser.error("Either --doc or --all is required")
 
-    print("Connecting to STAGING via SSH tunnel (localhost:5437)...")
-    conn = await get_connection()
+    print(f"Connecting to STAGING DB (localhost:{DB_PORT})...")
+    conn = psycopg2.connect(
+        host=DB_HOST, port=DB_PORT,
+        user=DB_USER, password=DB_PASS,
+        dbname=DB_NAME
+    )
+    conn.autocommit = False
+    cur = conn.cursor()
     print("Connected!\n")
 
     try:
@@ -188,33 +175,49 @@ async def main():
         else:
             docs = [args.doc]
 
-        print(f"=== IMPORT TO STAGING ===")
+        print(f"=== IMPORT TO STAGING (REMOTE) ===")
         print(f"Documents: {len(docs)}")
         print(f"Dry run: {args.dry_run}\n")
 
         results = []
         for doc in docs:
-            result = await import_document(conn, doc, args.dry_run)
+            result = import_document(cur, doc, args.dry_run)
             results.append(result)
+            # Commit after each document
+            if not args.dry_run:
+                conn.commit()
 
-        # Summary
         total_imported = sum(r.get("imported", 0) for r in results)
         total_skipped = sum(r.get("skipped", 0) for r in results)
         total_errors = sum(r.get("errors", 0) for r in results)
+        work_found = sum(1 for r in results if r["status"] == "ok")
+        work_missing = sum(1 for r in results if r["status"] == "work_not_found")
 
         print(f"\n=== SUMMARY ===")
+        print(f"Works found: {work_found}, missing: {work_missing}")
         print(f"Total imported: {total_imported}")
         print(f"Total skipped: {total_skipped}")
         print(f"Total errors: {total_errors}")
 
-        # Verify in DB
         if not args.dry_run:
-            count = await conn.fetchval("SELECT COUNT(*) FROM kb.normativa")
+            cur.execute("SELECT COUNT(*) FROM kb.normativa")
+            count = cur.fetchone()[0]
             print(f"Total in DB: {count}")
 
+            # Per-code stats
+            cur.execute("""
+                SELECT w.code, COUNT(n.id)
+                FROM kb.work w JOIN kb.normativa n ON n.work_id = w.id
+                GROUP BY w.code ORDER BY COUNT(n.id) DESC LIMIT 25
+            """)
+            print(f"\nTop 25 codes by article count:")
+            for code, cnt in cur.fetchall():
+                print(f"  {code}: {cnt}")
+
     finally:
-        await conn.close()
+        cur.close()
+        conn.close()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
