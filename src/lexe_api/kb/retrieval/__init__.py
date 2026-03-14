@@ -83,6 +83,15 @@ from .sparse import (
     keyword_boost_search,
     trgm_search,
 )
+from .concept_expansion import (
+    ADJACENCY_BOOST,
+    MAX_EXPAND_RESULTS,
+    MAX_SIBLINGS,
+    expand_concept_path,
+    get_concept_path,
+    get_parent_concepts,
+    hierarchical_search,
+)
 from .temporal import (
     TemporalBoostConfig,
     apply_temporal_boost,
@@ -156,6 +165,14 @@ __all__ = [
     "boost_by_norm",
     "hybrid_search_with_norm_boost",
     "get_norm_citing_massime",
+    # concept_expansion
+    "get_concept_path",
+    "get_parent_concepts",
+    "expand_concept_path",
+    "hierarchical_search",
+    "MAX_SIBLINGS",
+    "MAX_EXPAND_RESULTS",
+    "ADJACENCY_BOOST",
     # graph_reranker (GraphRAG)
     "GraphExpandedResult",
     "GraphRAGConfig",
