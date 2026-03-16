@@ -30,14 +30,7 @@ STRUCTURE_PATTERNS = [
 ]
 
 # Code abbreviations to work_id mapping (populated at runtime)
-CODE_ABBREVIATIONS = {
-    "codice civile": "CC",
-    "codice penale": "CP",
-    "codice di procedura civile": "CPC",
-    "codice di procedura penale": "CPP",
-    "costituzione": "COST",
-    "codice della crisi d'impresa": "CCI",
-}
+TARGET_CODES = ["CC", "CP", "CPC", "CPP", "COST", "CCII"]
 
 
 async def populate_for_code(
@@ -53,13 +46,13 @@ async def populate_for_code(
     # Get all articles for this code, ordered by article number
     articles = await conn.fetch(
         """
-        SELECT id, article, rubrica, urn
+        SELECT id, articolo AS article, rubrica, urn_nir AS urn
         FROM kb.normativa
         WHERE work_id = $1
         ORDER BY
-            CASE WHEN article ~ '^[0-9]+'
-                 THEN LPAD(regexp_replace(article, '[^0-9].*', ''), 10, '0')
-                 ELSE article END
+            CASE WHEN articolo ~ '^[0-9]+'
+                 THEN LPAD(regexp_replace(articolo, '[^0-9].*', ''), 10, '0')
+                 ELSE articolo END
         """,
         work_id,
     )
@@ -112,19 +105,19 @@ async def populate_all(db_url: str, dry_run: bool = False) -> None:
     conn = await asyncpg.connect(db_url)
 
     try:
-        # Find work_ids for known codes
+        # Find work_ids for target codes
         works = await conn.fetch(
             """
-            SELECT DISTINCT w.id, w.act_type
+            SELECT w.id, w.code
             FROM kb.work w
-            WHERE LOWER(w.act_type) = ANY($1)
+            WHERE w.code = ANY($1)
             """,
-            list(CODE_ABBREVIATIONS.keys()),
+            TARGET_CODES,
         )
 
         total = 0
         for work in works:
-            abbrev = CODE_ABBREVIATIONS.get(work["act_type"].lower(), work["act_type"][:3].upper())
+            abbrev = work["code"]
             count = await populate_for_code(conn, work["id"], abbrev, dry_run)
             total += count
             logger.info("Updated %d articles for %s", count, abbrev)
