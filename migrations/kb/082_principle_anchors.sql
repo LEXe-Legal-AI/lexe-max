@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS kb.principle_massima_links (
     massima_id UUID NOT NULL,
     relevance_score FLOAT NOT NULL DEFAULT 0.5,
     link_type VARCHAR(30) DEFAULT 'embodies',
-    run_id INTEGER DEFAULT 1,
+    run_id INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    PRIMARY KEY (principle_id, massima_id, COALESCE(run_id, 0))
+    PRIMARY KEY (principle_id, massima_id, run_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_pml_principle ON kb.principle_massima_links(principle_id);
