@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from lexe_api import __version__
 from lexe_api.api.health import router as health_router
+from lexe_api.api.kb_library import router as kb_library_router
 from lexe_api.api.kb_massime import router as kb_massime_router
 from lexe_api.api.kb_retrieval import router as kb_normativa_router
 from lexe_api.cache import cache
@@ -108,6 +109,7 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(kb_normativa_router)
 app.include_router(kb_massime_router)
+app.include_router(kb_library_router)
 
 
 @app.get("/")
