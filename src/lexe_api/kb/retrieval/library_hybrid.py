@@ -91,6 +91,8 @@ async def library_hybrid_search(
     *,
     top_k: int = 5,
     doc_type: str | None = None,
+    folder_id: UUID | None = None,
+    document_ids: list[UUID] | None = None,
     embedding_client: EmbeddingClient | None = None,
 ) -> tuple[list[LibrarySearchResult], float, float | None]:
     """Hybrid search on private library chunks.
@@ -108,6 +110,8 @@ async def library_hybrid_search(
         tenant_id:        UUID of the owning tenant (mandatory filter).
         top_k:            Number of results to return.
         doc_type:         Optional document type filter (reserved for future use).
+        folder_id:        Optional folder UUID (caller should resolve to document_ids).
+        document_ids:     Optional list of document UUIDs to scope search within.
         embedding_client: Optional pre-initialised client; created from env if None.
 
     Returns:
@@ -124,13 +128,16 @@ async def library_hybrid_search(
     except Exception:
         logger.exception("Library search embedding failed — falling back to sparse-only")
         # Graceful degradation: sparse-only search
-        results = await _sparse_only_search(pool, query, tenant_id, top_k)
+        results = await _sparse_only_search(
+            pool, query, tenant_id, top_k, document_ids=document_ids,
+        )
         elapsed_ms = (time.perf_counter() - start) * 1000
         return results, elapsed_ms, None
 
     try:
         results = await _hybrid_rrf_search(
-            pool, query, query_embedding, tenant_id, top_k
+            pool, query, query_embedding, tenant_id, top_k,
+            document_ids=document_ids,
         )
     finally:
         if client_to_close is not None:
@@ -143,6 +150,8 @@ async def library_hybrid_search(
         tenant_id=str(tenant_id),
         results=len(results),
         top_k=top_k,
+        folder_id=str(folder_id) if folder_id else None,
+        document_ids_count=len(document_ids) if document_ids else 0,
         time_ms=round(elapsed_ms, 1),
     )
 
@@ -158,8 +167,27 @@ async def _hybrid_rrf_search(
     query_embedding: list[float],
     tenant_id: UUID,
     top_k: int,
+    *,
+    document_ids: list[UUID] | None = None,
 ) -> list[LibrarySearchResult]:
     """Execute hybrid search with RRF fusion."""
+
+    # Build dynamic WHERE clauses for document scoping
+    extra_where = ""
+    params: list = [
+        query_embedding,           # $1 - vector
+        query,                     # $2 - tsquery text
+        tenant_id,                 # $3 - tenant_id
+        _DENSE_LIMIT,              # $4 - dense limit
+        _SPARSE_LIMIT,             # $5 - sparse limit
+        _RRF_K,                    # $6 - RRF k
+        top_k,                     # $7 - final limit
+    ]
+
+    if document_ids:
+        params.append(document_ids)
+        idx = len(params)  # $8
+        extra_where = f" AND c.document_id = ANY(${idx})"
 
     sql = f"""
 WITH query_params AS (
@@ -176,7 +204,7 @@ dense AS (
     FROM kb.library_chunk c
     JOIN kb.library_chunk_embeddings e ON e.chunk_id = c.id
     CROSS JOIN query_params q
-    WHERE c.tenant_id = $3
+    WHERE c.tenant_id = $3{extra_where}
     ORDER BY e.embedding <=> q.qemb
     LIMIT $4
 ),
@@ -189,7 +217,7 @@ sparse AS (
     FROM kb.library_chunk_fts f
     JOIN kb.library_chunk c ON c.id = f.chunk_id
     CROSS JOIN query_params q
-    WHERE c.tenant_id = $3
+    WHERE c.tenant_id = $3{extra_where}
       AND f.tsv_it @@ q.qtsv
     ORDER BY ts_rank_cd(f.tsv_it, q.qtsv) DESC
     LIMIT $5
@@ -219,16 +247,6 @@ ORDER BY r.rrf_score DESC
 LIMIT $7;
     """
 
-    params = [
-        query_embedding,           # $1 - vector
-        query,                     # $2 - tsquery text
-        tenant_id,                 # $3 - tenant_id
-        _DENSE_LIMIT,              # $4 - dense limit
-        _SPARSE_LIMIT,             # $5 - sparse limit
-        _RRF_K,                    # $6 - RRF k
-        top_k,                     # $7 - final limit
-    ]
-
     async with pool.acquire() as conn:
         rows = await conn.fetch(sql, *params)
 
@@ -240,10 +258,20 @@ async def _sparse_only_search(
     query: str,
     tenant_id: UUID,
     top_k: int,
+    *,
+    document_ids: list[UUID] | None = None,
 ) -> list[LibrarySearchResult]:
     """Fallback sparse-only (BM25) search when embeddings are unavailable."""
 
-    sql = """
+    extra_where = ""
+    params: list = [query, tenant_id, top_k]
+
+    if document_ids:
+        params.append(document_ids)
+        idx = len(params)  # $4
+        extra_where = f" AND c.document_id = ANY(${idx})"
+
+    sql = f"""
 WITH query_tsv AS (
     SELECT plainto_tsquery('italian', $1) AS qtsv
 )
@@ -258,14 +286,14 @@ SELECT
 FROM kb.library_chunk_fts f
 JOIN kb.library_chunk c ON c.id = f.chunk_id
 CROSS JOIN query_tsv q
-WHERE c.tenant_id = $2
+WHERE c.tenant_id = $2{extra_where}
   AND f.tsv_it @@ q.qtsv
 ORDER BY ts_rank_cd(f.tsv_it, q.qtsv) DESC
 LIMIT $3;
     """
 
     async with pool.acquire() as conn:
-        rows = await conn.fetch(sql, query, tenant_id, top_k)
+        rows = await conn.fetch(sql, *params)
 
     return _rows_to_results(rows)
 

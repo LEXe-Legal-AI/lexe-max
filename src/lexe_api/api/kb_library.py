@@ -83,6 +83,8 @@ class SearchRequest(BaseModel):
     tenant_id: UUID = Field(..., description="Tenant UUID (mandatory for data isolation)")
     top_k: int = Field(default=5, ge=1, le=20, description="Max results to return")
     doc_type: str | None = Field(default=None, description="Optional document type filter")
+    folder_id: UUID | None = Field(default=None, description="Optional folder UUID to scope search within a folder's documents")
+    document_ids: list[UUID] | None = Field(default=None, description="Optional list of document UUIDs to scope search")
 
 
 class SearchResultItem(BaseModel):
@@ -188,6 +190,8 @@ async def search(body: SearchRequest) -> SearchResponse:
             tenant_id=body.tenant_id,
             top_k=body.top_k,
             doc_type=body.doc_type,
+            folder_id=body.folder_id,
+            document_ids=body.document_ids,
         )
 
         items = [
