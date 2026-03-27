@@ -236,14 +236,14 @@ async def fetch_updated_acts(sync_date: str, lookback_days: int) -> list[dict]:
                 if not cod_red or cod_red in acts_seen:
                     continue
 
-                # Extract GU date
+                # Extract GU date — use dataGU directly from search result (YYYY-MM-DD)
                 data_gu_raw: str | None = None
-                if item.get("annoGU") and item.get("meseGU") and item.get("giornoGU"):
-                    data_gu_raw = (
-                        f"{item['annoGU']:04d}-{int(item['meseGU']):02d}-{int(item['giornoGU']):02d}"
-                    )
-                elif item.get("dataGU"):
+                if item.get("dataGU"):
                     data_gu_raw = str(item["dataGU"])[:10]
+                elif item.get("annoGU") and item.get("meseGU") and item.get("giornoGU"):
+                    data_gu_raw = (
+                        f"{int(item['annoGU']):04d}-{int(item['meseGU']):02d}-{int(item['giornoGU']):02d}"
+                    )
 
                 act = UpdatedAct(
                     urn=_build_urn(item),
@@ -313,8 +313,9 @@ async def fetch_act_articles(act: dict) -> list[dict]:
         activity.heartbeat()
 
         # Request full act detail (no idArticolo = full act)
+        # NOTE: dettaglio-atto accepts dataGU as YYYY-MM-DD (NOT inverted)
         payload: dict[str, Any] = {
-            "dataGU": _convert_data_gu_for_api(data_gu),
+            "dataGU": data_gu,
             "codiceRedazionale": cod_red,
         }
 
