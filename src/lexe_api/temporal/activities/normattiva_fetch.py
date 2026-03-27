@@ -91,7 +91,7 @@ def _build_urn(item: dict[str, Any]) -> str:
     act_slug = denom_map.get(denom, denom.replace(" ", "."))
 
     if anno and mese and giorno and numero:
-        date_part = f"{anno:04d}-{int(mese):02d}-{int(giorno):02d}"
+        date_part = f"{int(anno):04d}-{int(mese):02d}-{int(giorno):02d}"
         return f"urn:nir:stato:{act_slug}:{date_part};{numero}"
     if anno and numero:
         return f"urn:nir:stato:{act_slug}:{anno};{numero}"
