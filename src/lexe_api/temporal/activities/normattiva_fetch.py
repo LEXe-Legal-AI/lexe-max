@@ -331,7 +331,12 @@ async def fetch_act_articles(act: dict) -> list[dict]:
             return []
 
         response.raise_for_status()
-        data = response.json()
+        raw = response.json()
+
+        # API wraps response in {"code":..., "data":{"atto":{...}}, "success":...}
+        data = raw.get("data", raw)
+        if isinstance(data, dict) and "atto" in data:
+            data = data["atto"]
 
     # Parse article list from response.
     # The dettaglio-atto response for a full act contains "listaArticoli" or
