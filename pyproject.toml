@@ -25,6 +25,7 @@ dependencies = [
     "pymupdf>=1.26.7",
     "sentence-transformers>=5.2.2",
     "openai>=2.15.0",
+    "temporalio>=1.7.0",
 ]
 
 [project.optional-dependencies]
