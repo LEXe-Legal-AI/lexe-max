@@ -119,10 +119,12 @@ async def upsert_normativa(articles: list[dict]) -> dict:
                     INSERT INTO kb.normativa (
                         codice, articolo, testo,
                         canonical_source, canonical_hash, content_hash,
+                        identity_class, quality,
                         data_vigenza_da, is_current, created_at, updated_at
                     ) VALUES (
                         $1, $2, $3,
                         'normattiva_opendata', $4::varchar(64), $4::text,
+                        'BASE', 'VALID_STRONG',
                         CURRENT_DATE, true, NOW(), NOW()
                     )
                     RETURNING id::text
@@ -188,12 +190,14 @@ async def upsert_normativa(articles: list[dict]) -> dict:
                         INSERT INTO kb.normativa (
                             codice, articolo, testo,
                             canonical_source, canonical_hash, content_hash,
+                            identity_class, quality,
                             data_vigenza_da, is_current,
                             previous_version_id,
                             created_at, updated_at
                         ) VALUES (
                             $1, $2, $3,
                             'normattiva_opendata', $4::varchar(64), $4::text,
+                            'BASE', 'VALID_STRONG',
                             CURRENT_DATE, true,
                             $5,
                             NOW(), NOW()
