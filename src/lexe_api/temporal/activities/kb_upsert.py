@@ -122,7 +122,7 @@ async def upsert_normativa(articles: list[dict]) -> dict:
                         data_vigenza_da, is_current, created_at, updated_at
                     ) VALUES (
                         $1, $2, $3,
-                        'normattiva_opendata', $4, $4,
+                        'normattiva_opendata', $4::varchar(64), $4::text,
                         CURRENT_DATE, true, NOW(), NOW()
                     )
                     RETURNING id::text
@@ -193,7 +193,7 @@ async def upsert_normativa(articles: list[dict]) -> dict:
                             created_at, updated_at
                         ) VALUES (
                             $1, $2, $3,
-                            'normattiva_opendata', $4, $4,
+                            'normattiva_opendata', $4::varchar(64), $4::text,
                             CURRENT_DATE, true,
                             $5,
                             NOW(), NOW()
