@@ -17,6 +17,15 @@ async def fetch_updated_acts_activity(
     """Fetch updated acts from Normattiva OpenData API."""
     from lexe_api.temporal.activities.normattiva_fetch import fetch_updated_acts
 
+    # TODO #KB-COLLECTIONS: collections parameter is accepted but not forwarded.
+    # Currently fetches ALL updated acts regardless of collections filter.
+    if collections:
+        logger.warning(
+            "collections parameter passed (%s) but not yet implemented — "
+            "fetching ALL updated acts. See TODO #KB-COLLECTIONS",
+            collections,
+        )
+
     sync_date = date.today().isoformat()
     lookback_days = 30 if full_sync else 7
     return await fetch_updated_acts(sync_date, lookback_days)
