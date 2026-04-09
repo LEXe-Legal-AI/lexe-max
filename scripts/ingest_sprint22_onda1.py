@@ -223,6 +223,18 @@ async def upsert_article(
     content_hash = compute_hash(testo, rubrica)
     art_id = uuid.uuid5(uuid.NAMESPACE_URL, f"onda1:{code}:{art_str}")
 
+    # Delete any existing row with same urn_nir to avoid unique constraint clash
+    # (handles cases where article was previously ingested with different work_id/sort_key)
+    if urn_nir:
+        await conn.execute(
+            "DELETE FROM kb.normativa_chunk_embeddings WHERE chunk_id IN "
+            "(SELECT c.id FROM kb.normativa_chunk c JOIN kb.normativa n ON c.normativa_id = n.id "
+            "WHERE n.urn_nir = $1)", urn_nir)
+        await conn.execute(
+            "DELETE FROM kb.normativa_chunk WHERE normativa_id IN "
+            "(SELECT id FROM kb.normativa WHERE urn_nir = $1)", urn_nir)
+        await conn.execute("DELETE FROM kb.normativa WHERE urn_nir = $1 AND id != $2", urn_nir, art_id)
+
     return await conn.fetchval("""
         INSERT INTO kb.normativa (
             id, work_id, codice, articolo, articolo_num, articolo_suffix,
