@@ -75,8 +75,23 @@ KNOWN_EU_ACTS = {
 }
 
 
-async def fetch_eurlex_html(celex: str) -> str | None:
-    """Fetch the Italian HTML text of an EU act from EUR-Lex."""
+async def fetch_eurlex_html(celex: str, local_file: str | None = None) -> str | None:
+    """Fetch the Italian HTML text of an EU act from EUR-Lex or local file.
+
+    Args:
+        celex: CELEX identifier (e.g., "32024R1689")
+        local_file: Path to local HTML file (bypasses EUR-Lex fetch).
+                    Useful when EUR-Lex CloudFront WAF blocks curl/httpx.
+    """
+    if local_file:
+        from pathlib import Path
+        p = Path(local_file)
+        if p.exists():
+            logger.info("Loading %s from local file: %s", celex, local_file)
+            return p.read_text(encoding="utf-8")
+        logger.warning("Local file not found: %s", local_file)
+        return None
+
     url = f"{EURLEX_BASE}{celex}"
     logger.info("Fetching %s from %s", celex, url)
 
@@ -251,12 +266,12 @@ async def ingest_to_db(articles: list[dict], act_key: str, act_info: dict, dry_r
         await conn.close()
 
 
-async def process_act(act_key: str, act_info: dict, dry_run: bool = False) -> dict:
+async def process_act(act_key: str, act_info: dict, dry_run: bool = False, local_file: str | None = None) -> dict:
     """Fetch, parse, and ingest a single EU act."""
     celex = act_info["celex"]
     logger.info("Processing %s (%s) — CELEX: %s", act_key, act_info["title"], celex)
 
-    html = await fetch_eurlex_html(celex)
+    html = await fetch_eurlex_html(celex, local_file=local_file)
     if not html:
         return {"act": act_key, "status": "fetch_failed", "articles": 0}
 
@@ -283,6 +298,7 @@ async def main():
     parser.add_argument("--all", action="store_true", help="Ingest ALL known acts")
     parser.add_argument("--list", action="store_true", help="List available acts")
     parser.add_argument("--dry-run", action="store_true", help="Fetch + parse only, no DB write")
+    parser.add_argument("--file", default=None, help="Local HTML file (bypasses EUR-Lex fetch, avoids WAF)")
     args = parser.parse_args()
 
     if args.list:
@@ -310,7 +326,7 @@ async def main():
     logger.info("Processing %d acts (dry_run=%s)", len(acts_to_process), args.dry_run)
     results = []
     for key, info in acts_to_process.items():
-        result = await process_act(key, info, dry_run=args.dry_run)
+        result = await process_act(key, info, dry_run=args.dry_run, local_file=args.file)
         results.append(result)
 
     # Summary
