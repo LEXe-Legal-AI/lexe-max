@@ -92,8 +92,23 @@ async def fetch_eurlex_html(celex: str) -> str | None:
             return None
 
 
+def _extract_table_text(table) -> list[str]:
+    """Extract text rows from an HTML table element."""
+    rows = table.find_all("tr")
+    table_text = []
+    for row in rows:
+        cells = row.find_all("td")
+        row_text = " ".join(cell.get_text(strip=True) for cell in cells)
+        if row_text:
+            table_text.append(row_text)
+    return table_text
+
+
 def extract_articles_from_html(html: str, celex: str) -> list[dict]:
     """Parse EUR-Lex HTML and extract individual articles.
+
+    Uses sibling-walking approach: finds <p class="oj-ti-art"> headers,
+    then collects all sibling elements until the next article header.
 
     Returns list of {article, title, text, celex}.
     """
@@ -102,13 +117,14 @@ def extract_articles_from_html(html: str, celex: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
     articles = []
 
-    # EUR-Lex uses <div class="eli-subdivision" id="art_N"> for articles
-    art_divs = soup.find_all("div", class_="eli-subdivision")
-    if not art_divs:
-        # Fallback: look for <p> with "Articolo N" pattern
-        art_divs = soup.find_all("p", class_="oj-ti-art")
+    # Primary strategy: find all <p class="oj-ti-art"> article headers
+    art_headers = soup.find_all("p", class_="oj-ti-art")
 
-    if not art_divs:
+    # Fallback: eli-subdivision divs (some newer EUR-Lex pages)
+    if not art_headers:
+        art_headers = soup.find_all("div", class_="eli-subdivision")
+
+    if not art_headers:
         # Last resort: regex on full text
         text = soup.get_text(separator="\n")
         art_pattern = re.compile(
@@ -117,7 +133,7 @@ def extract_articles_from_html(html: str, celex: str) -> list[dict]:
         )
         for m in art_pattern.finditer(text):
             art_num = m.group(1)
-            art_text = m.group(2).strip()[:5000]
+            art_text = m.group(2).strip()[:50000]
             if len(art_text) > 20:
                 articles.append({
                     "article": art_num,
@@ -128,25 +144,53 @@ def extract_articles_from_html(html: str, celex: str) -> list[dict]:
         logger.info("Regex extraction: %d articles from %s", len(articles), celex)
         return articles
 
-    for div in art_divs:
-        art_id = div.get("id", "")
-        art_num_match = re.search(r"(\d+[a-z]*)", art_id or div.get_text()[:30])
+    for header in art_headers:
+        header_text = header.get_text(strip=True)
+
+        # Extract article number from header text ("Articolo 1", "Articolo 99", "Article 1")
+        art_num_match = re.search(r"(\d+[a-z]*)", header_text)
         if not art_num_match:
-            continue
+            # Also try the id attribute for eli-subdivision divs
+            art_id = header.get("id", "")
+            art_num_match = re.search(r"(\d+[a-z]*)", art_id)
+            if not art_num_match:
+                continue
 
         art_num = art_num_match.group(1)
-        # Get title (next sibling or first child)
-        title_el = div.find(class_="oj-ti-art")
-        title = title_el.get_text(strip=True) if title_el else ""
 
-        # Get text content
+        # Extract rubrica from next <p class="oj-sti-art"> sibling (if exists)
+        title = ""
+        next_el = header.find_next_sibling()
+        if next_el and next_el.name == "p" and "oj-sti-art" in next_el.get("class", []):
+            title = next_el.get_text(strip=True)
+            # Advance past the rubrica so we don't include it in body text
+            next_el = next_el.find_next_sibling()
+
+        # Walk siblings collecting content until next oj-ti-art header
         text_parts = []
-        for p in div.find_all(["p", "li", "td"]):
-            t = p.get_text(strip=True)
-            if t and t != title:
-                text_parts.append(t)
+        element = next_el
+        while element:
+            # Stop at next article header
+            if element.name == "p" and "oj-ti-art" in element.get("class", []):
+                break
+            # Also stop at next eli-subdivision (alternative structure)
+            if element.name == "div" and "eli-subdivision" in element.get("class", []):
+                break
 
-        art_text = "\n".join(text_parts)[:5000]
+            if element.name in ("p", "div"):
+                t = element.get_text(strip=True)
+                if t:
+                    text_parts.append(t)
+            elif element.name == "table":
+                text_parts.extend(_extract_table_text(element))
+            elif element.name == "li":
+                t = element.get_text(strip=True)
+                if t:
+                    text_parts.append(t)
+
+            element = element.find_next_sibling()
+
+        art_text = "\n".join(text_parts)[:50000]
         if len(art_text) > 20:
             articles.append({
                 "article": art_num,
@@ -155,7 +199,7 @@ def extract_articles_from_html(html: str, celex: str) -> list[dict]:
                 "celex": celex,
             })
 
-    logger.info("Parsed %d articles from %s", len(articles), celex)
+    logger.info("Parsed %d articles from %s (sibling-walk)", len(articles), celex)
     return articles
 
 
