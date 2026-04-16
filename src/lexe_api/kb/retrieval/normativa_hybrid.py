@@ -169,6 +169,7 @@ async def hybrid_search_normativa(
     codes: list[str] | None = None,
     mode: SearchMode = SearchMode.HYBRID,
     config: HybridSearchConfig | None = None,
+    source_type: str | None = None,
 ) -> tuple[list[NormativaSearchResult], float]:
     """
     Hybrid search on KB Normativa chunks.
@@ -192,6 +193,18 @@ async def hybrid_search_normativa(
     """
     cfg = config or HybridSearchConfig()
     start = time.perf_counter()
+
+    # Sprint 27 T9 S10.2: source_type acknowledgment.
+    # kb.normativa currently stores only norma_primaria (statuti/decreti).
+    # Other types (circolare_prassi / giurisprudenza / softlaw) require
+    # multi-source ingest (Sprint 28 backlog BL-S28-T9-02). We log the hint
+    # to allow observability without altering the filter pipeline.
+    if source_type and source_type != "norma_primaria":
+        logger.info(
+            "normativa_hybrid.source_type_hint_non_primaria",
+            source_type=source_type,
+            note="kb.normativa has only norma_primaria; no additional filter applied.",
+        )
 
     # Build code filter if provided.
     # Sprint 27 (S2.3 / T4.2 re-apply): defensive JOIN on kb.work_alias so

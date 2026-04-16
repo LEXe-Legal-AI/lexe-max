@@ -140,6 +140,7 @@ async def search_normativa(request: NormativaSearchRequest) -> NormativaSearchRe
             top_k=request.top_k,
             codes=request.codes,
             mode=request.mode,
+            source_type=request.source_type,
         )
 
         # Filter by min_score if specified
