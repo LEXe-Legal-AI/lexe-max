@@ -140,6 +140,19 @@ _URN_TO_CODE: dict[str, str] = {
     "urn:nir:stato:decreto.legislativo:1992-12-31;546": "CPT",        # Codice Processo Tributario
     "urn:nir:stato:decreto.del.presidente.della.repubblica:1992-12-16;495": "REGCDS",
     "urn:nir:stato:decreto.legislativo:2023-03-31;36": "CAPP",        # Codice Appalti 2023
+    # --- Sprint 27 S6.2: 11 Testi Unici dal bundle "Testi Unici" (T2-BIS) ---
+    #     CGS (Codice Giustizia Sportiva FIGC) NON è nel bundle: source non-statale.
+    "urn:nir:stato:decreto.legislativo:1993-09-01;385": "TUB",        # Testo Unico Bancario
+    "urn:nir:stato:decreto.legislativo:1998-02-24;58": "TUF",         # Testo Unico Finanza
+    "urn:nir:stato:decreto.del.presidente.della.repubblica:1986-12-22;917": "TUIR",   # Testo Unico Imposte Redditi
+    "urn:nir:stato:decreto.legislativo:2000-08-18;267": "TUEL",       # Testo Unico Enti Locali
+    "urn:nir:stato:decreto.legislativo:2008-04-09;81": "TUSL",        # Testo Unico Sicurezza Lavoro
+    "urn:nir:stato:decreto.legislativo:1998-07-25;286": "TUI",        # Testo Unico Immigrazione
+    "urn:nir:stato:decreto.del.presidente.della.repubblica:2002-05-30;115": "TUSG",   # Testo Unico Spese Giustizia
+    "urn:nir:stato:decreto.legislativo:1994-04-16;297": "TUIST",      # Testo Unico Istruzione
+    "urn:nir:stato:decreto.del.presidente.della.repubblica:2000-12-28;445": "TUDA",   # Testo Unico Documentazione Amministrativa
+    "urn:nir:stato:decreto.del.presidente.della.repubblica:2001-06-08;327": "TUESP",  # Testo Unico Espropriazioni
+    "urn:nir:stato:decreto.legislativo:2006-04-24;219": "CMED",       # Codice Medicinali
     # --- Codici NUOVI (non ancora in kb.work, verranno creati) ---
     "urn:nir:stato:regio.decreto:1942-03-30;318": "DISP_ATT_CC",
     "urn:nir:stato:regio.decreto:1942-03-30;327": "CNAV",
@@ -186,6 +199,18 @@ _DIR_TO_CODE: dict[str, str] = {
     "DECRETO LEGISLATIVO_19921231_546": "CPT",
     "DECRETO DEL PRESIDENTE DELLA REPUBBLICA_19921216_495": "REGCDS",
     "DECRETO LEGISLATIVO_20230331_36": "CAPP",
+    # --- Sprint 27 S6.2: 11 Testi Unici dal bundle "Testi Unici" (T2-BIS) ---
+    "DECRETO LEGISLATIVO_19930901_385": "TUB",
+    "DECRETO LEGISLATIVO_19980224_58": "TUF",
+    "DECRETO DEL PRESIDENTE DELLA REPUBBLICA_19861222_917": "TUIR",
+    "DECRETO LEGISLATIVO_20000818_267": "TUEL",
+    "DECRETO LEGISLATIVO_20080409_81": "TUSL",
+    "DECRETO LEGISLATIVO_19980725_286": "TUI",
+    "DECRETO DEL PRESIDENTE DELLA REPUBBLICA_20020530_115": "TUSG",
+    "DECRETO LEGISLATIVO_19940416_297": "TUIST",
+    "DECRETO DEL PRESIDENTE DELLA REPUBBLICA_20001228_445": "TUDA",
+    "DECRETO DEL PRESIDENTE DELLA REPUBBLICA_20010608_327": "TUESP",
+    "DECRETO LEGISLATIVO_20060424_219": "CMED",
     # --- Codici nuovi (verranno creati in kb.work se mancano) ---
     "REGIO DECRETO_19420330_318": "DISP_ATT_CC",
     "REGIO DECRETO_19420330_327": "CNAV",
