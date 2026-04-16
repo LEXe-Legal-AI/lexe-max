@@ -103,6 +103,7 @@ EURLEX_TARGETS = {
     "dsa":  {"celex": "32022R2065", "title": "DSA (Reg. UE 2022/2065)", "code": "DSA"},
     "nis2": {"celex": "32022L2555", "title": "NIS2 (Dir. UE 2022/2555)", "code": "NIS2"},
     "tfue": {"celex": "12012E/TXT", "title": "TFUE", "code": "TFUE"},
+    "gdpr": {"celex": "32016R0679", "title": "GDPR (Reg. UE 2016/679)", "code": "GDPR"},
 }
 
 # Suffix ordering (match ingest_opendata_codici.py)
