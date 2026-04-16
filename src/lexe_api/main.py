@@ -16,6 +16,7 @@ from lexe_api.api.health import router as health_router
 from lexe_api.api.kb_library import router as kb_library_router
 from lexe_api.api.kb_massime import router as kb_massime_router
 from lexe_api.api.kb_retrieval import router as kb_normativa_router
+from lexe_api.api.kb_sentenze_cc import router as kb_sentenze_cc_router
 from lexe_api.cache import cache
 from lexe_api.config import settings
 from lexe_api.database import db
@@ -110,6 +111,7 @@ app.include_router(health_router)
 app.include_router(kb_normativa_router)
 app.include_router(kb_massime_router)
 app.include_router(kb_library_router)
+app.include_router(kb_sentenze_cc_router)
 
 
 @app.get("/")

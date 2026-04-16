@@ -30,12 +30,20 @@ CREATE TABLE IF NOT EXISTS kb.sentenze_cc (
     testo_integrale TEXT,
     external_refs   JSONB NOT NULL DEFAULT '[]'::jsonb,
     parse_warnings  JSONB NOT NULL DEFAULT '[]'::jsonb,
+    tsv_italian     tsvector,
     crawled_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CONSTRAINT uq_sentenze_cc_tipo_num_anno UNIQUE (tipo, numero, anno),
     CONSTRAINT uq_sentenze_cc_slug UNIQUE (filename_slug)
 );
 
+-- Populate tsvector from testo_integrale + dispositivo
+UPDATE kb.sentenze_cc SET tsv_italian = to_tsvector('italian',
+    COALESCE(testo_integrale, '') || ' ' || COALESCE(dispositivo, '')
+) WHERE tsv_italian IS NULL;
+
+CREATE INDEX IF NOT EXISTS idx_sentenze_cc_tsv
+    ON kb.sentenze_cc USING GIN (tsv_italian);
 CREATE INDEX IF NOT EXISTS idx_sentenze_cc_anno_numero
     ON kb.sentenze_cc(anno DESC, numero DESC);
 CREATE INDEX IF NOT EXISTS idx_sentenze_cc_tipo
@@ -63,7 +71,7 @@ CREATE INDEX IF NOT EXISTS idx_sentenze_cc_embedding_hnsw
 CREATE TABLE IF NOT EXISTS kb.sentenze_cc_edges (
     id                SERIAL PRIMARY KEY,
     source_id         UUID NOT NULL REFERENCES kb.sentenze_cc(id) ON DELETE CASCADE,
-    target_kind       TEXT NOT NULL CHECK (target_kind IN ('sentenza_cc','norm','url')),
+    target_kind       TEXT NOT NULL CHECK (target_kind IN ('sentenza_cc','norm','url','massima')),
     target_id         UUID,
     target_raw        TEXT NOT NULL,
     target_url        TEXT,
