@@ -49,6 +49,16 @@ class NormativaSearchRequest(BaseModel):
         le=1.0,
         description="Minimum score threshold (filters results below this)",
     )
+    source_type: str | None = Field(
+        default=None,
+        description=(
+            "Sprint 27 T9 S10.2: hint on source type "
+            "(norma_primaria|circolare_prassi|giurisprudenza|softlaw). "
+            "Currently accepted and logged; kb.normativa contains only "
+            "norma_primaria. Filter differentiation requires multi-source "
+            "ingest (Sprint 28 backlog)."
+        ),
+    )
 
     model_config = {
         "json_schema_extra": {
