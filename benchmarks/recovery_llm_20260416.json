@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-04-16T05:40:49Z",
+  "args": {
+    "execute": true,
+    "min_confidence": 0.8,
+    "only_regex": false,
+    "only_llm": true,
+    "limit": 0,
+    "concurrency": 10,
+    "model": "google/gemini-2.5-flash-lite-preview-09-2025"
+  },
+  "baseline": null,
+  "final": {
+    "total": 46767,
+    "anno_null": 8097,
+    "numero_null": 9656,
+    "sezione_null": 9656,
+    "rv_null": 3436,
+    "extracted": 9103
+  },
+  "gate_b": "FAIL",
+  "phases": [
+    {
+      "phase": "llm",
+      "processed": 9910,
+      "concurrency": 10,
+      "llm_ok": 9502,
+      "llm_failed": 408,
+      "matched_at_threshold": 1814,
+      "below_threshold": 7688,
+      "updated": 1814,
+      "execute": true,
+      "model": "google/gemini-2.5-flash-lite-preview-09-2025",
+      "wall_clock_sec": 756.4
+    }
+  ]
+}

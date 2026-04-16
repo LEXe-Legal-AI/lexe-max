@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-04-16T05:21:15Z",
+  "args": {
+    "execute": true,
+    "min_confidence": 0.8,
+    "only_regex": true,
+    "only_llm": false,
+    "limit": 0,
+    "concurrency": 10,
+    "model": "google/gemini-2.5-flash-lite-preview-09-2025"
+  },
+  "baseline": {
+    "total": 46767,
+    "anno_null": 14275,
+    "numero_null": 17064,
+    "sezione_null": 17064,
+    "rv_null": 8444,
+    "extracted": 7855
+  },
+  "final": {
+    "total": 46767,
+    "anno_null": 9910,
+    "numero_null": 11443,
+    "sezione_null": 11443,
+    "rv_null": 4079,
+    "extracted": 8543
+  },
+  "gate_b": "FAIL",
+  "phases": [
+    {
+      "phase": "regex",
+      "processed": 18150,
+      "matched_at_threshold": 5666,
+      "below_threshold": 12484,
+      "filled_breakdown": {
+        "anno": 9027,
+        "numero": 8921,
+        "sezione": 13122,
+        "rv": 16017
+      },
+      "updated": 5666,
+      "execute": true
+    }
+  ]
+}
