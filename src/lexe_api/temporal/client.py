@@ -6,13 +6,15 @@ KB nightly sync workflows via Temporal.
 
 import logging
 import os
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from temporalio.client import (
     Client,
     Schedule,
     ScheduleActionStartWorkflow,
+    ScheduleCalendarSpec,
     ScheduleIntervalSpec,
+    ScheduleRange,
     ScheduleSpec,
     WorkflowHandle,
 )
@@ -161,6 +163,108 @@ class TemporalClient:
                 raise
 
         return schedule_id
+
+    async def schedule_massime_enrich(
+        self,
+        schedule_id: str = "lexe-massime-weekly-enrich",
+        batch_size: int = 500,
+    ) -> str:
+        """Create or update the weekly massime enrichment schedule.
+
+        Runs Sunday 02:00 UTC — low-traffic window after the Saturday
+        KB nightly sync (03:00 UTC). See MassimeEnrichWorkflow docstring.
+
+        Args:
+            schedule_id: Unique schedule identifier.
+            batch_size: Rows per activity batch (default 500).
+
+        Returns:
+            The schedule ID.
+        """
+        from lexe_api.temporal.workflows.massime_enrich import (
+            MassimeEnrichParams,
+            MassimeEnrichWorkflow,
+        )
+
+        params = MassimeEnrichParams(
+            batch_size=batch_size,
+            triggered_by="schedule",
+        )
+
+        try:
+            await self._client.create_schedule(
+                schedule_id,
+                Schedule(
+                    action=ScheduleActionStartWorkflow(
+                        MassimeEnrichWorkflow.run,
+                        args=[params],
+                        id="massime-enrich-scheduled",
+                        task_queue=TaskQueues.KB_SYNC.value,
+                        retry_policy=RetryPolicy(
+                            initial_interval=timedelta(seconds=10),
+                            backoff_coefficient=2.0,
+                            maximum_interval=timedelta(minutes=30),
+                            maximum_attempts=3,
+                        ),
+                    ),
+                    spec=ScheduleSpec(
+                        # cron "0 2 * * 0" — Sunday 02:00 UTC
+                        calendars=[
+                            ScheduleCalendarSpec(
+                                hour=(ScheduleRange(start=2, end=2, step=1),),
+                                minute=(ScheduleRange(start=0, end=0, step=1),),
+                                day_of_week=(ScheduleRange(start=0, end=0, step=1),),
+                            ),
+                        ],
+                    ),
+                ),
+            )
+            logger.info(
+                f"Created massime enrich schedule '{schedule_id}' "
+                f"(Sunday 02:00 UTC, batch_size={batch_size})"
+            )
+        except Exception as e:
+            if "already exists" in str(e).lower():
+                logger.info(
+                    f"Schedule '{schedule_id}' already exists, skipping creation"
+                )
+            else:
+                raise
+
+        return schedule_id
+
+    async def trigger_massime_enrich(
+        self,
+        batch_size: int = 500,
+        max_iterations: int = 200,
+    ) -> WorkflowHandle:
+        """Manually trigger a massime enrichment workflow run.
+
+        Args:
+            batch_size: Rows per activity batch.
+            max_iterations: Safety cap on total iterations.
+
+        Returns:
+            Workflow handle for monitoring/cancel.
+        """
+        from lexe_api.temporal.workflows.massime_enrich import (
+            MassimeEnrichParams,
+            MassimeEnrichWorkflow,
+        )
+
+        params = MassimeEnrichParams(
+            batch_size=batch_size,
+            max_iterations=max_iterations,
+            triggered_by="manual",
+        )
+        handle = await self._client.start_workflow(
+            MassimeEnrichWorkflow.run,
+            args=[params],
+            id=f"massime-enrich-manual-{int(datetime.now().timestamp())}",
+            task_queue=TaskQueues.KB_SYNC.value,
+        )
+        logger.info(f"Triggered massime enrich workflow: {handle.id}")
+        return handle
 
     async def trigger_kb_sync(
         self,

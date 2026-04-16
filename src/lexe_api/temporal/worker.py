@@ -29,8 +29,13 @@ from lexe_api.temporal.activities.kb_process import (
     reembed_chunks_activity,
     upsert_normativa_activity,
 )
+from lexe_api.temporal.activities.massime_enrich import (
+    enrich_massime_batch_activity,
+    get_pending_massime_activity,
+)
 from lexe_api.temporal.task_queues import TaskQueues
 from lexe_api.temporal.workflows.kb_sync import KBSyncWorkflow
+from lexe_api.temporal.workflows.massime_enrich import MassimeEnrichWorkflow
 
 logger = logging.getLogger(__name__)
 
@@ -42,9 +47,12 @@ ALL_ACTIVITIES = [
     rechunk_articles_activity,
     reembed_chunks_activity,
     notify_sync_complete_activity,
+    # Sprint 27 T9 S7.1 — massime enrichment (weekly)
+    get_pending_massime_activity,
+    enrich_massime_batch_activity,
 ]
 
-ALL_WORKFLOWS = [KBSyncWorkflow]
+ALL_WORKFLOWS = [KBSyncWorkflow, MassimeEnrichWorkflow]
 
 
 async def run_worker(
