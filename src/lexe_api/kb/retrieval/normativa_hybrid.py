@@ -193,12 +193,22 @@ async def hybrid_search_normativa(
     cfg = config or HybridSearchConfig()
     start = time.perf_counter()
 
-    # Build code filter if provided
+    # Build code filter if provided.
+    # Sprint 27 (S2.3 / T4.2 re-apply): defensive JOIN on kb.work_alias so
+    # user-facing short codes (TUB, TUF, ...) resolve to their canonical
+    # OpenData counterparts (DLGS_385_1993, DLGS_58_1998, ...). Necessary
+    # because the Sprint 27 delete cleared the legacy short-code rows; without
+    # this JOIN, queries with codes=['TUB'] find 0 results. asyncpg/PostgreSQL
+    # allow reusing the same bound placeholder across multiple IN clauses.
     code_filter = ""
     code_values: list[Any] = []
     if codes:
         placeholders = ", ".join(f"${i + 7}" for i in range(len(codes)))
-        code_filter = f"AND w.code IN ({placeholders})"
+        code_filter = (
+            f"AND (w.code IN ({placeholders})"
+            f" OR w.id IN (SELECT wa.work_id FROM kb.work_alias wa"
+            f"             WHERE wa.alias IN ({placeholders})))"
+        )
         code_values = codes
 
     async with pool.acquire() as conn:
